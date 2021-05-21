@@ -1,0 +1,298 @@
+package csmp.part_b.p5.util;
+
+import android.content.ContentResolver;
+import android.content.ContentUris;
+import android.content.ContentValues;
+import android.content.Context;
+import android.content.Intent;
+import android.database.Cursor;
+import android.net.Uri;
+import android.os.Environment;
+import android.provider.BaseColumns;
+import android.provider.MediaStore;
+import android.text.TextUtils;
+import android.util.Log;
+import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.core.content.FileProvider;
+
+import java.io.File;
+import java.io.IOException;
+import java.util.List;
+import java.util.Locale;
+
+import csmp.part_b.p5.R;
+import csmp.part_b.p5.helper.MusicPlayerRemote;
+import csmp.part_b.p5.loader.PlaylistLoader;
+import csmp.part_b.p5.loader.SongLoader;
+import csmp.part_b.p5.model.Album;
+import csmp.part_b.p5.model.Artist;
+import csmp.part_b.p5.model.Playlist;
+import csmp.part_b.p5.model.Song;
+
+public class MusicUtil {
+
+    public static Uri getMediaStoreAlbumCoverUri(long albumId) {
+        final Uri sArtworkUri = Uri.parse("content://media/external/audio/albumart");
+
+        return ContentUris.withAppendedId(sArtworkUri, albumId);
+    }
+
+    public static Uri getSongFileUri(long songId) {
+        return ContentUris.withAppendedId(MediaStore.Audio.Media.EXTERNAL_CONTENT_URI, songId);
+    }
+
+    @NonNull
+    public static Intent createShareSongFileIntent(@NonNull final Song song, Context context) {
+        try {
+            return new Intent()
+                    .setAction(Intent.ACTION_SEND)
+                    .putExtra(Intent.EXTRA_STREAM, FileProvider.getUriForFile(context, context.getApplicationContext().getPackageName(), new File(song.data)))
+                    .addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+                    .setType("audio/*");
+        } catch (IllegalArgumentException e) {
+            // TODO the path is most likely not like /storage/emulated/0/... but something like /storage/28C7-75B0/...
+            e.printStackTrace();
+            Toast.makeText(context, "Could not share this file, I'm aware of the issue.", Toast.LENGTH_SHORT).show();
+            return new Intent();
+        }
+    }
+
+    @NonNull
+    public static String getArtistInfoString(@NonNull final Context context, @NonNull final Artist artist) {
+        int albumCount = artist.getAlbumCount();
+        int songCount = artist.getSongCount();
+
+        return MusicUtil.buildInfoString(
+            MusicUtil.getAlbumCountString(context, albumCount),
+            MusicUtil.getSongCountString(context, songCount)
+        );
+    }
+
+    @NonNull
+    public static String getAlbumInfoString(@NonNull final Context context, @NonNull final Album album) {
+        int songCount = album.getSongCount();
+
+        return MusicUtil.buildInfoString(
+            album.getArtistName(),
+            MusicUtil.getSongCountString(context, songCount)
+        );
+    }
+
+    @NonNull
+    public static String getSongInfoString(@NonNull final Song song) {
+        return MusicUtil.buildInfoString(
+            song.artistName,
+            song.albumName
+        );
+    }
+
+    @NonNull
+    public static String getPlaylistInfoString(@NonNull final Context context, @NonNull List<Song> songs) {
+        final long duration = getTotalDuration(context, songs);
+
+        return MusicUtil.buildInfoString(
+            MusicUtil.getSongCountString(context, songs.size()),
+            MusicUtil.getReadableDurationString(duration)
+        );
+    }
+
+    @NonNull
+    public static String getSongCountString(@NonNull final Context context, int songCount) {
+        final String songString = songCount == 1 ? context.getResources().getString(R.string.song) : context.getResources().getQuantityString(R.plurals.songs_x, songCount);
+        return songCount + " " + songString;
+    }
+
+    @NonNull
+    public static String getAlbumCountString(@NonNull final Context context, int albumCount) {
+        final String albumString = albumCount == 1 ? context.getResources().getString(R.string.album) : context.getResources().getQuantityString(R.plurals.albums_x, albumCount);
+        return albumCount + " " + albumString;
+    }
+
+    @NonNull
+    public static String getYearString(int year) {
+        return year > 0 ? String.valueOf(year) : "-";
+    }
+
+    public static long getTotalDuration(@NonNull final Context context, @NonNull List<Song> songs) {
+        long duration = 0;
+        for (int i = 0; i < songs.size(); i++) {
+            duration += songs.get(i).duration;
+        }
+        return duration;
+    }
+
+    public static String getReadableDurationString(long songDurationMillis) {
+        long minutes = (songDurationMillis / 1000) / 60;
+        long seconds = (songDurationMillis / 1000) % 60;
+        if (minutes < 60) {
+            return String.format(Locale.getDefault(), "%01d:%02d", minutes, seconds);
+        } else {
+            long hours = minutes / 60;
+            minutes = minutes % 60;
+            return String.format(Locale.getDefault(), "%d:%02d:%02d", hours, minutes, seconds);
+        }
+    }
+
+    /**
+     * Build a concatenated string from the provided arguments
+     * The intended purpose is to show extra annotations
+     * to a music library item.
+     * Ex: for a given album --> buildInfoString(album.artist, album.songCount)
+     */
+    @NonNull
+    public static String buildInfoString(@Nullable final String string1, @Nullable final String string2)
+    {
+        // Skip empty strings
+        if (TextUtils.isEmpty(string1)) {
+            //noinspection ConstantConditions
+            return TextUtils.isEmpty(string2) ? "" : string2;
+        }
+        if (TextUtils.isEmpty(string2)) {
+            //noinspection ConstantConditions
+            return TextUtils.isEmpty(string1) ? "" : string1;
+        }
+
+        return string1 + "  •  " + string2;
+    }
+
+    //iTunes uses for example 1002 for song 2 CD1 or 3011 for song 11 CD3.
+    //this method converts those values to normal songnumbers
+    public static int getFixedSongNumber(int songNumberToFix) {
+        return songNumberToFix % 1000;
+    }
+
+    public static void insertAlbumArt(@NonNull Context context, long albumId, String path) {
+        ContentResolver contentResolver = context.getContentResolver();
+
+        Uri artworkUri = Uri.parse("content://media/external/audio/albumart");
+        contentResolver.delete(ContentUris.withAppendedId(artworkUri, albumId), null, null);
+
+        ContentValues values = new ContentValues();
+        values.put("album_id", albumId);
+        values.put("_data", path);
+
+        contentResolver.insert(artworkUri, values);
+        contentResolver.notifyChange(artworkUri, null);
+    }
+
+    public static void deleteAlbumArt(@NonNull Context context, long albumId) {
+        ContentResolver contentResolver = context.getContentResolver();
+        Uri localUri = Uri.parse("content://media/external/audio/albumart");
+        contentResolver.delete(ContentUris.withAppendedId(localUri, albumId), null, null);
+        contentResolver.notifyChange(localUri, null);
+    }
+
+    @NonNull
+    public static File createAlbumArtFile() {
+        return new File(createAlbumArtDir(), String.valueOf(System.currentTimeMillis()));
+    }
+
+    @NonNull
+    @SuppressWarnings("ResultOfMethodCallIgnored")
+    public static File createAlbumArtDir() {
+        File albumArtDir = new File(Environment.getExternalStorageDirectory(), "/albumthumbs/");
+        if (!albumArtDir.exists()) {
+            albumArtDir.mkdirs();
+            try {
+                new File(albumArtDir, ".nomedia").createNewFile();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        return albumArtDir;
+    }
+
+    public static void deleteSongs(@NonNull final Context context, @NonNull final List<Song> songs) {
+        final String[] projection = new String[]{
+                BaseColumns._ID, MediaStore.MediaColumns.DATA
+        };
+        final StringBuilder selection = new StringBuilder();
+        selection.append(BaseColumns._ID + " IN (");
+        for (int i = 0; i < songs.size(); i++) {
+            selection.append(songs.get(i).id);
+            if (i < songs.size() - 1) {
+                selection.append(",");
+            }
+        }
+        selection.append(")");
+
+        int deletedCount = 0;
+
+        try {
+            final Cursor cursor = context.getContentResolver().query(
+                    MediaStore.Audio.Media.EXTERNAL_CONTENT_URI, projection, selection.toString(),
+                    null, null);
+            if (cursor != null) {
+                // Step 1: Remove selected songs from the current playlist, as well
+                // as from the album art cache
+                cursor.moveToFirst();
+                while (!cursor.isAfterLast()) {
+                    final long id = cursor.getLong(0);
+                    final Song song = SongLoader.getSong(context, id);
+                    MusicPlayerRemote.removeFromQueue(song);
+                    cursor.moveToNext();
+                }
+
+                // Step 2: Remove files from card
+                cursor.moveToFirst();
+                while (!cursor.isAfterLast()) {
+                    final long id = cursor.getLong(0);
+                    final String name = cursor.getString(1);
+                    try { // File.delete can throw a security exception
+                        final File f = new File(name);
+                        if (f.delete()) {
+                            // Step 3: Remove selected track from the database
+                            context.getContentResolver().delete(ContentUris.withAppendedId(MediaStore.Audio.Media.EXTERNAL_CONTENT_URI, id),null, null);
+                            deletedCount++;
+                        } else {
+                            // I'm not sure if we'd ever get here (deletion would
+                            // have to fail, but no exception thrown)
+                            Log.e("MusicUtils", "Failed to delete file " + name);
+                        }
+
+                        cursor.moveToNext();
+                    } catch (@NonNull final SecurityException ex) {
+                        cursor.moveToNext();
+                    } catch (NullPointerException e) {
+                        Log.e("MusicUtils", "Failed to find file " + name);
+                    }
+                }
+                cursor.close();
+            }
+      		Toast.makeText(context, context.getResources().getQuantityString(R.plurals.deleted_x_songs, deletedCount, deletedCount), Toast.LENGTH_SHORT).show();
+        } catch (SecurityException ignored) {
+        }
+    }
+
+    public static Playlist getFavoritesPlaylist(@NonNull final Context context) {
+        return PlaylistLoader.getPlaylist(context, context.getString(R.string.favorites));
+    }
+
+    public static boolean isFavorite(@NonNull final Context context, @NonNull final Song song) {
+        return PlaylistsUtil.doesPlaylistContain(context, getFavoritesPlaylist(context).id, song.id);
+    }
+
+    public static boolean isArtistNameUnknown(@Nullable String artistName) {
+        if (TextUtils.isEmpty(artistName)) return false;
+        if (artistName.equals(Artist.UNKNOWN_ARTIST_DISPLAY_NAME)) return true;
+        artistName = artistName.trim().toLowerCase();
+        return artistName.equals("unknown") || artistName.equals("<unknown>");
+    }
+
+    @NonNull
+    public static String getSectionName(@Nullable String musicMediaTitle) {
+        if (TextUtils.isEmpty(musicMediaTitle)) return "";
+        musicMediaTitle = musicMediaTitle.trim().toLowerCase();
+        if (musicMediaTitle.startsWith("the ")) {
+            musicMediaTitle = musicMediaTitle.substring(4);
+        } else if (musicMediaTitle.startsWith("a ")) {
+            musicMediaTitle = musicMediaTitle.substring(2);
+        }
+        if (musicMediaTitle.isEmpty()) return "";
+        return String.valueOf(musicMediaTitle.charAt(0)).toUpperCase();
+    }
+
+}

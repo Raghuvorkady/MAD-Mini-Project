@@ -1,0 +1,67 @@
+
+package csmp.part_b.p5.misc;
+
+import android.content.Context;
+
+import androidx.loader.content.AsyncTaskLoader;
+
+public abstract class WrappedAsyncTaskLoader<D> extends AsyncTaskLoader<D> {
+
+    private D mData;
+
+    /**
+     * Constructor of <code>WrappedAsyncTaskLoader</code>
+     *
+     * @param context The {@link Context} to use.
+     */
+    public WrappedAsyncTaskLoader(Context context) {
+        super(context);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void deliverResult(D data) {
+        if (!isReset()) {
+            this.mData = data;
+            super.deliverResult(data);
+        } else {
+            // An asynchronous query came in while the loader is stopped
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected void onStartLoading() {
+        super.onStartLoading();
+        if (this.mData != null) {
+            deliverResult(this.mData);
+        } else if (takeContentChanged() || this.mData == null) {
+            forceLoad();
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected void onStopLoading() {
+        super.onStopLoading();
+        // Attempt to cancel the current load task if possible
+        cancelLoad();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    protected void onReset() {
+        super.onReset();
+        // Ensure the loader is stopped
+        onStopLoading();
+        this.mData = null;
+    }
+}
