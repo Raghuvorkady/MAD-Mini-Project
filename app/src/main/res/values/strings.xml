@@ -34,7 +34,7 @@
         <item quantity="other">albums</item>
     </plurals>
     <string name="always">Always</string>
-    <string name="app_name">Music Player</string>
+    <string name="app_name">Muizik</string>
     <string name="audio_focus_denied">Audio focus denied</string>
     <string name="authors">Authors</string>
     <string name="black_theme_name">Black (AMOLED)</string>
@@ -74,7 +74,7 @@
     <string name="label_view_playing_queue">View playing queue</string>
     <string name="library">Library</string>
     <string name="light_theme_name">Light</string>
-    <string name="main_activity_name">Music</string>
+    <string name="main_activity_name">Muizik</string>
     <string name="md_back_label">Back</string>
     <string name="md_cancel_label">Cancel</string>
     <string name="md_choose_label">Choose</string>
@@ -131,7 +131,7 @@
     <string name="unplayable_file">Couldn’t play this song</string>
     <string name="up_next">Up next</string>
     <string name="version">Version</string>
-    <string name="welcome_to_music_app">Welcome to \"Music\" application, a beautiful and lightweight music player!</string>
+    <string name="welcome_to_music_app">Welcome to \"Muizik\" application, a beautiful and lightweight music player!</string>
     <string name="what_do_you_want_to_share">What do you want to share?</string>
     <string name="write_an_email">Write an email</string>
     <string name="x_selected">%1$d selected</string>

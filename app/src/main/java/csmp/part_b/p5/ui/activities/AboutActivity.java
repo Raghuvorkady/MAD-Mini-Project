@@ -94,7 +94,7 @@ public class AboutActivity extends AbsBaseActivity implements View.OnClickListen
             Intent intent = new Intent(Intent.ACTION_SENDTO);
             intent.setData(Uri.parse("mailto:raghavendrakm300@gmail.com"));
             intent.putExtra(Intent.EXTRA_EMAIL, "raghavendrakm300@gmail.com");
-            intent.putExtra(Intent.EXTRA_SUBJECT, "Music");
+            intent.putExtra(Intent.EXTRA_SUBJECT, "Muizik");
             startActivity(Intent.createChooser(intent, "E-Mail"));
         }
     }
