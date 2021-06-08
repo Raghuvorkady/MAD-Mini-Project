@@ -1,0 +1,26 @@
+Existing System 
+
+People traveling in cities many a times find difficulty in parking their vehicles. Few of the reasons are:
+1. People who are strangers to a city
+2. Lack of available parking slots
+3. Manual searching of parking spaces
+4. Google maps displays parking slots, but it doesn't show the available parking slot.
+
+Causes of this are:
+1. People will get exhausted in finding the perfect place for their vehicles
+2. Fuels which are the national resources will also get wasted in this process of searching
+
+_______________________
+
+
+Proposed System 
+
+The proposed system is mostly targeted to the drivers who wants to park his vehicle in a city. The system will act as his/her assitant in finding a nearest parking space for him. And in addition to this, the system(app) will also help in generation of the bills.
+
+The proposed system will be designed to takle most of the problems which are being faced by the society in the existing system discussed above.
+
+Few of the features of the proposed model are:
+1. Provide users with information related to parking spaces near him/her.
+2. Also details about available parking slots in the parking area/space.
+3. The parking fee of the particular parking space.
+4. Generating parking fee bills according to the duration of parking
