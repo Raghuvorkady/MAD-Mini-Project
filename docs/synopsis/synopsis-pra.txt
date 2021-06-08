@@ -9,6 +9,7 @@ _______________________
 Applications of the Project
 
 Efficient Parking system.
+Parking Billing system
 Display the available space in parking.
 	//redundant//Car Park management and access control
 _______________________
