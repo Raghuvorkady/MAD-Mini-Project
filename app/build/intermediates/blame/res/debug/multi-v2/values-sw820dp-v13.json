@@ -1,0 +1,19 @@
+{
+    "logs": [
+        {
+            "outputFile": "F:\\PROJECT_X\\mad_project\\MAD-Mini-Project\\app\\build\\intermediates\\incremental\\mergeDebugResources\\merged.dir\\values-sw820dp-v13\\values-sw820dp-v13.xml",
+            "map": [
+                {
+                    "source": "C:\\Users\\hp\\.gradle\\caches\\transforms-2\\files-2.1\\9ebd8ef0f7edaf320617048125900066\\jetified-material-intro-2.0.0\\res\\values-sw820dp-v13\\values-sw820dp-v13.xml",
+                    "from": {
+                        "startLines": "2,3,4,5",
+                        "startColumns": "4,4,4,4",
+                        "startOffsets": "55,98,146,210",
+                        "endColumns": "42,47,63,43",
+                        "endOffsets": "93,141,205,249"
+                    }
+                }
+            ]
+        }
+    ]
+}

@@ -1,0 +1,318 @@
+1<?xml version="1.0" encoding="utf-8"?>
+2<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+3    package="csmp.part_b.p5.debug"
+4    android:versionCode="1"
+5    android:versionName="1.0" >
+6
+7    <uses-sdk
+8        android:minSdkVersion="21"
+8-->F:\PROJECT_X\mad_project\MAD-Mini-Project\app\src\main\AndroidManifest.xml
+9        android:targetSdkVersion="30" />
+9-->F:\PROJECT_X\mad_project\MAD-Mini-Project\app\src\main\AndroidManifest.xml
+10
+11    <uses-permission android:name="android.permission.WAKE_LOCK" />
+11-->F:\PROJECT_X\mad_project\MAD-Mini-Project\app\src\main\AndroidManifest.xml:6:5-68
+11-->F:\PROJECT_X\mad_project\MAD-Mini-Project\app\src\main\AndroidManifest.xml:6:22-65
+12    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+12-->F:\PROJECT_X\mad_project\MAD-Mini-Project\app\src\main\AndroidManifest.xml:7:5-80
+12-->F:\PROJECT_X\mad_project\MAD-Mini-Project\app\src\main\AndroidManifest.xml:7:22-77
+13    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+13-->F:\PROJECT_X\mad_project\MAD-Mini-Project\app\src\main\AndroidManifest.xml:8:5-81
+13-->F:\PROJECT_X\mad_project\MAD-Mini-Project\app\src\main\AndroidManifest.xml:8:22-78
+14    <uses-permission android:name="android.permission.INTERNET" />
+14-->F:\PROJECT_X\mad_project\MAD-Mini-Project\app\src\main\AndroidManifest.xml:9:5-67
+14-->F:\PROJECT_X\mad_project\MAD-Mini-Project\app\src\main\AndroidManifest.xml:9:22-64
+15    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+15-->F:\PROJECT_X\mad_project\MAD-Mini-Project\app\src\main\AndroidManifest.xml:10:5-79
+15-->F:\PROJECT_X\mad_project\MAD-Mini-Project\app\src\main\AndroidManifest.xml:10:22-76
+16    <uses-permission android:name="android.permission.BROADCAST_STICKY" />
+16-->F:\PROJECT_X\mad_project\MAD-Mini-Project\app\src\main\AndroidManifest.xml:11:5-75
+16-->F:\PROJECT_X\mad_project\MAD-Mini-Project\app\src\main\AndroidManifest.xml:11:22-72
+17    <uses-permission android:name="android.permission.WRITE_SETTINGS" />
+17-->F:\PROJECT_X\mad_project\MAD-Mini-Project\app\src\main\AndroidManifest.xml:12:5-14:47
+17-->F:\PROJECT_X\mad_project\MAD-Mini-Project\app\src\main\AndroidManifest.xml:13:9-57
+18    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+18-->F:\PROJECT_X\mad_project\MAD-Mini-Project\app\src\main\AndroidManifest.xml:15:5-81
+18-->F:\PROJECT_X\mad_project\MAD-Mini-Project\app\src\main\AndroidManifest.xml:15:22-78
+19    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+19-->F:\PROJECT_X\mad_project\MAD-Mini-Project\app\src\main\AndroidManifest.xml:16:5-77
+19-->F:\PROJECT_X\mad_project\MAD-Mini-Project\app\src\main\AndroidManifest.xml:16:22-74
+20
+21    <application
+21-->F:\PROJECT_X\mad_project\MAD-Mini-Project\app\src\main\AndroidManifest.xml:18:5-142:19
+22        android:name="csmp.part_b.p5.App"
+22-->F:\PROJECT_X\mad_project\MAD-Mini-Project\app\src\main\AndroidManifest.xml:19:9-28
+23        android:allowBackup="true"
+23-->F:\PROJECT_X\mad_project\MAD-Mini-Project\app\src\main\AndroidManifest.xml:20:9-35
+24        android:appComponentFactory="androidx.core.app.CoreComponentFactory"
+24-->[androidx.core:core:1.3.2] C:\Users\hp\.gradle\caches\transforms-2\files-2.1\ddc9deb311e776b956336a8f1832b03f\core-1.3.2\AndroidManifest.xml:24:18-86
+25        android:debuggable="true"
+26        android:icon="@mipmap/ic_launcher"
+26-->F:\PROJECT_X\mad_project\MAD-Mini-Project\app\src\main\AndroidManifest.xml:21:9-43
+27        android:label="@string/app_name"
+27-->F:\PROJECT_X\mad_project\MAD-Mini-Project\app\src\main\AndroidManifest.xml:22:9-41
+28        android:requestLegacyExternalStorage="true"
+28-->F:\PROJECT_X\mad_project\MAD-Mini-Project\app\src\main\AndroidManifest.xml:23:9-52
+29        android:resizeableActivity="true"
+29-->F:\PROJECT_X\mad_project\MAD-Mini-Project\app\src\main\AndroidManifest.xml:24:9-42
+30        android:supportsRtl="true"
+30-->F:\PROJECT_X\mad_project\MAD-Mini-Project\app\src\main\AndroidManifest.xml:25:9-35
+31        android:testOnly="true"
+32        android:theme="@style/Theme.Music.Light" >
+32-->F:\PROJECT_X\mad_project\MAD-Mini-Project\app\src\main\AndroidManifest.xml:26:9-49
+33        <activity
+33-->F:\PROJECT_X\mad_project\MAD-Mini-Project\app\src\main\AndroidManifest.xml:28:9-101:20
+34            android:name="csmp.part_b.p5.ui.activities.MainActivity"
+34-->F:\PROJECT_X\mad_project\MAD-Mini-Project\app\src\main\AndroidManifest.xml:29:13-55
+35            android:label="@string/main_activity_name"
+35-->F:\PROJECT_X\mad_project\MAD-Mini-Project\app\src\main\AndroidManifest.xml:30:13-55
+36            android:theme="@style/SplashTheme" >
+36-->F:\PROJECT_X\mad_project\MAD-Mini-Project\app\src\main\AndroidManifest.xml:31:13-47
+37            <intent-filter>
+37-->F:\PROJECT_X\mad_project\MAD-Mini-Project\app\src\main\AndroidManifest.xml:32:13-39:29
+38                <action android:name="android.intent.action.MAIN" />
+38-->F:\PROJECT_X\mad_project\MAD-Mini-Project\app\src\main\AndroidManifest.xml:33:17-69
+38-->F:\PROJECT_X\mad_project\MAD-Mini-Project\app\src\main\AndroidManifest.xml:33:25-66
+39                <action android:name="android.intent.action.MUSIC_PLAYER" />
+39-->F:\PROJECT_X\mad_project\MAD-Mini-Project\app\src\main\AndroidManifest.xml:34:17-77
+39-->F:\PROJECT_X\mad_project\MAD-Mini-Project\app\src\main\AndroidManifest.xml:34:25-74
+40
+41                <category android:name="android.intent.category.LAUNCHER" />
+41-->F:\PROJECT_X\mad_project\MAD-Mini-Project\app\src\main\AndroidManifest.xml:36:17-77
+41-->F:\PROJECT_X\mad_project\MAD-Mini-Project\app\src\main\AndroidManifest.xml:36:27-74
+42                <category android:name="android.intent.category.APP_MUSIC" />
+42-->F:\PROJECT_X\mad_project\MAD-Mini-Project\app\src\main\AndroidManifest.xml:37:17-78
+42-->F:\PROJECT_X\mad_project\MAD-Mini-Project\app\src\main\AndroidManifest.xml:37:27-75
+43                <category android:name="android.intent.category.DEFAULT" />
+43-->F:\PROJECT_X\mad_project\MAD-Mini-Project\app\src\main\AndroidManifest.xml:38:17-76
+43-->F:\PROJECT_X\mad_project\MAD-Mini-Project\app\src\main\AndroidManifest.xml:38:27-73
+44            </intent-filter>
+45            <intent-filter>
+45-->F:\PROJECT_X\mad_project\MAD-Mini-Project\app\src\main\AndroidManifest.xml:40:13-44:29
+46                <action android:name="android.media.action.MEDIA_PLAY_FROM_SEARCH" />
+46-->F:\PROJECT_X\mad_project\MAD-Mini-Project\app\src\main\AndroidManifest.xml:41:17-86
+46-->F:\PROJECT_X\mad_project\MAD-Mini-Project\app\src\main\AndroidManifest.xml:41:25-83
+47
+48                <category android:name="android.intent.category.DEFAULT" />
+48-->F:\PROJECT_X\mad_project\MAD-Mini-Project\app\src\main\AndroidManifest.xml:38:17-76
+48-->F:\PROJECT_X\mad_project\MAD-Mini-Project\app\src\main\AndroidManifest.xml:38:27-73
+49            </intent-filter>
+50            <intent-filter>
+50-->F:\PROJECT_X\mad_project\MAD-Mini-Project\app\src\main\AndroidManifest.xml:45:13-55:29
+51                <action android:name="android.intent.action.VIEW" />
+51-->F:\PROJECT_X\mad_project\MAD-Mini-Project\app\src\main\AndroidManifest.xml:46:17-69
+51-->F:\PROJECT_X\mad_project\MAD-Mini-Project\app\src\main\AndroidManifest.xml:46:25-66
+52
+53                <category android:name="android.intent.category.DEFAULT" />
+53-->F:\PROJECT_X\mad_project\MAD-Mini-Project\app\src\main\AndroidManifest.xml:38:17-76
+53-->F:\PROJECT_X\mad_project\MAD-Mini-Project\app\src\main\AndroidManifest.xml:38:27-73
+54
+55                <data android:scheme="content" />
+55-->F:\PROJECT_X\mad_project\MAD-Mini-Project\app\src\main\AndroidManifest.xml:50:17-50
+55-->F:\PROJECT_X\mad_project\MAD-Mini-Project\app\src\main\AndroidManifest.xml:50:23-47
+56                <data android:mimeType="audio/*" />
+56-->F:\PROJECT_X\mad_project\MAD-Mini-Project\app\src\main\AndroidManifest.xml:50:17-50
+56-->F:\PROJECT_X\mad_project\MAD-Mini-Project\app\src\main\AndroidManifest.xml:51:23-49
+57                <data android:mimeType="application/ogg" />
+57-->F:\PROJECT_X\mad_project\MAD-Mini-Project\app\src\main\AndroidManifest.xml:50:17-50
+57-->F:\PROJECT_X\mad_project\MAD-Mini-Project\app\src\main\AndroidManifest.xml:51:23-49
+58                <data android:mimeType="application/x-ogg" />
+58-->F:\PROJECT_X\mad_project\MAD-Mini-Project\app\src\main\AndroidManifest.xml:50:17-50
+58-->F:\PROJECT_X\mad_project\MAD-Mini-Project\app\src\main\AndroidManifest.xml:51:23-49
+59                <data android:mimeType="application/itunes" />
+59-->F:\PROJECT_X\mad_project\MAD-Mini-Project\app\src\main\AndroidManifest.xml:50:17-50
+59-->F:\PROJECT_X\mad_project\MAD-Mini-Project\app\src\main\AndroidManifest.xml:51:23-49
+60            </intent-filter>
+61            <intent-filter>
+61-->F:\PROJECT_X\mad_project\MAD-Mini-Project\app\src\main\AndroidManifest.xml:56:13-66:29
+62                <action android:name="android.intent.action.VIEW" />
+62-->F:\PROJECT_X\mad_project\MAD-Mini-Project\app\src\main\AndroidManifest.xml:46:17-69
+62-->F:\PROJECT_X\mad_project\MAD-Mini-Project\app\src\main\AndroidManifest.xml:46:25-66
+63
+64                <category android:name="android.intent.category.DEFAULT" />
+64-->F:\PROJECT_X\mad_project\MAD-Mini-Project\app\src\main\AndroidManifest.xml:38:17-76
+64-->F:\PROJECT_X\mad_project\MAD-Mini-Project\app\src\main\AndroidManifest.xml:38:27-73
+65
+66                <data android:scheme="file" />
+66-->F:\PROJECT_X\mad_project\MAD-Mini-Project\app\src\main\AndroidManifest.xml:50:17-50
+66-->F:\PROJECT_X\mad_project\MAD-Mini-Project\app\src\main\AndroidManifest.xml:50:23-47
+67                <data android:mimeType="audio/*" />
+67-->F:\PROJECT_X\mad_project\MAD-Mini-Project\app\src\main\AndroidManifest.xml:50:17-50
+67-->F:\PROJECT_X\mad_project\MAD-Mini-Project\app\src\main\AndroidManifest.xml:51:23-49
+68                <data android:mimeType="application/ogg" />
+68-->F:\PROJECT_X\mad_project\MAD-Mini-Project\app\src\main\AndroidManifest.xml:50:17-50
+68-->F:\PROJECT_X\mad_project\MAD-Mini-Project\app\src\main\AndroidManifest.xml:51:23-49
+69                <data android:mimeType="application/x-ogg" />
+69-->F:\PROJECT_X\mad_project\MAD-Mini-Project\app\src\main\AndroidManifest.xml:50:17-50
+69-->F:\PROJECT_X\mad_project\MAD-Mini-Project\app\src\main\AndroidManifest.xml:51:23-49
+70                <data android:mimeType="application/itunes" />
+70-->F:\PROJECT_X\mad_project\MAD-Mini-Project\app\src\main\AndroidManifest.xml:50:17-50
+70-->F:\PROJECT_X\mad_project\MAD-Mini-Project\app\src\main\AndroidManifest.xml:51:23-49
+71            </intent-filter>
+72            <intent-filter>
+72-->F:\PROJECT_X\mad_project\MAD-Mini-Project\app\src\main\AndroidManifest.xml:67:13-78:29
+73                <action android:name="android.intent.action.VIEW" />
+73-->F:\PROJECT_X\mad_project\MAD-Mini-Project\app\src\main\AndroidManifest.xml:46:17-69
+73-->F:\PROJECT_X\mad_project\MAD-Mini-Project\app\src\main\AndroidManifest.xml:46:25-66
+74
+75                <category android:name="android.intent.category.DEFAULT" />
+75-->F:\PROJECT_X\mad_project\MAD-Mini-Project\app\src\main\AndroidManifest.xml:38:17-76
+75-->F:\PROJECT_X\mad_project\MAD-Mini-Project\app\src\main\AndroidManifest.xml:38:27-73
+76                <category android:name="android.intent.category.BROWSABLE" />
+76-->F:\PROJECT_X\mad_project\MAD-Mini-Project\app\src\main\AndroidManifest.xml:71:17-78
+76-->F:\PROJECT_X\mad_project\MAD-Mini-Project\app\src\main\AndroidManifest.xml:71:27-75
+77
+78                <data android:scheme="http" />
+78-->F:\PROJECT_X\mad_project\MAD-Mini-Project\app\src\main\AndroidManifest.xml:50:17-50
+78-->F:\PROJECT_X\mad_project\MAD-Mini-Project\app\src\main\AndroidManifest.xml:50:23-47
+79                <data android:mimeType="audio/*" />
+79-->F:\PROJECT_X\mad_project\MAD-Mini-Project\app\src\main\AndroidManifest.xml:50:17-50
+79-->F:\PROJECT_X\mad_project\MAD-Mini-Project\app\src\main\AndroidManifest.xml:51:23-49
+80                <data android:mimeType="application/ogg" />
+80-->F:\PROJECT_X\mad_project\MAD-Mini-Project\app\src\main\AndroidManifest.xml:50:17-50
+80-->F:\PROJECT_X\mad_project\MAD-Mini-Project\app\src\main\AndroidManifest.xml:51:23-49
+81                <data android:mimeType="application/x-ogg" />
+81-->F:\PROJECT_X\mad_project\MAD-Mini-Project\app\src\main\AndroidManifest.xml:50:17-50
+81-->F:\PROJECT_X\mad_project\MAD-Mini-Project\app\src\main\AndroidManifest.xml:51:23-49
+82                <data android:mimeType="application/itunes" />
+82-->F:\PROJECT_X\mad_project\MAD-Mini-Project\app\src\main\AndroidManifest.xml:50:17-50
+82-->F:\PROJECT_X\mad_project\MAD-Mini-Project\app\src\main\AndroidManifest.xml:51:23-49
+83            </intent-filter>
+84            <intent-filter>
+84-->F:\PROJECT_X\mad_project\MAD-Mini-Project\app\src\main\AndroidManifest.xml:79:13-87:29
+85                <action android:name="android.intent.action.VIEW" />
+85-->F:\PROJECT_X\mad_project\MAD-Mini-Project\app\src\main\AndroidManifest.xml:46:17-69
+85-->F:\PROJECT_X\mad_project\MAD-Mini-Project\app\src\main\AndroidManifest.xml:46:25-66
+86
+87                <category android:name="android.intent.category.DEFAULT" />
+87-->F:\PROJECT_X\mad_project\MAD-Mini-Project\app\src\main\AndroidManifest.xml:38:17-76
+87-->F:\PROJECT_X\mad_project\MAD-Mini-Project\app\src\main\AndroidManifest.xml:38:27-73
+88
+89                <data android:mimeType="vnd.android.cursor.dir/playlist" />
+89-->F:\PROJECT_X\mad_project\MAD-Mini-Project\app\src\main\AndroidManifest.xml:50:17-50
+89-->F:\PROJECT_X\mad_project\MAD-Mini-Project\app\src\main\AndroidManifest.xml:51:23-49
+90                <data android:mimeType="vnd.android.cursor.dir/albums" />
+90-->F:\PROJECT_X\mad_project\MAD-Mini-Project\app\src\main\AndroidManifest.xml:50:17-50
+90-->F:\PROJECT_X\mad_project\MAD-Mini-Project\app\src\main\AndroidManifest.xml:51:23-49
+91                <data android:mimeType="vnd.android.cursor.dir/artists" />
+91-->F:\PROJECT_X\mad_project\MAD-Mini-Project\app\src\main\AndroidManifest.xml:50:17-50
+91-->F:\PROJECT_X\mad_project\MAD-Mini-Project\app\src\main\AndroidManifest.xml:51:23-49
+92            </intent-filter>
+93            <intent-filter>
+93-->F:\PROJECT_X\mad_project\MAD-Mini-Project\app\src\main\AndroidManifest.xml:88:13-92:29
+94                <action android:name="com.cyanogenmod.eleven.AUDIO_PLAYER" />
+94-->F:\PROJECT_X\mad_project\MAD-Mini-Project\app\src\main\AndroidManifest.xml:89:17-78
+94-->F:\PROJECT_X\mad_project\MAD-Mini-Project\app\src\main\AndroidManifest.xml:89:25-75
+95
+96                <category android:name="android.intent.category.DEFAULT" />
+96-->F:\PROJECT_X\mad_project\MAD-Mini-Project\app\src\main\AndroidManifest.xml:38:17-76
+96-->F:\PROJECT_X\mad_project\MAD-Mini-Project\app\src\main\AndroidManifest.xml:38:27-73
+97            </intent-filter>
+98            <intent-filter>
+98-->F:\PROJECT_X\mad_project\MAD-Mini-Project\app\src\main\AndroidManifest.xml:93:13-100:29
+99                <action android:name="android.intent.action.PICK" />
+99-->F:\PROJECT_X\mad_project\MAD-Mini-Project\app\src\main\AndroidManifest.xml:94:17-69
+99-->F:\PROJECT_X\mad_project\MAD-Mini-Project\app\src\main\AndroidManifest.xml:94:25-66
+100
+101                <category android:name="android.intent.category.DEFAULT" />
+101-->F:\PROJECT_X\mad_project\MAD-Mini-Project\app\src\main\AndroidManifest.xml:38:17-76
+101-->F:\PROJECT_X\mad_project\MAD-Mini-Project\app\src\main\AndroidManifest.xml:38:27-73
+102                <category android:name="android.intent.category.OPENABLE" />
+102-->F:\PROJECT_X\mad_project\MAD-Mini-Project\app\src\main\AndroidManifest.xml:97:17-77
+102-->F:\PROJECT_X\mad_project\MAD-Mini-Project\app\src\main\AndroidManifest.xml:97:27-74
+103
+104                <data android:mimeType="vnd.android.cursor.dir/audio" />
+104-->F:\PROJECT_X\mad_project\MAD-Mini-Project\app\src\main\AndroidManifest.xml:50:17-50
+104-->F:\PROJECT_X\mad_project\MAD-Mini-Project\app\src\main\AndroidManifest.xml:51:23-49
+105            </intent-filter>
+106        </activity>
+107        <activity android:name="csmp.part_b.p5.ui.activities.AlbumDetailActivity" />
+107-->F:\PROJECT_X\mad_project\MAD-Mini-Project\app\src\main\AndroidManifest.xml:102:9-71
+107-->F:\PROJECT_X\mad_project\MAD-Mini-Project\app\src\main\AndroidManifest.xml:102:19-68
+108        <activity android:name="csmp.part_b.p5.ui.activities.SearchActivity" />
+108-->F:\PROJECT_X\mad_project\MAD-Mini-Project\app\src\main\AndroidManifest.xml:103:9-66
+108-->F:\PROJECT_X\mad_project\MAD-Mini-Project\app\src\main\AndroidManifest.xml:103:19-63
+109        <activity
+109-->F:\PROJECT_X\mad_project\MAD-Mini-Project\app\src\main\AndroidManifest.xml:104:9-106:55
+110            android:name="csmp.part_b.p5.ui.activities.SettingsActivity"
+110-->F:\PROJECT_X\mad_project\MAD-Mini-Project\app\src\main\AndroidManifest.xml:105:13-59
+111            android:label="@string/action_settings" />
+111-->F:\PROJECT_X\mad_project\MAD-Mini-Project\app\src\main\AndroidManifest.xml:106:13-52
+112        <activity
+112-->F:\PROJECT_X\mad_project\MAD-Mini-Project\app\src\main\AndroidManifest.xml:107:9-110:57
+113            android:name="csmp.part_b.p5.ui.activities.AboutActivity"
+113-->F:\PROJECT_X\mad_project\MAD-Mini-Project\app\src\main\AndroidManifest.xml:108:13-56
+114            android:label="@string/action_about"
+114-->F:\PROJECT_X\mad_project\MAD-Mini-Project\app\src\main\AndroidManifest.xml:109:13-49
+115            android:theme="@style/AboutActivityTheme" />
+115-->F:\PROJECT_X\mad_project\MAD-Mini-Project\app\src\main\AndroidManifest.xml:110:13-54
+116        <activity
+116-->F:\PROJECT_X\mad_project\MAD-Mini-Project\app\src\main\AndroidManifest.xml:111:9-114:50
+117            android:name="csmp.part_b.p5.ui.activities.intro.AppIntroActivity"
+117-->F:\PROJECT_X\mad_project\MAD-Mini-Project\app\src\main\AndroidManifest.xml:112:13-65
+118            android:label="@string/intro_label"
+118-->F:\PROJECT_X\mad_project\MAD-Mini-Project\app\src\main\AndroidManifest.xml:113:13-48
+119            android:theme="@style/Theme.Intro" />
+119-->F:\PROJECT_X\mad_project\MAD-Mini-Project\app\src\main\AndroidManifest.xml:114:13-47
+120
+121        <service
+121-->F:\PROJECT_X\mad_project\MAD-Mini-Project\app\src\main\AndroidManifest.xml:116:9-118:38
+122            android:name="csmp.part_b.p5.service.MusicService"
+122-->F:\PROJECT_X\mad_project\MAD-Mini-Project\app\src\main\AndroidManifest.xml:117:13-49
+123            android:enabled="true" />
+123-->F:\PROJECT_X\mad_project\MAD-Mini-Project\app\src\main\AndroidManifest.xml:118:13-35
+124
+125        <meta-data
+125-->F:\PROJECT_X\mad_project\MAD-Mini-Project\app\src\main\AndroidManifest.xml:120:9-122:35
+126            android:name="android.max_aspect"
+126-->F:\PROJECT_X\mad_project\MAD-Mini-Project\app\src\main\AndroidManifest.xml:121:13-46
+127            android:value="2.1" />
+127-->F:\PROJECT_X\mad_project\MAD-Mini-Project\app\src\main\AndroidManifest.xml:122:13-32
+128        <meta-data
+128-->F:\PROJECT_X\mad_project\MAD-Mini-Project\app\src\main\AndroidManifest.xml:123:9-125:36
+129            android:name="com.lge.support.SPLIT_WINDOW"
+129-->F:\PROJECT_X\mad_project\MAD-Mini-Project\app\src\main\AndroidManifest.xml:124:13-56
+130            android:value="true" />
+130-->F:\PROJECT_X\mad_project\MAD-Mini-Project\app\src\main\AndroidManifest.xml:125:13-33
+131        <meta-data
+131-->F:\PROJECT_X\mad_project\MAD-Mini-Project\app\src\main\AndroidManifest.xml:126:9-128:43
+132            android:name="csmp.part_b.p5.glide.MusicGlideModule"
+132-->F:\PROJECT_X\mad_project\MAD-Mini-Project\app\src\main\AndroidManifest.xml:127:13-65
+133            android:value="GlideModule" />
+133-->F:\PROJECT_X\mad_project\MAD-Mini-Project\app\src\main\AndroidManifest.xml:128:13-40
+134        <meta-data
+134-->F:\PROJECT_X\mad_project\MAD-Mini-Project\app\src\main\AndroidManifest.xml:129:9-131:43
+135            android:name="com.bumptech.glide.integration.okhttp3.OkHttpGlideModule"
+135-->F:\PROJECT_X\mad_project\MAD-Mini-Project\app\src\main\AndroidManifest.xml:130:13-84
+136            android:value="GlideModule" />
+136-->F:\PROJECT_X\mad_project\MAD-Mini-Project\app\src\main\AndroidManifest.xml:131:13-40
+137
+138        <provider
+139            android:name="androidx.core.content.FileProvider"
+139-->F:\PROJECT_X\mad_project\MAD-Mini-Project\app\src\main\AndroidManifest.xml:134:13-62
+140            android:authorities="csmp.part_b.p5.debug"
+140-->F:\PROJECT_X\mad_project\MAD-Mini-Project\app\src\main\AndroidManifest.xml:135:13-51
+141            android:exported="false"
+141-->F:\PROJECT_X\mad_project\MAD-Mini-Project\app\src\main\AndroidManifest.xml:136:13-37
+142            android:grantUriPermissions="true" >
+142-->F:\PROJECT_X\mad_project\MAD-Mini-Project\app\src\main\AndroidManifest.xml:137:13-47
+143            <meta-data
+143-->F:\PROJECT_X\mad_project\MAD-Mini-Project\app\src\main\AndroidManifest.xml:138:13-140:58
+144                android:name="android.support.FILE_PROVIDER_PATHS"
+144-->F:\PROJECT_X\mad_project\MAD-Mini-Project\app\src\main\AndroidManifest.xml:139:17-67
+145                android:resource="@xml/provider_paths" />
+145-->F:\PROJECT_X\mad_project\MAD-Mini-Project\app\src\main\AndroidManifest.xml:140:17-55
+146        </provider>
+147
+148        <activity android:name="com.kabouzeid.appthemehelper.common.ATHToolbarActivity" />
+148-->[com.github.kabouzeid:app-theme-helper:1.3.10] C:\Users\hp\.gradle\caches\transforms-2\files-2.1\a5a99f811a361c871aca1e512f9d0454\jetified-app-theme-helper-1.3.10\AndroidManifest.xml:12:9-91
+148-->[com.github.kabouzeid:app-theme-helper:1.3.10] C:\Users\hp\.gradle\caches\transforms-2\files-2.1\a5a99f811a361c871aca1e512f9d0454\jetified-app-theme-helper-1.3.10\AndroidManifest.xml:12:19-88
+149        <activity android:name="com.kabouzeid.appthemehelper.ATHActivity" />
+149-->[com.github.kabouzeid:app-theme-helper:1.3.10] C:\Users\hp\.gradle\caches\transforms-2\files-2.1\a5a99f811a361c871aca1e512f9d0454\jetified-app-theme-helper-1.3.10\AndroidManifest.xml:13:9-77
+149-->[com.github.kabouzeid:app-theme-helper:1.3.10] C:\Users\hp\.gradle\caches\transforms-2\files-2.1\a5a99f811a361c871aca1e512f9d0454\jetified-app-theme-helper-1.3.10\AndroidManifest.xml:13:19-74
+150        <activity android:name="com.kabouzeid.appthemehelper.common.ATHActionBarActivity" />
+150-->[com.github.kabouzeid:app-theme-helper:1.3.10] C:\Users\hp\.gradle\caches\transforms-2\files-2.1\a5a99f811a361c871aca1e512f9d0454\jetified-app-theme-helper-1.3.10\AndroidManifest.xml:14:9-93
+150-->[com.github.kabouzeid:app-theme-helper:1.3.10] C:\Users\hp\.gradle\caches\transforms-2\files-2.1\a5a99f811a361c871aca1e512f9d0454\jetified-app-theme-helper-1.3.10\AndroidManifest.xml:14:19-90
+151    </application>
+152
+153</manifest>
