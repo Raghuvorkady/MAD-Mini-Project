@@ -1,0 +1,27 @@
+System Requirement Specifications 
+
+Android device (android version>7.0)
+ram 2gb
+faster cpu(>1GHz)
+Disk storage >10 mb
+_______________________
+
+Applications of the Project
+
+Efficient Parking system.
+Parking Billing system
+Display the available space in parking.
+	//redundant//Car Park management and access control
+_______________________
+
+References 
+M. Owayjan, B. Sleem, E. Saad and A. Maroun, "Parking management system using mobile application," 2017 Sensors Networks Smart and Emerging Technologies (SENSET), 2017, pp. 1-4, doi: 10.1109/SENSET.2017.8125048.
+https://ieeexplore.ieee.org/document/8125048
+
+C. Ng, S. Cheong, E. Hajimohammadhosseinmemar and W. Yap, "Mobile outdoor parking space detection application," 2017 IEEE 8th Control and System Graduate Research Colloquium (ICSGRC), 2017, pp. 81-86, doi: 10.1109/ICSGRC.2017.8070573.
+https://ieeexplore.ieee.org/document/8070573
+
+B. K. Patil, A. Deshpande, S. Suryavanshi, R. Magdum and B. Manjunath, "Smart Parking System for Cars," 2018 International Conference on Recent Innovations in Electrical, Electronics & Communication Engineering (ICRIEECE), 2018, pp. 1118-1121, doi: 10.1109/ICRIEECE44171.2018.9008662.
+https://ieeexplore.ieee.org/document/9008662
+
+
