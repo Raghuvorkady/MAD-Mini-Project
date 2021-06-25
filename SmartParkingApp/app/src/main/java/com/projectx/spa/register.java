@@ -73,7 +73,7 @@ public class register extends AppCompatActivity implements View.OnClickListener 
                 public void onComplete(@NonNull Task<AuthResult> task) {
                     if(task.isSuccessful()){
                         Toast.makeText(register.this,"User created", Toast.LENGTH_SHORT).show();
-                        startActivity(new Intent(getApplicationContext(),MainActivity.class));//add .class file of vehicle number entry
+                        startActivity(new Intent(getApplicationContext(),vehicle_entry.class));//add .class file of vehicle number entry
                     }
                     else{
                         Toast.makeText(register.this,"Error !!"+task.getException().getMessage(),Toast.LENGTH_SHORT).show();
