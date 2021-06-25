@@ -63,9 +63,9 @@ public class CheckAvailability extends AppCompatActivity {
         Random random = new Random();
         UUID uuid = UUID.randomUUID();
         ParkingSlot slot = new ParkingSlot(
-                "City Centre" + random.nextInt(10),
-                "Mangaluru" + random.nextInt(10),
-                uuid.toString(),
+                uuid,
+                "City Centre-" + random.nextInt(10),
+                "Bengaluru-" + random.nextInt(10),
                 random.nextInt(20),
                 random.nextInt(10),
                 Timestamp.now());

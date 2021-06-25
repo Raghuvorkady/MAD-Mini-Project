@@ -42,14 +42,14 @@
             android:id="@+id/totalSpace"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Total Space: 20"
+            android:text="Total Space: "
             android:textAppearance="@style/TextAppearance.AppCompat.Title" />
 
         <TextView
             android:id="@+id/availableSpace"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Available Space: 10"
+            android:text="Available Space: "
             android:textAppearance="@style/TextAppearance.AppCompat.Title" />
 
     </LinearLayout>

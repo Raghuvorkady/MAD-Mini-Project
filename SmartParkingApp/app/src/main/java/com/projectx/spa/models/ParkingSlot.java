@@ -6,6 +6,7 @@ import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 
 public class ParkingSlot implements Serializable {
     private String location, landmark, id;
@@ -15,10 +16,10 @@ public class ParkingSlot implements Serializable {
     public ParkingSlot() {
     }
 
-    public ParkingSlot(String location, String landmark, String id, int totalSpace, int availableSpace, Timestamp createdTime) {
+    public ParkingSlot(UUID id, String location, String landmark, int totalSpace, int availableSpace, Timestamp createdTime) {
+        this.id = id.toString();
         this.location = location;
         this.landmark = landmark;
-        this.id = id;
         this.totalSpace = totalSpace;
         this.availableSpace = availableSpace;
         this.createdTime = createdTime.toString();
