@@ -23,13 +23,14 @@ public class SerializationTest extends AppCompatActivity {
         TextView textView = findViewById(R.id.text);
 
         Intent intent = getIntent();
+        // for reading single instance of ParkingSlot,
+        // which is passed through Intent
         parkingSlot = (ParkingSlot) intent.getSerializableExtra("key");
 
         textView.setText(parkingSlot.toString());
-
     }
 
-//    trying to deserialize TimeStamp object
+    //    trying to deserialize TimeStamp object
     public void readTime(View view) {
         //Timestamp timestamp = new Timestamp(new Date());
         String time = parkingSlot.getCreatedTime();

@@ -1,14 +1,14 @@
 package com.projectx.spa.activities;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -19,35 +19,30 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.projectx.spa.R;
+import com.projectx.spa.adapters.ParkingSpacesCardAdapter;
 import com.projectx.spa.models.ParkingSlot;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.Random;
 import java.util.UUID;
 
 public class CheckAvailability extends AppCompatActivity {
     private final String COLLECTIONS = "parking-spaces";
-    TextView textView;
-    TextView placeName;
-    TextView landmark;
-    TextView totalSpace;
-    TextView availableSpace;
     private FirebaseFirestore firebaseFirestore;
     private ParkingSlot parkingSlot;
+
+    private List<ParkingSlot> parkingSlots;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_check_availability);
 
-        textView = findViewById(R.id.data);
-        placeName = findViewById(R.id.placeName);
-        landmark = findViewById(R.id.landmark);
-        totalSpace = findViewById(R.id.totalSpace);
-        availableSpace = findViewById(R.id.availableSpace);
-
         firebaseFirestore = FirebaseFirestore.getInstance();
 
+        parkingSlots = new ArrayList<>();
         /*DocumentReference docRef = db.collection("cities").document("LAB");
         docRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
             @Override
@@ -82,7 +77,7 @@ public class CheckAvailability extends AppCompatActivity {
 
     //    to read data from the firebase firestore
     public void read(View view) {
-        textView.setText(""); // to clear the existing text
+        parkingSlots.clear(); // clear existing data from the list
         firebaseFirestore.collection(COLLECTIONS)
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -95,8 +90,8 @@ public class CheckAvailability extends AppCompatActivity {
                                     Log.d("TAG", document.getId() + " => " + data);
                                     // creating ParkingSlot object
                                     parkingSlot = document.toObject(ParkingSlot.class);
-                                    setCard();
-                                    textView.append(parkingSlot.toString() + "\n");
+                                    parkingSlots.add(parkingSlot);
+                                    makeToast("data read successfully");
                                 } else makeToast("doc does not exist");
                             }
                         } else {
@@ -106,19 +101,16 @@ public class CheckAvailability extends AppCompatActivity {
                 });
     }
 
-    //    to set the Available Spaces Card
-    private void setCard() {
-        placeName.setText(parkingSlot.getLocation());
-        landmark.setText(parkingSlot.getLandmark());
-        totalSpace.setText("Total Space: " + parkingSlot.getTotalSpace());
-        availableSpace.setText("Available Space: " + parkingSlot.getAvailableSpace());
-    }
-
     //    for next button action
-    public void next(View view) {
-        Intent intent = new Intent(this, SerializationTest.class);
+    public void updateList(View view) {
+        /*Intent intent = new Intent(this, SerializationTest.class);
         intent.putExtra("key", parkingSlot);
-        startActivity(intent);
+        startActivity(intent);*/
+
+        RecyclerView recyclerView = findViewById(R.id.recyclerView);
+        ParkingSpacesCardAdapter parkingSpacesCardAdapter = new ParkingSpacesCardAdapter(this, parkingSlots);
+        recyclerView.setAdapter(parkingSpacesCardAdapter);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
     }
 
     //    for creating Toast
