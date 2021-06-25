@@ -3,8 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:background="#f2f2f2"
     android:layout_height="match_parent"
+    android:background="#f2f2f2"
     tools:context=".MainActivity">
 
     <TextView
@@ -14,9 +14,9 @@
         android:layout_marginTop="20dp"
         android:background="@color/teal_700"
         android:padding="30dp"
-        android:textSize="24sp"
         android:text="LOGO"
         android:textColor="@color/white"
+        android:textSize="24sp"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
