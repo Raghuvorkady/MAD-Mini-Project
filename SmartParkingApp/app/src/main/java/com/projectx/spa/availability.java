@@ -1,4 +1,14 @@
 package com.projectx.spa;
 
-public class availability {
+import androidx.appcompat.app.AppCompatActivity;
+
+import android.os.Bundle;
+
+public class availability extends AppCompatActivity {
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_availability);
+    }
 }
