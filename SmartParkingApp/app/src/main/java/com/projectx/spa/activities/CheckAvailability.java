@@ -45,6 +45,7 @@ public class CheckAvailability extends AppCompatActivity {
         landmark = findViewById(R.id.landmark);
         totalSpace = findViewById(R.id.totalSpace);
         availableSpace = findViewById(R.id.availableSpace);
+
         firebaseFirestore = FirebaseFirestore.getInstance();
 
         /*DocumentReference docRef = db.collection("cities").document("LAB");
@@ -61,8 +62,13 @@ public class CheckAvailability extends AppCompatActivity {
     public void addData(View view) {
         Random random = new Random();
         UUID uuid = UUID.randomUUID();
-        ParkingSlot slot = new ParkingSlot("City Centre" + random.nextInt(10),
-                "Mangaluru" + random.nextInt(10), uuid.toString(), random.nextInt(20), random.nextInt(10), Timestamp.now());
+        ParkingSlot slot = new ParkingSlot(
+                "City Centre" + random.nextInt(10),
+                "Mangaluru" + random.nextInt(10),
+                uuid.toString(),
+                random.nextInt(20),
+                random.nextInt(10),
+                Timestamp.now());
 
         DocumentReference documentReference = firebaseFirestore.collection(COLLECTIONS).document();
         // db.collection(COLLECTIONS).document("area1").set(slot);
@@ -76,7 +82,7 @@ public class CheckAvailability extends AppCompatActivity {
 
     //    to read data from the firebase firestore
     public void read(View view) {
-        textView.setText("");
+        textView.setText(""); // to clear the existing text
         firebaseFirestore.collection(COLLECTIONS)
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -87,6 +93,7 @@ public class CheckAvailability extends AppCompatActivity {
                                 if (document.exists()) {
                                     Map<String, Object> data = document.getData();
                                     Log.d("TAG", document.getId() + " => " + data);
+                                    // creating ParkingSlot object
                                     parkingSlot = document.toObject(ParkingSlot.class);
                                     setCard();
                                     textView.append(parkingSlot.toString() + "\n");
@@ -114,6 +121,7 @@ public class CheckAvailability extends AppCompatActivity {
         startActivity(intent);
     }
 
+    //    for creating Toast
     private void makeToast(String toastMessage) {
         Toast.makeText(CheckAvailability.this, toastMessage, Toast.LENGTH_SHORT).show();
     }
