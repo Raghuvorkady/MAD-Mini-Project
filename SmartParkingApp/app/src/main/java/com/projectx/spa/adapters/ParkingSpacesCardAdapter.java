@@ -1,14 +1,17 @@
 package com.projectx.spa.adapters;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.projectx.spa.R;
+import com.projectx.spa.activities.SerializationTest;
 import com.projectx.spa.models.ParkingSlot;
 
 import java.util.List;
@@ -40,6 +43,15 @@ public class ParkingSpacesCardAdapter extends RecyclerView.Adapter<ParkingSpaces
 
         String availableSpaceStr = "Available Space: " + parkingSlots.get(position).getAvailableSpace();
         holder.availableSpace.setText(availableSpaceStr);
+
+        holder.cardLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(context, SerializationTest.class);
+                intent.putExtra("key", parkingSlots.get(position));
+                context.startActivity(intent);
+            }
+        });
     }
 
     @Override
@@ -49,6 +61,7 @@ public class ParkingSpacesCardAdapter extends RecyclerView.Adapter<ParkingSpaces
 
     public class MyOwnHolder extends RecyclerView.ViewHolder {
         TextView landmark, location, totalSpace, availableSpace;
+        LinearLayout cardLayout;
 
         public MyOwnHolder(View itemView) {
             super(itemView);
@@ -56,6 +69,7 @@ public class ParkingSpacesCardAdapter extends RecyclerView.Adapter<ParkingSpaces
             landmark = itemView.findViewById(R.id.landmark);
             totalSpace = itemView.findViewById(R.id.totalSpace);
             availableSpace = itemView.findViewById(R.id.availableSpace);
+            cardLayout = itemView.findViewById(R.id.cardLayout);
         }
     }
 }

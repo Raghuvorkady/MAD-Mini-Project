@@ -33,10 +33,9 @@ public class SerializationTest extends AppCompatActivity {
     //    trying to deserialize TimeStamp object
     public void readTime(View view) {
         //Timestamp timestamp = new Timestamp(new Date());
-        String time = parkingSlot.getCreatedTime();
-        long seconds = Long.parseLong(time.substring(18, 28));
-        int nanoseconds = Integer.parseInt(time.substring(42, 51));
-        makeToast(seconds + "\n" + nanoseconds);
+        String createdTime = parkingSlot.getCreatedTime();
+        long seconds = Long.parseLong(createdTime.substring(18, 28));
+        int nanoseconds = Integer.parseInt(createdTime.substring(42, 51));
         Timestamp timestamp = new Timestamp(seconds, nanoseconds);
         makeToast(timestamp.toDate() + "");
     }

@@ -103,10 +103,6 @@ public class CheckAvailability extends AppCompatActivity {
 
     //    for next button action
     public void updateList(View view) {
-        /*Intent intent = new Intent(this, SerializationTest.class);
-        intent.putExtra("key", parkingSlot);
-        startActivity(intent);*/
-
         RecyclerView recyclerView = findViewById(R.id.recyclerView);
         ParkingSpacesCardAdapter parkingSpacesCardAdapter = new ParkingSpacesCardAdapter(this, parkingSlots);
         recyclerView.setAdapter(parkingSpacesCardAdapter);
