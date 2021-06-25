@@ -3,6 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
+    android:background="#f2f2f2"
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
@@ -13,6 +14,7 @@
         android:layout_marginTop="20dp"
         android:background="@color/teal_700"
         android:padding="30dp"
+        android:textSize="24sp"
         android:text="LOGO"
         android:textColor="@color/white"
         app:layout_constraintLeft_toLeftOf="parent"

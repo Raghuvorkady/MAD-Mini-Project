@@ -1,22 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
 <com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="#f2f2f2"
+        android:background="#fff"
         android:orientation="vertical"
-        android:padding="12dp">
+        android:paddingStart="20dp"
+        android:paddingLeft="20dp"
+        android:paddingTop="12dp"
+        android:paddingEnd="12dp"
+        android:paddingRight="12dp"
+        android:paddingBottom="12dp">
 
         <TextView
             android:id="@+id/placeName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="2dp"
             android:text="Place Name"
             android:textAppearance="@style/TextAppearance.AppCompat.Headline"
-            android:textStyle="bold" />
+            android:autoLink="map"
+            android:gravity="bottom"
+            android:textStyle="bold"
+            app:drawableLeftCompat="@drawable/ic_location" />
 
         <TextView
             android:id="@+id/landmark"
@@ -24,8 +34,9 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="8dp"
             android:text="Landmark"
-            android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
-
+            android:gravity="bottom"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+            app:drawableLeftCompat="@drawable/ic_landmark" />
 
         <TextView
             android:id="@+id/totalSpace"
