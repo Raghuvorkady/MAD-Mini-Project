@@ -12,10 +12,10 @@
         android:id="@+id/login"
         android:layout_width="371dp"
         android:layout_height="40dp"
-        android:layout_marginTop="396dp"
+        android:layout_marginTop="348dp"
         android:text="login"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.475"
+        app:layout_constraintHorizontal_bias="0.4"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView" />
 
@@ -57,13 +57,14 @@
         android:id="@+id/textView3"
         android:layout_width="185dp"
         android:layout_height="42dp"
-        android:layout_marginTop="44dp"
+        android:layout_marginTop="40dp"
         android:gravity="center"
         android:text="Login to E-park"
         android:textColor="@color/white"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView" />
+
     <EditText
         android:id="@+id/email"
         android:layout_width="391dp"
@@ -80,7 +81,7 @@
         app:layout_constraintHorizontal_bias="0.2"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView3"
-        app:layout_constraintVertical_bias="0.182" />
+        app:layout_constraintVertical_bias="0.086" />
 
     <EditText
         android:id="@+id/password"
@@ -98,7 +99,7 @@
         app:layout_constraintHorizontal_bias="0.2"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView3"
-        app:layout_constraintVertical_bias="0.4" />
+        app:layout_constraintVertical_bias="0.277" />
 
     <TextView
         android:id="@+id/reg"
@@ -109,6 +110,19 @@
         android:text="Not Registered? Register here"
         android:textColor="@color/teal_700"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/login" />
+
+    <TextView
+        android:id="@+id/forgot"
+        android:layout_width="373dp"
+        android:layout_height="42dp"
+        android:layout_marginTop="60dp"
+        android:gravity="center"
+        android:text="forgot password"
+        android:textColor="@color/teal_700"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.578"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/login" />
 </androidx.constraintlayout.widget.ConstraintLayout>
