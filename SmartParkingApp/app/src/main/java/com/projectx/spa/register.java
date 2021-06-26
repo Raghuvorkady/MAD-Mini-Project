@@ -4,8 +4,10 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.nfc.Tag;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -13,15 +15,24 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class register extends AppCompatActivity implements View.OnClickListener {
     Button register;
     EditText name,email,phone,password;
     TextView loginbtn;
     FirebaseAuth fAuth;
+    FirebaseFirestore fstore;
+    String userid;
 
 
     @Override
@@ -38,6 +49,8 @@ public class register extends AppCompatActivity implements View.OnClickListener 
         loginbtn.setOnClickListener(this);
 
         fAuth = FirebaseAuth.getInstance();
+        fstore = FirebaseFirestore.getInstance();
+
 
         if (fAuth.getCurrentUser() != null) {
             startActivity(new Intent(getApplicationContext(), MainActivity.class));//add .class file of vehicle number entry
@@ -52,6 +65,8 @@ public class register extends AppCompatActivity implements View.OnClickListener 
         if (v.equals(register)){
             String emails=email.getText().toString().trim();
             String pwd=password.getText().toString().trim();
+            String fname=name.getText().toString();
+            String phno=phone.getText().toString();
 
             if (TextUtils.isEmpty(emails)){
                 email.setError("Email is required.");
@@ -73,6 +88,23 @@ public class register extends AppCompatActivity implements View.OnClickListener 
                 public void onComplete(@NonNull Task<AuthResult> task) {
                     if(task.isSuccessful()){
                         Toast.makeText(register.this,"User created", Toast.LENGTH_SHORT).show();
+                        userid=fAuth.getCurrentUser().getUid();
+                        DocumentReference documentReference= fstore.collection("users").document(userid);
+                        Map<String,Object> user = new HashMap<>();
+                        user.put("fname",fname);
+                        user.put("email",emails);
+                        user.put("phone no.",phno);
+                        documentReference.set(user).addOnSuccessListener(new OnSuccessListener<Void>() {
+                            @Override
+                            public void onSuccess(Void unused) {
+                                Log.d("TAG","onSuccess: user profile is created for "+userid);
+                            }
+                        }).addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+                                Log.d("TAG","onFailure: "+e.toString());
+                            }
+                        });
                         startActivity(new Intent(getApplicationContext(),vehicle_entry.class));//add .class file of vehicle number entry
                     }
                     else{
