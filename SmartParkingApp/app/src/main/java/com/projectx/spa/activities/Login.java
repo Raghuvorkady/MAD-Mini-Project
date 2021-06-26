@@ -1,4 +1,4 @@
-package com.projectx.spa;
+package com.projectx.spa.activities;
 
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -20,6 +20,7 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.projectx.spa.R;
 
 public class Login extends AppCompatActivity implements View.OnClickListener {
 
