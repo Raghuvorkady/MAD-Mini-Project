@@ -28,7 +28,7 @@ public class ParkingSpacesCardAdapter extends RecyclerView.Adapter<ParkingSpaces
     @Override
     public MyOwnHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         LayoutInflater layoutInflater = LayoutInflater.from(context);
-        View view = layoutInflater.inflate(R.layout.available_spaces_card, parent, false);
+        View view = layoutInflater.inflate(R.layout.parking_spaces_card, parent, false);
         return new MyOwnHolder(view);
     }
 
