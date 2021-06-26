@@ -1,5 +1,7 @@
 package com.projectx.spa.models;
 
+import android.util.Log;
+
 import com.google.firebase.Timestamp;
 
 import java.io.Serializable;
@@ -9,7 +11,7 @@ import java.util.Map;
 import java.util.UUID;
 
 public class ParkingSlot implements Serializable {
-    private String location, landmark, id;
+    private String id, location, landmark;
     private int totalSpace, availableSpace;
     private String createdTime;
 
@@ -46,7 +48,18 @@ public class ParkingSlot implements Serializable {
     }
 
     public String getCreatedTime() {
-        return createdTime;
+        long seconds = 0;
+        int nanoseconds = 0;
+        try {
+            String[] strings = createdTime.split("=");
+            seconds = Long.parseLong(strings[1].split(",")[0]);
+            nanoseconds = Integer.parseInt(strings[2].split("\\)")[0]);
+            Log.d("Date", "seconds " + seconds + "\nnanoseconds " + nanoseconds);
+        } catch (Exception e) {
+            Log.d("Date", "Error");
+        }
+        Timestamp timestamp = new Timestamp(seconds, nanoseconds);
+        return timestamp.toDate().toString();
     }
 
     public Map<String, Object> toMap() {
@@ -65,12 +78,12 @@ public class ParkingSlot implements Serializable {
     @Override
     public String toString() {
         return "ParkingSlot{" +
-                "location='" + location + '\'' +
+                "id='" + id + '\'' +
+                ", location='" + location + '\'' +
                 ", landmark='" + landmark + '\'' +
-                ", id='" + id + '\'' +
                 ", totalSpace=" + totalSpace +
                 ", availableSpace=" + availableSpace +
-                ", createdTime=" + createdTime +
+                ", createdTime='" + createdTime + '\'' +
                 '}';
     }
 }

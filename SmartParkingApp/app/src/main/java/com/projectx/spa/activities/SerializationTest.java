@@ -8,7 +8,6 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.google.firebase.Timestamp;
 import com.projectx.spa.R;
 import com.projectx.spa.models.ParkingSlot;
 
@@ -32,12 +31,7 @@ public class SerializationTest extends AppCompatActivity {
 
     //    trying to deserialize TimeStamp object
     public void readTime(View view) {
-        //Timestamp timestamp = new Timestamp(new Date());
-        String createdTime = parkingSlot.getCreatedTime();
-        long seconds = Long.parseLong(createdTime.substring(18, 28));
-        int nanoseconds = Integer.parseInt(createdTime.substring(42, 51));
-        Timestamp timestamp = new Timestamp(seconds, nanoseconds);
-        makeToast(timestamp.toDate() + "");
+        makeToast(parkingSlot.getCreatedTime());
     }
 
     private void makeToast(String toastMessage) {
