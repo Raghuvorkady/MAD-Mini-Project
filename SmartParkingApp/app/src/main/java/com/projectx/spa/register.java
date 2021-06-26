@@ -28,7 +28,7 @@ import java.util.Map;
 
 public class register extends AppCompatActivity implements View.OnClickListener {
     Button register;
-    EditText name,email,phone,password;
+    EditText name,email,phone,password,building,area,totalspace;
     TextView loginbtn;
     FirebaseAuth fAuth;
     FirebaseFirestore fstore;
@@ -47,6 +47,9 @@ public class register extends AppCompatActivity implements View.OnClickListener 
         password = findViewById(R.id.password);
         loginbtn = findViewById(R.id.login1);
         loginbtn.setOnClickListener(this);
+        building= findViewById(R.id.building);
+        area=findViewById(R.id.area);
+        totalspace= findViewById(R.id.slots);
 
         fAuth = FirebaseAuth.getInstance();
         fstore = FirebaseFirestore.getInstance();
@@ -67,6 +70,9 @@ public class register extends AppCompatActivity implements View.OnClickListener 
             String pwd=password.getText().toString().trim();
             String fname=name.getText().toString();
             String phno=phone.getText().toString();
+            String place=building.getText().toString();
+            String local=area.getText().toString();
+            String avail=totalspace.getText().toString();
 
             if (TextUtils.isEmpty(emails)){
                 email.setError("Email is required.");
@@ -74,6 +80,18 @@ public class register extends AppCompatActivity implements View.OnClickListener 
             }
             if(TextUtils.isEmpty(pwd)){
                 password.setError("password is required");
+                return;
+            }
+            if(TextUtils.isEmpty(fname)){
+                name.setError("name is required");
+                return;
+            }
+            if(TextUtils.isEmpty(place)){
+                building.setError("phone building name is required");
+                return;
+            }
+            if(TextUtils.isEmpty(avail)){
+                totalspace.setError("Total slots is required");
                 return;
             }
             if (pwd.length()<6){
@@ -93,7 +111,7 @@ public class register extends AppCompatActivity implements View.OnClickListener 
                         Map<String,Object> user = new HashMap<>();
                         user.put("fname",fname);
                         user.put("email",emails);
-                        user.put("phone no.",phno);
+                        user.put("phone_no",phno);
                         documentReference.set(user).addOnSuccessListener(new OnSuccessListener<Void>() {
                             @Override
                             public void onSuccess(Void unused) {
@@ -105,6 +123,28 @@ public class register extends AppCompatActivity implements View.OnClickListener 
                                 Log.d("TAG","onFailure: "+e.toString());
                             }
                         });
+
+                        // parking data
+                        DocumentReference documentReference1= fstore.collection("parking data").document(userid);
+                        Map<String,Object> data = new HashMap<>();
+                        data.put("authoriser",fname);
+                        data.put("building",place);
+                        data.put("address",local);
+                        data.put("total_slot",avail);
+
+                        documentReference1.set(data).addOnSuccessListener(new OnSuccessListener<Void>() {
+                            @Override
+                            public void onSuccess(Void unused) {
+                                Log.d("TAG","onSuccess: user profile is created for "+userid);
+                            }
+                        }).addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+                                Log.d("TAG","onFailure: "+e.toString());
+                            }
+                        });
+
+
                         startActivity(new Intent(getApplicationContext(),vehicle_entry.class));//add .class file of vehicle number entry
                     }
                     else{
