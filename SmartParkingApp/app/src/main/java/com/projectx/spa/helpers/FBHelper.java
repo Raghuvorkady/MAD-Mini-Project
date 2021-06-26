@@ -19,6 +19,8 @@ import com.projectx.spa.models.ParkingSlot;
 import java.util.ArrayList;
 import java.util.List;
 
+import es.dmoral.toasty.Toasty;
+
 public class FBHelper {
     private final String COLLECTIONS = "parking-spaces";
     private final FirebaseFirestore firebaseFirestore;
@@ -41,15 +43,13 @@ public class FBHelper {
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void unused) {
-                        Log.i("TAG1", "Data added successfully");
-                        makeToast("Success");
+                        makeSuccessToast("Data added successfully");
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
-                        Log.e("TAG2", "Data could not be added successfully");
-                        makeToast("Failure");
+                        makeFailureToast("Data could not be added successfully");
                     }
                 });
     }
@@ -67,22 +67,20 @@ public class FBHelper {
                                     // creating ParkingSlot object
                                     ParkingSlot parkingSlot = document.toObject(ParkingSlot.class);
                                     parkingSlots.add(parkingSlot);
-                                    Log.i("TAG3", "Data read successfully");
-                                    makeToast("Data read successfully");
+                                    makeSuccessToast("Data read successfully");
                                 } else {
-                                    Log.i("TAG4", "Data does not exist");
-                                    makeToast("doc does not exist");
+                                    makeFailureToast("doc does not exist");
                                 }
                             }
                         } else {
-                            Log.w("TAG5", "Error getting documents.", task.getException());
+                            makeFailureToast("Error getting documents." + task.getException());
                         }
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
-                        Log.e("TAG6", "Data could not be added successfully");
+                        makeFailureToast("Data could not be added successfully");
                     }
                 });
         return parkingSlots;
@@ -91,6 +89,16 @@ public class FBHelper {
 
     private void makeToast(String toastMessage) {
         Toast.makeText(context, toastMessage, Toast.LENGTH_SHORT).show();
+    }
+
+    private void makeSuccessToast(String toastMessage) {
+        Log.i("TAG", toastMessage);
+        Toasty.success(context, toastMessage, Toast.LENGTH_SHORT, true).show();
+    }
+
+    private void makeFailureToast(String toastMessage) {
+        Log.e("TAG", toastMessage);
+        Toasty.error(context, toastMessage, Toast.LENGTH_SHORT, true).show();
     }
 
     /*DocumentReference docRef = db.collection("cities").document("LAB");

@@ -32,6 +32,7 @@ android {
 dependencies {
     implementation 'androidx.multidex:multidex:2.0.1'
 
+    // Android component dependencies
     implementation 'androidx.appcompat:appcompat:1.3.0'
     implementation 'com.google.android.material:material:1.3.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
@@ -39,6 +40,10 @@ dependencies {
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
 
+    // other dependencies
+    implementation 'com.github.GrenderG:Toasty:1.5.0'
+
+    // firebase dependencies
     implementation platform('com.google.firebase:firebase-bom:28.1.0')
     implementation 'com.google.firebase:firebase-analytics'
     implementation 'com.google.firebase:firebase-firestore'
