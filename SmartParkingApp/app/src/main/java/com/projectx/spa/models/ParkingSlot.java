@@ -6,6 +6,7 @@ import com.google.firebase.Timestamp;
 
 import java.io.Serializable;
 import java.lang.reflect.Field;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
@@ -48,6 +49,10 @@ public class ParkingSlot implements Serializable {
     }
 
     public String getCreatedTime() {
+        return createdTime;
+    }
+
+    public String getParsedCreatedTime() {
         long seconds = 0;
         int nanoseconds = 0;
         try {
@@ -59,7 +64,8 @@ public class ParkingSlot implements Serializable {
             Log.d("Date", "Error");
         }
         Timestamp timestamp = new Timestamp(seconds, nanoseconds);
-        return timestamp.toDate().toString();
+        Date date = timestamp.toDate();
+        return date.toString();
     }
 
     public Map<String, Object> toMap() {

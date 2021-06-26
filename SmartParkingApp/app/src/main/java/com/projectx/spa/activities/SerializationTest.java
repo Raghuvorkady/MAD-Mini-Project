@@ -31,7 +31,7 @@ public class SerializationTest extends AppCompatActivity {
 
     //    trying to deserialize TimeStamp object
     public void readTime(View view) {
-        makeToast(parkingSlot.getCreatedTime());
+        makeToast(parkingSlot.getParsedCreatedTime());
     }
 
     private void makeToast(String toastMessage) {
