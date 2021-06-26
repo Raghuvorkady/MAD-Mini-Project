@@ -21,11 +21,7 @@
 
         <TextView
             android:id="@+id/placeName"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="2dp"
-            android:autoLink="map"
-            android:gravity="bottom"
+            style="@style/textStyle"
             android:text="Place Name"
             android:textAppearance="@style/TextAppearance.AppCompat.Headline"
             android:textStyle="bold"
@@ -33,25 +29,20 @@
 
         <TextView
             android:id="@+id/landmark"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp"
-            android:gravity="bottom"
+            style="@style/textStyle"
             android:text="Landmark"
             android:textAppearance="@style/TextAppearance.AppCompat.Medium"
             app:drawableLeftCompat="@drawable/ic_landmark" />
 
         <TextView
             android:id="@+id/totalSpace"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            style="@style/textStyle"
             android:text="Total Space: "
             android:textAppearance="@style/TextAppearance.AppCompat.Title" />
 
         <TextView
             android:id="@+id/availableSpace"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            style="@style/textStyle"
             android:text="Available Space: "
             android:textAppearance="@style/TextAppearance.AppCompat.Title" />
 
