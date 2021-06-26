@@ -9,10 +9,10 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.SmartParkingApp">
-        <activity android:name=".vehicle_entry"></activity>
-        <activity android:name=".register" />
-        <activity android:name=".availability" />
-        <activity android:name=".login" />
+        <activity android:name=".VehicleEntry"></activity>
+        <activity android:name=".Register" />
+        <activity android:name=".Availability" />
+        <activity android:name=".Login" />
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

@@ -1,10 +1,10 @@
 package com.projectx.spa;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.os.Bundle;
 
-public class availability extends AppCompatActivity {
+import androidx.appcompat.app.AppCompatActivity;
+
+public class Availability extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
