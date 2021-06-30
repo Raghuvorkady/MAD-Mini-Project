@@ -11,6 +11,10 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.projectx.spa.R;
 import com.projectx.spa.models.ParkingSlot;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
+
 public class SerializationTest extends AppCompatActivity {
     ParkingSlot parkingSlot;
 
@@ -24,14 +28,17 @@ public class SerializationTest extends AppCompatActivity {
         Intent intent = getIntent();
         // for reading single instance of ParkingSlot,
         // which is passed through Intent
-        parkingSlot = (ParkingSlot) intent.getSerializableExtra("key");
+        parkingSlot = (ParkingSlot) intent.getParcelableExtra("key");
 
         textView.setText(parkingSlot.toString());
     }
 
     //    trying to deserialize TimeStamp object
     public void readTime(View view) {
-        makeToast(parkingSlot.getParsedCreatedTime());
+        Date date = parkingSlot.getCreatedTime().toDate();
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy", Locale.US);
+        SimpleDateFormat timeFormat = new SimpleDateFormat("hh:mm:ss aa", Locale.US);
+        makeToast("Date: " + dateFormat.format(date) + "\nTime: " + timeFormat.format(date));
     }
 
     private void makeToast(String toastMessage) {
