@@ -6,6 +6,7 @@ import android.view.View;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -13,11 +14,15 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.Timestamp;
+import com.google.firebase.firestore.DocumentChange;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.ListenerRegistration;
+import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.projectx.spa.R;
 import com.projectx.spa.adapters.ParkingSpacesCardAdapter;
 import com.projectx.spa.helpers.FBHelper;
@@ -41,14 +46,17 @@ public class CheckAvailability extends AppCompatActivity {
         setContentView(R.layout.activity_check_availability);
 
         fbHelper = new FBHelper(this);
-        documentReference = FirebaseFirestore.getInstance().collection("test").document("doc1");
+        documentReference = FirebaseFirestore.getInstance().collection("test").document("doc2");
 
-        readRealTime();
         parkingSlots = new ArrayList<>();
+
+        trackMultipleDocumentsTest();
+//        trackSingleDocumentTest();
     }
 
     //    to add data (custom class object) to the firebase firestore
     public void addData(View view) {
+        // test for adding reference datatype
         Map<String, Object> map = new HashMap<>();
         map.put("name", "rkm");
         FirebaseFirestore firebaseFirestore = FirebaseFirestore.getInstance();
@@ -107,6 +115,7 @@ public class CheckAvailability extends AppCompatActivity {
         map.put("name", "project-X123" + random.nextInt(100));
         map.put("email", "rkm@test.com" + random.nextInt(100));
         map.put("realtime", "testing" + random.nextInt(100));
+        map.put("randomInt", random.nextInt(100));
 
         documentReference
                 .update(map)
@@ -122,7 +131,9 @@ public class CheckAvailability extends AppCompatActivity {
                         makeToast("Update failed");
                     }
                 });
+    }
 
+    private void trackSingleDocumentTest() {
         documentReference.addSnapshotListener(new EventListener<DocumentSnapshot>() {
             @Override
             public void onEvent(DocumentSnapshot snapshot, FirebaseFirestoreException e) {
@@ -141,5 +152,56 @@ public class CheckAvailability extends AppCompatActivity {
                 }
             }
         });
+    }
+
+    private void trackMultipleDocumentsTest() {
+        Query query = FirebaseFirestore
+                .getInstance()
+                .collection("test");
+
+        ListenerRegistration registration = query.addSnapshotListener(new EventListener<QuerySnapshot>() {
+            @Override
+            public void onEvent(@Nullable QuerySnapshot value,
+                                @Nullable FirebaseFirestoreException e) {
+                if (e != null) {
+                    Log.w("TAG2", "Listen failed.", e);
+                    return;
+                }
+
+                if (value != null) {
+                    for (DocumentChange dc : value.getDocumentChanges()) {
+                        Map<String, Object> data = dc.getDocument().getData();
+                        String str = "name: " + data.get("name") + "\nemail: " + data.get("email") + "\nrandomInt: " + data.get("randomInt");
+                        switch (dc.getType()) {
+                            case ADDED:
+                                Log.d("ADDED", "New : " + str);
+                                makeToast("ADDED\n" + str);
+                                break;
+                            case MODIFIED:
+                                Log.d("MODIFIED", "Modified : " + str);
+                                makeToast("MODIFIED\n" + str);
+                                break;
+                            case REMOVED:
+                                Log.d("REMOVED", "Removed : " + str);
+                                makeToast("REMOVED\n" + str);
+                                break;
+                        }
+                    }
+                }
+
+                // it will read all the documents present in the Collection on detecting any change
+                /*for (QueryDocumentSnapshot doc : value) {
+                    if (doc.exists()) {
+                        Map<String, Object> data = doc.getData();
+                        String str = "name: " + data.get("name") + "\nemail: " + data.get("email") + "\nrandomInt: " + data.get("randomInt");
+                        Log.d("TAG1", str);
+                        makeToast(str);
+                    }
+                }*/
+            }
+        });
+
+        // Stop listening to changes
+//        registration.remove();
     }
 }
