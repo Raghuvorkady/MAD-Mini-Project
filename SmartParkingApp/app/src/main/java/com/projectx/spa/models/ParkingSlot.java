@@ -13,6 +13,7 @@ public class ParkingSlot implements Parcelable {
     private String id, building, address;
     private int totalSpace, availableSpace;
     private Timestamp lastUpdatedTime;
+    //    private String reference; // if DocumentReference is not feasible
 
     public ParkingSlot() {
     }

@@ -8,14 +8,19 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.Timestamp;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.projectx.spa.R;
 import com.projectx.spa.adapters.ParkingSpacesCardAdapter;
 import com.projectx.spa.helpers.FBHelper;
 import com.projectx.spa.models.ParkingSlot;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
 import java.util.UUID;
 
@@ -35,6 +40,20 @@ public class CheckAvailability extends AppCompatActivity {
 
     //    to add data (custom class object) to the firebase firestore
     public void addData(View view) {
+        Map<String, Object> map = new HashMap<>();
+        map.put("name", "rkm");
+        FirebaseFirestore firebaseFirestore = FirebaseFirestore.getInstance();
+        DocumentReference reference = firebaseFirestore.collection("test").document("doc1");
+        map.put("ref", reference);
+        reference
+                .set(map)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void unused) {
+                        makeToast("Success");
+                    }
+                });
+
         Random random = new Random();
         UUID uuid = UUID.randomUUID();
         ParkingSlot parkingSlot = new ParkingSlot(
