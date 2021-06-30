@@ -5,7 +5,10 @@ import androidx.annotation.NonNull;
 import java.util.UUID;
 
 public class User {
-    private final String userId, name, email, phoneNo;
+    private String userId, name, email, phoneNo;
+
+    public User() {
+    }
 
     public User(UUID userId, String name, String email, String phoneNo) {
         this.userId = userId.toString();
