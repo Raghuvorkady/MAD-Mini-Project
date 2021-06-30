@@ -8,4 +8,6 @@
     <string name="logo">logo</string>
     <string name="not_registered_register_here">Not Registered? Register here</string>
     <string name="forgot_password">Forgot password</string>
+    <string name="login_page">Login Page</string>
+    <string name="check_available_space">Check Available Space</string>
 </resources>
