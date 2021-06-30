@@ -93,11 +93,11 @@ public class ParkingSlot implements Parcelable {
     public String toString() {
         return "ParkingSlot{" +
                 "id='" + id + '\'' +
-                ", location='" + building + '\'' +
-                ", landmark='" + address + '\'' +
+                ", building='" + building + '\'' +
+                ", address='" + address + '\'' +
                 ", totalSpace=" + totalSpace +
                 ", availableSpace=" + availableSpace +
-                ", createdTime='" + lastUpdatedTime.toDate() + '\'' +
+                ", lastUpdatedTime='" + lastUpdatedTime.toDate() + '\'' +
                 '}';
     }
 }
