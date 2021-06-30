@@ -52,6 +52,7 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
             startActivity(new Intent(this, Register.class));
         } else if (v.equals(forgot)) {
             EditText resetMail = new EditText(v.getContext());
+            resetMail.setHint("email");
             AlertDialog.Builder passwordResetDialog = new AlertDialog.Builder(v.getContext());
             passwordResetDialog.setTitle("Reset password?");
             passwordResetDialog.setMessage("Enter your email to receive reset link");

@@ -10,4 +10,12 @@
     <string name="forgot_password">Forgot password</string>
     <string name="login_page">Login Page</string>
     <string name="check_available_space">Check Available Space</string>
+    <string name="create_new_account">Create new Account</string>
+    <string name="full_name">Full Name</string>
+    <string name="phone">phone</string>
+    <string name="building">building</string>
+    <string name="area">area</string>
+    <string name="total_space_available">Total Space Available</string>
+    <string name="already_registered_login_here">Already Registered? Login here</string>
+    <string name="register">Register</string>
 </resources>
