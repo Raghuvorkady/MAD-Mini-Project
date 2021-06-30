@@ -34,9 +34,9 @@ public class ParkingSpacesCardAdapter extends RecyclerView.Adapter<ParkingSpaces
 
     @Override
     public void onBindViewHolder(ParkingSpacesCardAdapter.MyOwnHolder holder, int position) {
-        holder.location.setText(parkingSlots.get(position).getLocation());
+        holder.location.setText(parkingSlots.get(position).getBuilding());
 
-        holder.landmark.setText(parkingSlots.get(position).getLandmark());
+        holder.landmark.setText(parkingSlots.get(position).getAddress());
 
         String totalSpaceStr = "Total Space: " + parkingSlots.get(position).getTotalSpace();
         holder.totalSpace.setText(totalSpaceStr);

@@ -35,7 +35,7 @@ public class SerializationTest extends AppCompatActivity {
 
     //    trying to deserialize TimeStamp object
     public void readTime(View view) {
-        Date date = parkingSlot.getCreatedTime().toDate();
+        Date date = parkingSlot.getLastUpdatedTime().toDate();
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy", Locale.US);
         SimpleDateFormat timeFormat = new SimpleDateFormat("hh:mm:ss aa", Locale.US);
         makeToast("Date: " + dateFormat.format(date) + "\nTime: " + timeFormat.format(date));
