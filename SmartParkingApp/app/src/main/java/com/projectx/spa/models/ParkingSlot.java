@@ -13,21 +13,21 @@ public class ParkingSlot implements Parcelable {
     private String id, building, address;
     private int totalSpace, availableSpace;
     private Timestamp lastUpdatedTime;
-    private String documentReference; // DocumentReference is Parcelable
+    private String authorizerDocument; // DocumentReference is not Parcelable
 
     public ParkingSlot() {
     }
 
     public ParkingSlot(@Nullable String id, @NonNull String building, @NonNull String address,
                        int totalSpace, int availableSpace,
-                       @NonNull Timestamp lastUpdatedTime, @NonNull DocumentReference documentReference) {
+                       @NonNull Timestamp lastUpdatedTime, @NonNull DocumentReference authorizerDocument) {
         this.id = id == null ? "null" : id;
         this.building = building;
         this.address = address;
         this.totalSpace = totalSpace;
         this.availableSpace = availableSpace;
         this.lastUpdatedTime = lastUpdatedTime;
-        this.documentReference = documentReference.getPath();
+        this.authorizerDocument = authorizerDocument.getPath();
     }
 
     public String getId() {
@@ -58,8 +58,8 @@ public class ParkingSlot implements Parcelable {
         return lastUpdatedTime;
     }
 
-    public String getDocumentReference() {
-        return documentReference;
+    public String getAuthorizerDocument() {
+        return authorizerDocument;
     }
 
     // Parcelable implementations
@@ -82,7 +82,7 @@ public class ParkingSlot implements Parcelable {
         totalSpace = in.readInt();
         availableSpace = in.readInt();
         lastUpdatedTime = in.readParcelable(Timestamp.class.getClassLoader());
-        documentReference = in.readString();
+        authorizerDocument = in.readString();
     }
 
     @Override
@@ -98,7 +98,7 @@ public class ParkingSlot implements Parcelable {
         parcel.writeInt(totalSpace);
         parcel.writeInt(availableSpace);
         parcel.writeParcelable(lastUpdatedTime, i);
-        parcel.writeString(documentReference);
+        parcel.writeString(authorizerDocument);
     }
 
     @NonNull
@@ -111,7 +111,7 @@ public class ParkingSlot implements Parcelable {
                 ", totalSpace=" + totalSpace +
                 ", availableSpace=" + availableSpace +
                 ", lastUpdatedTime='" + lastUpdatedTime.toDate() + '\'' +
-                ", documentReference=" + documentReference +
+                ", authorizerDocument=" + authorizerDocument +
                 '}';
     }
 }

@@ -44,7 +44,7 @@ public class SerializationTest extends AppCompatActivity {
         makeToast("Date: " + dateFormat.format(date) + "\nTime: " + timeFormat.format(date));
 
         FBHelper fbHelper = new FBHelper(this);
-        DocumentReference doc = fbHelper.toDocumentReference(parkingSlot.getDocumentReference());
+        DocumentReference doc = fbHelper.toDocumentReference(parkingSlot.getAuthorizerDocument());
         Log.d("DOC", doc.getId());
         Log.d("DOC", doc.getPath());
         Log.d("DOC", doc.getParent().getPath());
