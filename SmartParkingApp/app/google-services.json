@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "388106657321",
+    "project_id": "parking-project-bmsit",
+    "storage_bucket": "parking-project-bmsit.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:388106657321:android:aeaee0bdb179f644f3c638",
+        "android_client_info": {
+          "package_name": "com.projectx.spa"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "388106657321-qah534p0bsof8srenv0sphviei8g6su4.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.projectx.spa",
+            "certificate_hash": "9f8a01460fa1d7dc84c5e118cebe4a8935f018a1"
+          }
+        },
+        {
+          "client_id": "388106657321-5jf42j6os06h7tjv8830j57v5ptocrqe.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAB2keaSJnkJ06e6_zD3j6mI6rYw4QJVNI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "388106657321-5jf42j6os06h7tjv8830j57v5ptocrqe.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

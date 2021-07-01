@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">Smart Parking App</string>
+    <string name="Rs">\u20B9</string>
 </resources>
