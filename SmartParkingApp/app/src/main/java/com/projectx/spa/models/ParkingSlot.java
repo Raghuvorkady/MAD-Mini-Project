@@ -1,37 +1,41 @@
 package com.projectx.spa.models;
 
-import android.util.Log;
+import android.os.Parcel;
+import android.os.Parcelable;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import com.google.firebase.Timestamp;
+import com.google.firebase.firestore.DocumentReference;
 
-import java.io.Serializable;
-import java.util.Date;
-import java.util.UUID;
-
-public class ParkingSlot implements Serializable {
-    private String id, building, address, authorizer;
+public class ParkingSlot implements Parcelable {
+    private String id, building, address;
     private int totalSpace, availableSpace;
-    private String createdTime;
-    private String authorizerId; // can be used as foreign key if needed
+    private Timestamp lastUpdatedTime;
+    private String authorizerDocument; // DocumentReference is not Parcelable
 
     public ParkingSlot() {
     }
 
-    public ParkingSlot(UUID id, String building, String address, String authorizer, int totalSpace, int availableSpace, Timestamp createdTime, String authorizerId) {
-        this.id = id.toString();
+    public ParkingSlot(@Nullable String id, @NonNull String building, @NonNull String address,
+                       int totalSpace, int availableSpace,
+                       @NonNull Timestamp lastUpdatedTime, @NonNull DocumentReference authorizerDocument) {
+        this.id = id == null ? "null" : id;
         this.building = building;
         this.address = address;
-        this.authorizer = authorizer;
         this.totalSpace = totalSpace;
         this.availableSpace = availableSpace;
-        this.createdTime = createdTime.toString();
-        this.authorizerId = authorizerId;
+        this.lastUpdatedTime = lastUpdatedTime;
+        this.authorizerDocument = authorizerDocument.getPath();
     }
 
     public String getId() {
         return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 
     public String getBuilding() {
@@ -42,10 +46,6 @@ public class ParkingSlot implements Serializable {
         return address;
     }
 
-    public String getAuthorizer() {
-        return authorizer;
-    }
-
     public int getTotalSpace() {
         return totalSpace;
     }
@@ -54,28 +54,51 @@ public class ParkingSlot implements Serializable {
         return availableSpace;
     }
 
-    public String getCreatedTime() {
-        return createdTime;
+    public Timestamp getLastUpdatedTime() {
+        return lastUpdatedTime;
     }
 
-    public String getAuthorizerId() {
-        return authorizerId;
+    public String getAuthorizerDocument() {
+        return authorizerDocument;
     }
 
-    public String getParsedCreatedTime() {
-        long seconds = 0;
-        int nanoseconds = 0;
-        try {
-            String[] strings = createdTime.split("=");
-            seconds = Long.parseLong(strings[1].split(",")[0]);
-            nanoseconds = Integer.parseInt(strings[2].split("\\)")[0]);
-            Log.d("Date", "seconds " + seconds + "\nnanoseconds " + nanoseconds);
-        } catch (Exception e) {
-            Log.d("Date", "Error");
+    // Parcelable implementations
+    public static final Creator<ParkingSlot> CREATOR = new Creator<ParkingSlot>() {
+        @Override
+        public ParkingSlot createFromParcel(Parcel in) {
+            return new ParkingSlot(in);
         }
-        Timestamp timestamp = new Timestamp(seconds, nanoseconds);
-        Date date = timestamp.toDate();
-        return date.toString();
+
+        @Override
+        public ParkingSlot[] newArray(int size) {
+            return new ParkingSlot[size];
+        }
+    };
+
+    protected ParkingSlot(Parcel in) {
+        id = in.readString();
+        building = in.readString();
+        address = in.readString();
+        totalSpace = in.readInt();
+        availableSpace = in.readInt();
+        lastUpdatedTime = in.readParcelable(Timestamp.class.getClassLoader());
+        authorizerDocument = in.readString();
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel parcel, int i) {
+        parcel.writeString(id);
+        parcel.writeString(building);
+        parcel.writeString(address);
+        parcel.writeInt(totalSpace);
+        parcel.writeInt(availableSpace);
+        parcel.writeParcelable(lastUpdatedTime, i);
+        parcel.writeString(authorizerDocument);
     }
 
     @NonNull
@@ -85,11 +108,10 @@ public class ParkingSlot implements Serializable {
                 "id='" + id + '\'' +
                 ", building='" + building + '\'' +
                 ", address='" + address + '\'' +
-                ", authorizer='" + authorizer + '\'' +
                 ", totalSpace=" + totalSpace +
                 ", availableSpace=" + availableSpace +
-                ", createdTime='" + createdTime + '\'' +
-                ", authorizerId='" + authorizerId + '\'' +
+                ", lastUpdatedTime='" + lastUpdatedTime.toDate() + '\'' +
+                ", authorizerDocument=" + authorizerDocument +
                 '}';
     }
 }
