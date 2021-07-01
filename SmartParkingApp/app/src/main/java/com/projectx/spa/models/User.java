@@ -1,20 +1,24 @@
 package com.projectx.spa.models;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
-import java.util.UUID;
+import com.google.firebase.Timestamp;
 
 public class User {
     private String userId, name, email, phoneNo;
+    private Timestamp createdTime;
 
     public User() {
     }
 
-    public User(UUID userId, String name, String email, String phoneNo) {
-        this.userId = userId.toString();
+    public User(@Nullable String userId, @NonNull String name, @NonNull String email,
+                @NonNull String phoneNo, @NonNull Timestamp createdTime) {
+        this.userId = userId;
         this.name = name;
         this.email = email;
         this.phoneNo = phoneNo;
+        this.createdTime = createdTime;
     }
 
     public String getUserId() {
@@ -33,6 +37,10 @@ public class User {
         return phoneNo;
     }
 
+    public Timestamp getCreatedTime() {
+        return createdTime;
+    }
+
     @NonNull
     @Override
     public String toString() {
@@ -41,6 +49,7 @@ public class User {
                 ", name='" + name + '\'' +
                 ", email='" + email + '\'' +
                 ", phoneNo='" + phoneNo + '\'' +
+                ", createdTime=" + createdTime +
                 '}';
     }
 }
