@@ -4,31 +4,38 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import com.google.firebase.Timestamp;
-
-import java.util.UUID;
+import com.google.firebase.firestore.DocumentReference;
 
 public class ParkingSlot implements Parcelable {
     private String id, building, address;
     private int totalSpace, availableSpace;
     private Timestamp lastUpdatedTime;
-    //    private String reference; // if DocumentReference is not feasible
+    private String documentReference; // DocumentReference is Parcelable
 
     public ParkingSlot() {
     }
 
-    public ParkingSlot(UUID id, String building, String address, int totalSpace, int availableSpace, Timestamp lastUpdatedTime) {
-        this.id = id.toString();
+    public ParkingSlot(@Nullable String id, @NonNull String building, @NonNull String address,
+                       int totalSpace, int availableSpace,
+                       @NonNull Timestamp lastUpdatedTime, @NonNull DocumentReference documentReference) {
+        this.id = id == null ? "null" : id;
         this.building = building;
         this.address = address;
         this.totalSpace = totalSpace;
         this.availableSpace = availableSpace;
         this.lastUpdatedTime = lastUpdatedTime;
+        this.documentReference = documentReference.getPath();
     }
 
     public String getId() {
         return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 
     public String getBuilding() {
@@ -51,6 +58,10 @@ public class ParkingSlot implements Parcelable {
         return lastUpdatedTime;
     }
 
+    public String getDocumentReference() {
+        return documentReference;
+    }
+
     // Parcelable implementations
     public static final Creator<ParkingSlot> CREATOR = new Creator<ParkingSlot>() {
         @Override
@@ -71,6 +82,7 @@ public class ParkingSlot implements Parcelable {
         totalSpace = in.readInt();
         availableSpace = in.readInt();
         lastUpdatedTime = in.readParcelable(Timestamp.class.getClassLoader());
+        documentReference = in.readString();
     }
 
     @Override
@@ -86,6 +98,7 @@ public class ParkingSlot implements Parcelable {
         parcel.writeInt(totalSpace);
         parcel.writeInt(availableSpace);
         parcel.writeParcelable(lastUpdatedTime, i);
+        parcel.writeString(documentReference);
     }
 
     @NonNull
@@ -98,6 +111,7 @@ public class ParkingSlot implements Parcelable {
                 ", totalSpace=" + totalSpace +
                 ", availableSpace=" + availableSpace +
                 ", lastUpdatedTime='" + lastUpdatedTime.toDate() + '\'' +
+                ", documentReference=" + documentReference +
                 '}';
     }
 }

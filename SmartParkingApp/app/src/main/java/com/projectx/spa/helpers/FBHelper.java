@@ -31,13 +31,27 @@ public class FBHelper {
         this.context = context;
     }
 
+    /**
+     * Returns the FirebaseFirestore instance
+     */
     public FirebaseFirestore getFirebaseFirestore() {
         return firebaseFirestore;
     }
 
+    /**
+     * Returns a string representation of the object(DocumentReference).
+     */
+    public DocumentReference toDocumentReference(String documentReference) {
+        return firebaseFirestore.document(documentReference);
+    }
+
+    /**
+     * Adds Parking slot object to Firestore
+     */
     public void addDataToFirestore(ParkingSlot parkingSlot) {
         DocumentReference documentReference = firebaseFirestore.collection(COLLECTIONS).document();
         // db.collection(COLLECTIONS).document("area1").set(slot);
+        parkingSlot.setId(documentReference.getId());
         documentReference
                 .set(parkingSlot)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {

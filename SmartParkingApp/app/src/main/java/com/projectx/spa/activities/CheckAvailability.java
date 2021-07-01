@@ -33,7 +33,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
-import java.util.UUID;
 
 public class CheckAvailability extends AppCompatActivity {
     private List<ParkingSlot> parkingSlots;
@@ -71,15 +70,20 @@ public class CheckAvailability extends AppCompatActivity {
                     }
                 });
 
+        Log.d("REF", reference.getId());
+        Log.d("REF", reference.getPath());
+        Log.d("REF", String.valueOf(reference));
+
         Random random = new Random();
-        UUID uuid = UUID.randomUUID();
+//        UUID uuid = UUID.randomUUID();
         ParkingSlot parkingSlot = new ParkingSlot(
-                uuid,
+                null,
                 "City Centre-" + random.nextInt(10),
                 "Bengaluru-" + random.nextInt(10),
                 random.nextInt(20),
                 random.nextInt(10),
-                Timestamp.now());
+                Timestamp.now(),
+                reference);
 
         fbHelper.addDataToFirestore(parkingSlot);
     }
@@ -145,7 +149,7 @@ public class CheckAvailability extends AppCompatActivity {
 
                 if (snapshot != null && snapshot.exists()) {
                     Log.d("TAG1", "Current data: " + snapshot.getData());
-                    makeToast(snapshot.getData().toString());
+                    makeToast("DATA: " + snapshot.getData());
                 } else {
                     Log.d("TAG1", "Current data: null");
                     makeToast("null");

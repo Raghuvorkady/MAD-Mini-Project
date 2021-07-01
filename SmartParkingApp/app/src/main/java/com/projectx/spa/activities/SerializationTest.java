@@ -2,13 +2,16 @@ package com.projectx.spa.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.firebase.firestore.DocumentReference;
 import com.projectx.spa.R;
+import com.projectx.spa.helpers.FBHelper;
 import com.projectx.spa.models.ParkingSlot;
 
 import java.text.SimpleDateFormat;
@@ -39,6 +42,13 @@ public class SerializationTest extends AppCompatActivity {
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy", Locale.US);
         SimpleDateFormat timeFormat = new SimpleDateFormat("hh:mm:ss aa", Locale.US);
         makeToast("Date: " + dateFormat.format(date) + "\nTime: " + timeFormat.format(date));
+
+        FBHelper fbHelper = new FBHelper(this);
+        DocumentReference doc = fbHelper.toDocumentReference(parkingSlot.getDocumentReference());
+        Log.d("DOC", doc.getId());
+        Log.d("DOC", doc.getPath());
+        Log.d("DOC", doc.getParent().getPath());
+        doc.update("name", "testUpdate");
     }
 
     private void makeToast(String toastMessage) {
