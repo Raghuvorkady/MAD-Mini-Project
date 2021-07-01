@@ -39,7 +39,7 @@ public class FBHelper {
     }
 
     /**
-     * Returns a string representation of the object(DocumentReference).
+     * Returns a DocumentReference representation of the string object (DocumentReference).
      */
     public DocumentReference toDocumentReference(String documentReference) {
         return firebaseFirestore.document(documentReference);
