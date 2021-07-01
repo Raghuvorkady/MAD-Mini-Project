@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.projectx.spa.R;
 import com.projectx.spa.activities.SerializationTest;
+import com.projectx.spa.helpers.Constants;
 import com.projectx.spa.models.ParkingSlot;
 
 import java.util.List;
@@ -48,7 +49,7 @@ public class ParkingSpacesCardAdapter extends RecyclerView.Adapter<ParkingSpaces
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(context, SerializationTest.class);
-                intent.putExtra("key", parkingSlots.get(position));
+                intent.putExtra(Constants.SAMPLE_KEY, parkingSlots.get(position));
                 context.startActivity(intent);
             }
         });

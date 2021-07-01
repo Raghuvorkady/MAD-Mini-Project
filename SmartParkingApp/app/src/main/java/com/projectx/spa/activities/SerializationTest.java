@@ -18,6 +18,8 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 
+import static com.projectx.spa.helpers.Constants.SAMPLE_KEY;
+
 public class SerializationTest extends AppCompatActivity {
     ParkingSlot parkingSlot;
 
@@ -31,7 +33,7 @@ public class SerializationTest extends AppCompatActivity {
         Intent intent = getIntent();
         // for reading single instance of ParkingSlot,
         // which is passed through Intent
-        parkingSlot = (ParkingSlot) intent.getParcelableExtra("key");
+        parkingSlot = (ParkingSlot) intent.getParcelableExtra(SAMPLE_KEY);
 
         textView.setText(parkingSlot.toString());
     }

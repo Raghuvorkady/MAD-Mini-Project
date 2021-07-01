@@ -70,7 +70,7 @@ public class FBHelper {
 
     public List<ParkingSlot> readDataFromFirestore() {
         List<ParkingSlot> parkingSlots = new ArrayList<>();
-        firebaseFirestore.collection(COLLECTIONS)
+        firebaseFirestore.collection(Constants.PARKING_SLOTS)
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
