@@ -22,10 +22,9 @@
             android:layout_marginStart="28dp"
             android:layout_marginLeft="28dp"
             android:layout_marginTop="20dp"
-            android:text="Hey ,"
+            android:text="@string/hey"
             android:textColor="@color/black"
             android:textSize="35sp"
-
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -33,6 +32,7 @@
             android:id="@+id/pt2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginStart="28dp"
             android:layout_marginLeft="28dp"
             android:layout_marginTop="10dp"
             android:text=""
@@ -45,27 +45,27 @@
             android:id="@+id/pt3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginStart="28dp"
             android:layout_marginLeft="28dp"
             android:layout_marginTop="10dp"
             android:text=" "
             android:textColor="@color/black"
             android:textSize="30sp"
-
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/pt2" />
+
         <TextView
             android:id="@+id/pt5"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginStart="28dp"
             android:layout_marginLeft="28dp"
             android:layout_marginTop="1dp"
             android:text=""
             android:textColor="@color/black"
             android:textSize="25sp"
-
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/pt3" />
-
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -75,12 +75,10 @@
         android:layout_height="wrap_content"
         android:background="@drawable/background_white_top"
         app:layout_constraintBottom_toBottomOf="@+id/pl1"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/pl1"
-        app:layout_constraintVertical_bias="0.448"
-        tools:ignore="NotSibling">
-
+        app:layout_constraintVertical_bias="0.448">
 
         <LinearLayout
             android:id="@+id/pl2"
@@ -96,10 +94,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="center_horizontal"
-                android:text="No of Slots Available"
+                android:text="@string/no_of_slots_available"
                 android:textAlignment="center"
                 android:textColor="@color/black"
-
                 android:textSize="30sp" />
 
             <TextView
@@ -108,15 +105,12 @@
                 android:layout_height="wrap_content"
                 android:gravity="center_horizontal"
                 android:text=""
-                android:textColor="@color/black"
-                android:textStyle="bold"
                 android:textAlignment="center"
-                android:textSize="50sp" />
-
-
+                android:textColor="@color/black"
+                android:textSize="50sp"
+                android:textStyle="bold" />
 
         </LinearLayout>
-
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -125,43 +119,42 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
-        app:layout_constraintTop_toBottomOf="@id/pl3"
-        app:layout_constraintBottom_toBottomOf="parent">
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/pl3">
 
         <androidx.cardview.widget.CardView
             android:id="@+id/pc1"
             android:layout_width="200dp"
             android:layout_height="100dp"
             android:layout_marginTop="20dp"
+            android:onClick="detailsPage"
             app:cardBackgroundColor="#ccffff"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@id/pl4"
-            tools:ignore="NotSibling"
-            android:onClick="detailspage">
+            app:layout_constraintTop_toTopOf="@id/pl4">
 
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:orientation="vertical">
+
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginStart="60dp"
                     android:layout_marginLeft="60dp"
-                    android:src="@drawable/car_48px"/>
+                    android:contentDescription="@string/vehicle_image"
+                    android:src="@drawable/car_48px" />
+
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Enter Info"
+                    android:text="@string/enter_info"
                     android:textSize="40sp"
-                    android:textStyle="bold"
-                    />
-
+                    android:textStyle="bold" />
 
             </LinearLayout>
-
-
 
         </androidx.cardview.widget.CardView>
 
@@ -170,40 +163,37 @@
             android:layout_width="200dp"
             android:layout_height="100dp"
             android:layout_marginTop="40dp"
-            android:onClick="historypage"
+            android:onClick="historyPage"
             app:cardBackgroundColor="#ccffff"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/pc1"
-            >
+            app:layout_constraintTop_toBottomOf="@id/pc1">
+
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:orientation="vertical">
+
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginStart="40dp"
                     android:layout_marginLeft="40dp"
-                    android:src="@drawable/activity_history_48px"/>
+                    android:contentDescription="@string/history_image"
+                    android:src="@drawable/activity_history_48px" />
+
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="History"
+                    android:text="@string/history"
                     android:textSize="40sp"
-                    android:textStyle="bold"
-                    />
-
+                    android:textStyle="bold" />
 
             </LinearLayout>
+
         </androidx.cardview.widget.CardView>
 
-
-
     </androidx.constraintlayout.widget.ConstraintLayout>
-
-
-
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>
