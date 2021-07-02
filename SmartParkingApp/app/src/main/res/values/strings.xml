@@ -1,4 +1,17 @@
 <resources>
     <string name="app_name">Smart Parking App</string>
     <string name="Rs">\u20B9</string>
+    <string name="bill">BILL</string>
+    <string name="entry_time">ENTRY TIME :</string>
+    <string name="exit_time">EXIT TIME :</string>
+    <string name="payment_amount">PAYMENT AMOUNT</string>
+    <string name="enter_vehicle_number">Enter vehicle Number:</string>
+    <string name="out">OUT</string>
+    <string name="in">IN</string>
+    <string name="hey">Hey,</string>
+    <string name="vehicle_image">Vehicle image</string>
+    <string name="enter_info">Enter Info</string>
+    <string name="history_image">History image</string>
+    <string name="history">History</string>
+    <string name="no_of_slots_available">No. of Slots Available</string>
 </resources>
