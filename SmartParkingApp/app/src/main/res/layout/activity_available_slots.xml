@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#f2f2f2"
-    tools:context=".activities.CheckAvailability">
+    tools:context=".activities.AvailableSlotsActivity">
 
     <TextView
         android:id="@+id/logo"
@@ -14,7 +14,7 @@
         android:layout_marginTop="20dp"
         android:background="@color/teal_700"
         android:padding="30dp"
-        android:text="LOGO"
+        android:text="@string/logo"
         android:textColor="@color/white"
         android:textSize="24sp"
         app:layout_constraintLeft_toLeftOf="parent"
@@ -22,7 +22,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerView"
+        android:id="@+id/recycler_view"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_marginLeft="8dp"
@@ -35,19 +35,20 @@
         app:layout_constraintTop_toBottomOf="@id/logo" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/floatingActionButton"
+        android:id="@+id/floating_action_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="16dp"
         android:layout_marginRight="16dp"
         android:layout_marginBottom="16dp"
         android:background="#777"
-        android:contentDescription="Add data"
+        android:contentDescription="Add Data"
         android:onClick="addData"
-        android:tooltipText="Add data"
+        android:tooltipText="Add Data"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:srcCompat="@android:drawable/ic_menu_add" />
+        app:srcCompat="@android:drawable/ic_menu_add"
+        tools:targetApi="o" />
 
     <Button
         android:id="@+id/button"
@@ -56,8 +57,8 @@
         android:layout_marginStart="60dp"
         android:layout_marginLeft="84dp"
         android:layout_marginBottom="16dp"
-        android:onClick="read"
-        android:text="Read data"
+        android:onClick="readData"
+        android:text="Read Data"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
@@ -71,6 +72,6 @@
         android:onClick="updateList"
         android:text="update list"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/floatingActionButton" />
+        app:layout_constraintEnd_toStartOf="@+id/floating_action_button" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

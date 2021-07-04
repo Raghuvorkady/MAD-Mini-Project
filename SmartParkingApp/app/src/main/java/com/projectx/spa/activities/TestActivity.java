@@ -20,13 +20,13 @@ import java.util.Locale;
 
 import static com.projectx.spa.helpers.Constants.SAMPLE_KEY;
 
-public class SerializationTest extends AppCompatActivity {
+public class TestActivity extends AppCompatActivity {
     ParkingSlot parkingSlot;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_serialization_test);
+        setContentView(R.layout.activity_test);
 
         TextView textView = findViewById(R.id.text);
 

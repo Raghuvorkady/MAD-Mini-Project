@@ -24,7 +24,7 @@ import com.google.firebase.firestore.ListenerRegistration;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.projectx.spa.R;
-import com.projectx.spa.adapters.ParkingSpacesCardAdapter;
+import com.projectx.spa.adapters.AvailableSlotsAdapter;
 import com.projectx.spa.helpers.FBHelper;
 import com.projectx.spa.models.ParkingSlot;
 
@@ -34,7 +34,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
-public class CheckAvailability extends AppCompatActivity {
+public class AvailableSlotsActivity extends AppCompatActivity {
     private List<ParkingSlot> parkingSlots;
     private FBHelper fbHelper;
     private DocumentReference documentReference;
@@ -42,7 +42,7 @@ public class CheckAvailability extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_check_availability);
+        setContentView(R.layout.activity_available_slots);
 
         fbHelper = new FBHelper(this);
         documentReference = FirebaseFirestore.getInstance().collection("test").document("doc2");
@@ -89,7 +89,7 @@ public class CheckAvailability extends AppCompatActivity {
     }
 
     //    to read data from the firebase firestore
-    public void read(View view) {
+    public void readData(View view) {
         readRealTime();
         parkingSlots.clear(); // clear existing data from the list
         parkingSlots = fbHelper.readDataFromFirestore();
@@ -97,15 +97,15 @@ public class CheckAvailability extends AppCompatActivity {
 
     //    for next button action
     public void updateList(View view) {
-        RecyclerView recyclerView = findViewById(R.id.recyclerView);
-        ParkingSpacesCardAdapter parkingSpacesCardAdapter = new ParkingSpacesCardAdapter(this, parkingSlots);
-        recyclerView.setAdapter(parkingSpacesCardAdapter);
+        RecyclerView recyclerView = findViewById(R.id.recycler_view);
+        AvailableSlotsAdapter availableSlotsAdapter = new AvailableSlotsAdapter(this, parkingSlots);
+        recyclerView.setAdapter(availableSlotsAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
     }
 
     //    for creating Toast
     private void makeToast(String toastMessage) {
-        Toast.makeText(CheckAvailability.this, toastMessage, Toast.LENGTH_SHORT).show();
+        Toast.makeText(AvailableSlotsActivity.this, toastMessage, Toast.LENGTH_SHORT).show();
     }
 
     //    a test for real time data update of a single document

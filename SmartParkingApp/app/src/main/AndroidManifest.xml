@@ -10,9 +10,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.SmartParkingApp">
 
-        <activity android:name=".activities.SerializationTest" />
+        <activity android:name=".activities.TestActivity" />
 
-        <activity android:name=".activities.CheckAvailability">
+        <activity android:name=".activities.AvailableSlotsActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

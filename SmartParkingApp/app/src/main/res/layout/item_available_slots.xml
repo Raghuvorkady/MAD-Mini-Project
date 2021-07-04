@@ -7,7 +7,7 @@
     android:layout_marginBottom="2dp">
 
     <LinearLayout
-        android:id="@+id/cardLayout"
+        android:id="@+id/card_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="#ffffff"
@@ -20,30 +20,30 @@
         android:paddingBottom="12dp">
 
         <TextView
-            android:id="@+id/placeName"
-            style="@style/textStyle"
-            android:text="Place Name"
+            android:id="@+id/building"
+            style="@style/TextViewStyle"
+            android:text="@string/building"
             android:textAppearance="@style/TextAppearance.AppCompat.Headline"
             android:textStyle="bold"
-            app:drawableLeftCompat="@drawable/ic_location" />
+            app:drawableLeftCompat="@drawable/ic_building" />
 
         <TextView
-            android:id="@+id/landmark"
-            style="@style/textStyle"
-            android:text="Landmark"
+            android:id="@+id/address"
+            style="@style/TextViewStyle"
+            android:text="@string/address"
             android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-            app:drawableLeftCompat="@drawable/ic_landmark" />
+            app:drawableLeftCompat="@drawable/ic_address" />
 
         <TextView
-            android:id="@+id/totalSpace"
-            style="@style/textStyle"
-            android:text="Total Space: "
+            android:id="@+id/total_space"
+            style="@style/TextViewStyle"
+            android:text="@string/total_space"
             android:textAppearance="@style/TextAppearance.AppCompat.Title" />
 
         <TextView
-            android:id="@+id/availableSpace"
-            style="@style/textStyle"
-            android:text="Available Space: "
+            android:id="@+id/available_space"
+            style="@style/TextViewStyle"
+            android:text="@string/available_space"
             android:textAppearance="@style/TextAppearance.AppCompat.Title" />
 
     </LinearLayout>

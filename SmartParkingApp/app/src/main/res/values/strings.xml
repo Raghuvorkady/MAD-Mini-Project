@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">Smart Parking App</string>
+    <string name="building">Building</string>
+    <string name="address">Address</string>
+    <string name="total_space">Total Space:</string>
+    <string name="available_space">Available Space:</string>
+    <string name="logo">LOGO</string>
 </resources>

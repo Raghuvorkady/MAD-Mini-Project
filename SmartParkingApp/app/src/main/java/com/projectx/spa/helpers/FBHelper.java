@@ -22,7 +22,6 @@ import java.util.List;
 import es.dmoral.toasty.Toasty;
 
 public class FBHelper {
-    private final String COLLECTIONS = "parking-spaces";
     private final FirebaseFirestore firebaseFirestore;
     private final Context context;
 
@@ -49,7 +48,7 @@ public class FBHelper {
      * Adds Parking slot object to Firestore
      */
     public void addDataToFirestore(ParkingSlot parkingSlot) {
-        DocumentReference documentReference = firebaseFirestore.collection(COLLECTIONS).document();
+        DocumentReference documentReference = firebaseFirestore.collection(Constants.PARKING_SLOTS).document();
         // db.collection(COLLECTIONS).document("area1").set(slot);
         parkingSlot.setId(documentReference.getId());
         documentReference

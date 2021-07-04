@@ -10,8 +10,11 @@ import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.DocumentReference;
 
 public class ParkingSlot implements Parcelable {
-    private String id, building, address;
-    private int totalSpace, availableSpace;
+    private String id;
+    private String building;
+    private String address;
+    private int totalSpace;
+    private int availableSpace;
     private Timestamp lastUpdatedTime;
     private String authorizerDocument; // DocumentReference is not Parcelable
 
