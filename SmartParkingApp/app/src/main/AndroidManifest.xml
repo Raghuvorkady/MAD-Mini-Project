@@ -11,6 +11,10 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.SmartParkingApp">
+
+        <activity android:name=".activities.Test2Activity"></activity>
+        <activity android:name=".activities.TestActivity"></activity>
+        <activity android:name=".activities.AvailableSlotsActivity">
         <activity android:name=".activities.VehicleEntry" />
         <activity android:name=".activities.RegisterActivity" />
         <activity android:name=".activities.Availability" />

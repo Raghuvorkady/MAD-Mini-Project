@@ -1,5 +1,11 @@
 <resources>
+  
     <string name="app_name">Smart Parking App</string>
+    <string name="building">Building</string>
+    <string name="address">Address</string>
+    <string name="total_space">Total Space:</string>
+    <string name="available_space">Available Space:</string>
+    <string name="logo">LOGO</string>
     <string name="login">Login</string>
     <string name="password">password</string>
     <string name="email">email</string>
@@ -18,4 +24,5 @@
     <string name="total_space_available">Total Space Available</string>
     <string name="already_registered_login_here">Already Registered? Login here</string>
     <string name="register">Register</string>
+
 </resources>

@@ -1,20 +1,28 @@
 package com.projectx.spa.models;
 
+import android.os.Build;
+
 import android.os.Parcel;
 import android.os.Parcelable;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 
 import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.DocumentReference;
 
+import java.util.Objects;
+
 public class ParkingSlot implements Parcelable {
-    private String id, building, address;
-    private int totalSpace, availableSpace;
+   private String id;
+    private String building;
+    private String address;
+    private int totalSpace;
+    private int availableSpace;
     private Timestamp lastUpdatedTime;
     private String authorizerDocument; // DocumentReference is not Parcelable
-
+  
     public ParkingSlot() {
     }
 
@@ -99,6 +107,20 @@ public class ParkingSlot implements Parcelable {
         parcel.writeInt(availableSpace);
         parcel.writeParcelable(lastUpdatedTime, i);
         parcel.writeString(authorizerDocument);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        ParkingSlot that = (ParkingSlot) o;
+        return id.equals(that.id);
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
     }
 
     @NonNull

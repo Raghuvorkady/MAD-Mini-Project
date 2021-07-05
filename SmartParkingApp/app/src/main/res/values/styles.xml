@@ -1,6 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <style name="TextViewStyle.AvailableSlotsItem" parent="Widget.AppCompat.TextView">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginTop">2dp</item>
+        <item name="android:layout_marginBottom">2dp</item>
+        <item name="android:gravity">bottom</item>
+
     <style name="ImageViewStyle">
         <item name="android:layout_width">100dp</item>
         <item name="android:layout_height">100dp</item>
@@ -42,6 +49,7 @@
         <item name="android:padding">10dp</item>
         <item name="android:textColor">@color/white</item>
         <item name="android:textColorHint">#8A8787</item>
+
     </style>
 
 </resources>
