@@ -1,6 +1,7 @@
 package com.projectx.spa.models;
 
 import android.os.Build;
+
 import android.os.Parcel;
 import android.os.Parcelable;
 
@@ -14,25 +15,25 @@ import com.google.firebase.firestore.DocumentReference;
 import java.util.Objects;
 
 public class ParkingSlot implements Parcelable {
-    private String id;
+   private String id;
     private String building;
     private String address;
     private int totalSpace;
     private int availableSpace;
     private Timestamp lastUpdatedTime;
     private String authorizerDocument; // DocumentReference is not Parcelable
-
+  
     public ParkingSlot() {
     }
 
     public ParkingSlot(@Nullable String id, @NonNull String building, @NonNull String address,
-                       int totalSpace, int availableSpace,
+                       String totalSpace, String availableSpace,
                        @NonNull Timestamp lastUpdatedTime, @NonNull DocumentReference authorizerDocument) {
         this.id = id == null ? "null" : id;
         this.building = building;
         this.address = address;
-        this.totalSpace = totalSpace;
-        this.availableSpace = availableSpace;
+        this.totalSpace = Integer.parseInt(totalSpace);
+        this.availableSpace = Integer.parseInt(availableSpace);
         this.lastUpdatedTime = lastUpdatedTime;
         this.authorizerDocument = authorizerDocument.getPath();
     }
