@@ -65,7 +65,8 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
 
     public void onClick(View v) {
         if (v.equals(loginBtn)) {
-            startActivity(new Intent(getApplicationContext(), LoginActivity.class));
+            // finish() will destroy this Activity and navigate it back to LoginActivity
+            finish();
         }
         if (v.equals(registerBtn)) {
             String email = emailEditText.getText().toString().trim();
