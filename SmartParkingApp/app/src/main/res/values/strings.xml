@@ -1,3 +1,21 @@
 <resources>
     <string name="app_name">Smart Parking App</string>
+    <string name="login">Login</string>
+    <string name="password">password</string>
+    <string name="email">email</string>
+    <string name="login_to_e_park">Login to E-park</string>
+    <string name="e_park">E park</string>
+    <string name="logo">logo</string>
+    <string name="not_registered_register_here">Not Registered? Register here</string>
+    <string name="forgot_password">Forgot password</string>
+    <string name="login_page">Login Page</string>
+    <string name="check_available_space">Check Available Space</string>
+    <string name="create_new_account">Create new Account</string>
+    <string name="full_name">Full Name</string>
+    <string name="phone">phone</string>
+    <string name="building">building</string>
+    <string name="area">area</string>
+    <string name="total_space_available">Total Space Available</string>
+    <string name="already_registered_login_here">Already Registered? Login here</string>
+    <string name="register">Register</string>
 </resources>
