@@ -12,7 +12,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.projectx.spa.R;
-import com.projectx.spa.activities.TestActivity;
+import com.projectx.spa.activities.Test2Activity;
 import com.projectx.spa.helpers.Constants;
 import com.projectx.spa.models.ParkingSlot;
 
@@ -50,7 +50,7 @@ public class AvailableSlotsAdapter extends RecyclerView.Adapter<AvailableSlotsAd
         holder.cardLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(context, TestActivity.class);
+                Intent intent = new Intent(context, Test2Activity.class);
                 intent.putExtra(Constants.SAMPLE_KEY, parkingSlots.get(position));
                 context.startActivity(intent);
             }

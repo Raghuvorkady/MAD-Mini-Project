@@ -1,22 +1,20 @@
 package com.projectx.spa.activities;
 
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.firebase.Timestamp;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.firestore.DocumentChange;
-import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
@@ -25,145 +23,58 @@ import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.projectx.spa.R;
 import com.projectx.spa.adapters.AvailableSlotsAdapter;
+import com.projectx.spa.helpers.Constants;
 import com.projectx.spa.helpers.FBHelper;
 import com.projectx.spa.models.ParkingSlot;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.Random;
 
-public class AvailableSlotsActivity extends AppCompatActivity {
+public class AvailableSlotsActivity extends AppCompatActivity implements SwipeRefreshLayout.OnRefreshListener {
     private List<ParkingSlot> parkingSlots;
     private FBHelper fbHelper;
-    private DocumentReference documentReference;
+
+    private RecyclerView recyclerView;
+    private SwipeRefreshLayout swipeRefreshLayout;
+    private AvailableSlotsAdapter availableSlotsAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_available_slots);
 
+        recyclerView = findViewById(R.id.recycler_view);
+        swipeRefreshLayout = findViewById(R.id.swipe_refresh_layout);
+
         fbHelper = new FBHelper(this);
-        documentReference = FirebaseFirestore.getInstance().collection("test").document("doc2");
 
-        parkingSlots = new ArrayList<>();
+       parkingSlots = new ArrayList<>();
+       updateRecyclerView();
 
-        trackMultipleDocumentsTest();
-//        trackSingleDocumentTest();
+        swipeRefreshLayout.setOnRefreshListener(this);
+
+        trackMultipleDocuments();
     }
 
-    //    to add data (custom class object) to the firebase firestore
-    public void addData(View view) {
-        // test for adding reference datatype
-        Map<String, Object> map = new HashMap<>();
-        map.put("name", "rkm");
-        FirebaseFirestore firebaseFirestore = FirebaseFirestore.getInstance();
-        DocumentReference reference = firebaseFirestore.collection("test").document("doc1");
-        map.put("ref", reference);
-        reference
-                .set(map)
-                .addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void unused) {
-                        makeToast("Success");
-                    }
-                });
-
-        Log.d("REF", reference.getId());
-        Log.d("REF", reference.getPath());
-        Log.d("REF", String.valueOf(reference));
-
-        Random random = new Random();
-//        UUID uuid = UUID.randomUUID();
-        ParkingSlot parkingSlot = new ParkingSlot(
-                null,
-                "City Centre-" + random.nextInt(10),
-                "Bengaluru-" + random.nextInt(10),
-                random.nextInt(20),
-                random.nextInt(10),
-                Timestamp.now(),
-                reference);
-
-        fbHelper.addDataToFirestore(parkingSlot);
+    @Override
+    public void onRefresh() {
+        updateRecyclerView();
+        makeSnackMessage("Updated");
+        swipeRefreshLayout.setRefreshing(false);
     }
 
-    //    to read data from the firebase firestore
-    public void readData(View view) {
-        readRealTime();
-        parkingSlots.clear(); // clear existing data from the list
-        parkingSlots = fbHelper.readDataFromFirestore();
-    }
-
-    //    for next button action
-    public void updateList(View view) {
-        RecyclerView recyclerView = findViewById(R.id.recycler_view);
-        AvailableSlotsAdapter availableSlotsAdapter = new AvailableSlotsAdapter(this, parkingSlots);
+    public void updateRecyclerView() {
+        availableSlotsAdapter = new AvailableSlotsAdapter(this, parkingSlots);
         recyclerView.setAdapter(availableSlotsAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
     }
 
-    //    for creating Toast
-    private void makeToast(String toastMessage) {
-        Toast.makeText(AvailableSlotsActivity.this, toastMessage, Toast.LENGTH_SHORT).show();
-    }
-
-    //    a test for real time data update of a single document
-    //    https://dzone.com/articles/cloud-firestore-read-write-update-and-delete
-    //    https://firebase.google.com/docs/firestore/query-data/listen
-    //    Listen to multiple documents in a collection:
-    //    https://firebase.google.com/docs/firestore/query-data/listen#listen_to_multiple_documents_in_a_collection
-    void readRealTime() {
-        Map<String, Object> map = new HashMap<>();
-        Random random = new Random();
-        map.put("name", "project-X123" + random.nextInt(100));
-        map.put("email", "rkm@test.com" + random.nextInt(100));
-        map.put("realtime", "testing" + random.nextInt(100));
-        map.put("randomInt", random.nextInt(100));
-
-        documentReference
-                .update(map)
-                .addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void unused) {
-                        makeToast("Updated");
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        makeToast("Update failed");
-                    }
-                });
-    }
-
-    private void trackSingleDocumentTest() {
-        documentReference.addSnapshotListener(new EventListener<DocumentSnapshot>() {
-            @Override
-            public void onEvent(DocumentSnapshot snapshot, FirebaseFirestoreException e) {
-                if (e != null) {
-                    Log.w("TAG1", "Listen failed.", e);
-                    makeToast(e.getMessage());
-                    return;
-                }
-
-                if (snapshot != null && snapshot.exists()) {
-                    Log.d("TAG1", "Current data: " + snapshot.getData());
-                    makeToast("DATA: " + snapshot.getData());
-                } else {
-                    Log.d("TAG1", "Current data: null");
-                    makeToast("null");
-                }
-            }
-        });
-    }
-
-    private void trackMultipleDocumentsTest() {
-        Query query = FirebaseFirestore
-                .getInstance()
-                .collection("test");
+    private void trackMultipleDocuments() {
+        Query query = FirebaseFirestore.getInstance()
+                .collection(Constants.PARKING_SLOTS);
 
         ListenerRegistration registration = query.addSnapshotListener(new EventListener<QuerySnapshot>() {
+            @RequiresApi(api = Build.VERSION_CODES.N)
             @Override
             public void onEvent(@Nullable QuerySnapshot value,
                                 @Nullable FirebaseFirestoreException e) {
@@ -174,20 +85,37 @@ public class AvailableSlotsActivity extends AppCompatActivity {
 
                 if (value != null) {
                     for (DocumentChange dc : value.getDocumentChanges()) {
-                        Map<String, Object> data = dc.getDocument().getData();
-                        String str = "name: " + data.get("name") + "\nemail: " + data.get("email") + "\nrandomInt: " + data.get("randomInt");
+                        ParkingSlot parkingSlot = dc.getDocument().toObject(ParkingSlot.class);
+                        String str = parkingSlot.toString();
+
                         switch (dc.getType()) {
                             case ADDED:
+                                parkingSlots.add(parkingSlot);
+                                availableSlotsAdapter.notifyItemInserted(parkingSlots.size() - 1);
                                 Log.d("ADDED", "New : " + str);
-                                makeToast("ADDED\n" + str);
+//                                makeToast("ADDED\n" + str);
                                 break;
                             case MODIFIED:
+                                try {
+                                    int index = parkingSlots.indexOf(parkingSlot);
+                                    parkingSlots.set(index, parkingSlot);
+                                    availableSlotsAdapter.notifyDataSetChanged();
+                                } catch (IndexOutOfBoundsException indexException) {
+                                    indexException.printStackTrace();
+                                }
                                 Log.d("MODIFIED", "Modified : " + str);
-                                makeToast("MODIFIED\n" + str);
+//                                makeToast("MODIFIED\n" + str);
                                 break;
                             case REMOVED:
+                                try {
+                                    int index = parkingSlots.indexOf(parkingSlot);
+                                    parkingSlots.remove(parkingSlot);
+                                    availableSlotsAdapter.notifyItemRemoved(index);
+                                } catch (IndexOutOfBoundsException indexException) {
+                                    indexException.printStackTrace();
+                                }
                                 Log.d("REMOVED", "Removed : " + str);
-                                makeToast("REMOVED\n" + str);
+//                                makeToast("REMOVED\n" + str);
                                 break;
                         }
                     }
@@ -207,5 +135,20 @@ public class AvailableSlotsActivity extends AppCompatActivity {
 
         // Stop listening to changes
 //        registration.remove();
+    }
+
+    private void makeToast(String toastMessage) {
+        Toast.makeText(AvailableSlotsActivity.this, toastMessage, Toast.LENGTH_SHORT).show();
+    }
+
+    private void makeSnackMessage(String str) {
+        Snackbar snackbar = Snackbar.make(swipeRefreshLayout, str + " ", Snackbar.LENGTH_SHORT);
+        snackbar.setAction("OK", new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                snackbar.dismiss();
+            }
+        });
+        snackbar.show();
     }
 }
