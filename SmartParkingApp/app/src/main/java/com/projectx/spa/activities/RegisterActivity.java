@@ -17,110 +17,113 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.Timestamp;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.projectx.spa.R;
+import com.projectx.spa.helpers.Constants;
+import com.projectx.spa.models.ParkingSlot;
+import com.projectx.spa.models.User;
 
-import java.util.HashMap;
-import java.util.Map;
+public class RegisterActivity extends AppCompatActivity implements View.OnClickListener {
 
-public class Register extends AppCompatActivity implements View.OnClickListener {
-
-    private Button register;
-    private EditText name, email, phone, password, building, area, totalSpace;
+    private Button registerBtn;
+    private EditText nameEditText, emailEditText, phoneEditText, passwordEditText, buildingEditText, areaEditText, totalSpaceEditText;
     private TextView loginBtn;
     private FirebaseAuth fAuth;
     private FirebaseFirestore firestore;
-    private String userid;
+    private String userId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
 
-        register = findViewById(R.id.register);
-        name = findViewById(R.id.Name);
-        email = findViewById(R.id.email);
-        phone = findViewById(R.id.phone);
-        password = findViewById(R.id.password);
-        loginBtn = findViewById(R.id.login1);
-        building = findViewById(R.id.building);
-        area = findViewById(R.id.area);
-        totalSpace = findViewById(R.id.slots);
+        registerBtn = findViewById(R.id.register);
+        nameEditText = findViewById(R.id.name);
+        emailEditText = findViewById(R.id.email);
+        phoneEditText = findViewById(R.id.phone);
+        passwordEditText = findViewById(R.id.password);
+        loginBtn = findViewById(R.id.loginRoute);
+        buildingEditText = findViewById(R.id.building);
+        areaEditText = findViewById(R.id.area);
+        totalSpaceEditText = findViewById(R.id.slots);
 
-        register.setOnClickListener(this);
+        registerBtn.setOnClickListener(this);
         loginBtn.setOnClickListener(this);
 
         fAuth = FirebaseAuth.getInstance();
         firestore = FirebaseFirestore.getInstance();
 
         if (fAuth.getCurrentUser() != null) {
-            startActivity(new Intent(this, MainActivity.class));//add .class file of vehicle number entry
+            startActivity(new Intent(this, HomeActivity.class));//add .class file of vehicle number entry
             finish();
         }
     }
 
     public void onClick(View v) {
         if (v.equals(loginBtn)) {
-            startActivity(new Intent(getApplicationContext(), Login.class));
+            startActivity(new Intent(getApplicationContext(), LoginActivity.class));
         }
-        if (v.equals(register)) {
-            String emails = email.getText().toString().trim();
-            String pwd = password.getText().toString().trim();
-            String name = this.name.getText().toString();
-            String phone = this.phone.getText().toString();
-            String place = building.getText().toString();
-            String local = area.getText().toString();
-            String avail = totalSpace.getText().toString();
+        if (v.equals(registerBtn)) {
+            String email = emailEditText.getText().toString().trim();
+            String pwd = passwordEditText.getText().toString().trim();
+            String name = this.nameEditText.getText().toString();
+            String phone = this.phoneEditText.getText().toString();
+            String place = buildingEditText.getText().toString();
+            String local = areaEditText.getText().toString();
+            String avail = totalSpaceEditText.getText().toString();
 
-            if (TextUtils.isEmpty(emails)) {
-                email.setError("Email is required.");
+            if (TextUtils.isEmpty(email)) {
+                emailEditText.setError("Email is required.");
                 return;
             }
             if (TextUtils.isEmpty(pwd)) {
-                password.setError("password is required");
+                passwordEditText.setError("password is required");
                 return;
             }
             if (TextUtils.isEmpty(name)) {
-                this.name.setError("name is required");
+                this.nameEditText.setError("name is required");
                 return;
             }
             if (TextUtils.isEmpty(place)) {
-                building.setError("phone building name is required");
+                buildingEditText.setError("phone building name is required");
                 return;
             }
             if (TextUtils.isEmpty(avail)) {
-                totalSpace.setError("Total slots is required");
+                totalSpaceEditText.setError("Total slots is required");
                 return;
             }
             if (pwd.length() < 6) {
-                password.setError("password must be atleast 6 characters");
+                passwordEditText.setError("password must be atleast 6 characters");
                 return;
             }
 
             // register in firebase
-            fAuth.createUserWithEmailAndPassword(emails, pwd)
+            fAuth.createUserWithEmailAndPassword(email, pwd)
                     .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                         @Override
                         public void onComplete(@NonNull Task<AuthResult> task) {
                             if (task.isSuccessful()) {
                                 makeToast("User created");
-                                userid = fAuth.getCurrentUser().getUid();
-                                DocumentReference documentReference = firestore.collection("users").document(userid);
+                                userId = fAuth.getCurrentUser().getUid();
+                                DocumentReference documentReference = firestore.collection(Constants.USERS).document(userId);
 
-                                Map<String, Object> user = new HashMap<>();
-                                user.put("name", name);
-                                user.put("email", emails);
-                                user.put("phone_no", phone);
+                                User user = new User(
+                                        documentReference.getId(),
+                                        name,
+                                        email,
+                                        phone,
+                                        Timestamp.now());
 
                                 documentReference
                                         .set(user)
                                         .addOnSuccessListener(new OnSuccessListener<Void>() {
                                             @Override
                                             public void onSuccess(Void unused) {
-                                                Log.d("TAG", "onSuccess: user profile is created for " + userid);
+                                                Log.d("TAG", "onSuccess: user profile is created for " + userId);
                                             }
                                         })
                                         .addOnFailureListener(new OnFailureListener() {
@@ -131,20 +134,23 @@ public class Register extends AppCompatActivity implements View.OnClickListener 
                                         });
 
                                 // parking data
-                                DocumentReference documentReference1 = firestore.collection("parking-data").document(userid);
+                                DocumentReference parkingSlotDocument = firestore.collection(Constants.PARKING_SLOTS).document(userId);
 
-                                Map<String, Object> data = new HashMap<>();
-                                data.put("authorizer", name);
-                                data.put("building", place);
-                                data.put("address", local);
-                                data.put("totalSlots", avail);
-
-                                documentReference1
-                                        .set(data)
+                                ParkingSlot parkingSlot = new ParkingSlot(
+                                        parkingSlotDocument.getId(),
+                                        place,
+                                        local,
+                                        avail,
+                                        avail,
+                                        Timestamp.now(),
+                                        documentReference
+                                );
+                                parkingSlotDocument
+                                        .set(parkingSlot)
                                         .addOnSuccessListener(new OnSuccessListener<Void>() {
                                             @Override
                                             public void onSuccess(Void unused) {
-                                                Log.d("TAG", "onSuccess: user profile is created for " + userid);
+                                                Log.d("TAG", "onSuccess: user profile is created for " + userId);
                                             }
                                         })
                                         .addOnFailureListener(new OnFailureListener() {

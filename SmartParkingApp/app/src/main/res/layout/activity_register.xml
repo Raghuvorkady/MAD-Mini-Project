@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".activities.Register">
+    tools:context=".activities.RegisterActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -40,7 +40,7 @@
             android:orientation="vertical">
 
             <EditText
-                android:id="@+id/Name"
+                android:id="@+id/name"
                 style="@style/editTextStyle"
                 android:autofillHints="@string/full_name"
                 android:hint="@string/full_name"
@@ -98,7 +98,7 @@
             android:text="@string/register" />
 
         <TextView
-            android:id="@+id/login1"
+            android:id="@+id/loginRoute"
             style="@style/textStyle"
             android:layout_marginTop="20dp"
             android:layout_marginBottom="20dp"

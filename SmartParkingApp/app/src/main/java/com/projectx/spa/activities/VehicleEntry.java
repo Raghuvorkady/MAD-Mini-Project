@@ -24,7 +24,7 @@ public class VehicleEntry extends AppCompatActivity implements View.OnClickListe
 
     public void onClick(View v) {
         FirebaseAuth.getInstance().signOut();
-        startActivity(new Intent(getApplicationContext(), Login.class));
+        startActivity(new Intent(getApplicationContext(), LoginActivity.class));
         finish();
     }
 }

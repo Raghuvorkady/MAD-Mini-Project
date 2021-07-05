@@ -22,7 +22,7 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.projectx.spa.R;
 
-public class Login extends AppCompatActivity implements View.OnClickListener {
+public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
 
     private Button logIn;
     private EditText email, password;
@@ -49,7 +49,7 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
 
     public void onClick(View v) {
         if (v.equals(register)) {
-            startActivity(new Intent(this, Register.class));
+            startActivity(new Intent(this, RegisterActivity.class));
         } else if (v.equals(forgot)) {
             EditText resetMail = new EditText(v.getContext());
             resetMail.setHint("email");
@@ -109,6 +109,7 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
                             if (task.isSuccessful()) {
                                 makeToast("Sign in successful");
                                 startActivity(new Intent(getApplicationContext(), VehicleEntry.class));//add .class file of vehicle number entry
+                                finish();
                             } else {
                                 makeToast("Error !!" + task.getException().getMessage());
                             }

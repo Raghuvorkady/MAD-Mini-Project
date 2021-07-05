@@ -9,14 +9,14 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.projectx.spa.R;
 
-public class MainActivity extends AppCompatActivity implements View.OnClickListener {
+public class HomeActivity extends AppCompatActivity implements View.OnClickListener {
 
     private Button login, availability;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_home);
 
         login = findViewById(R.id.login);
         availability = findViewById(R.id.check);
@@ -27,7 +27,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     public void onClick(View v) {
         if (v.equals(login)) {
-            Intent intent = new Intent(this, Login.class);
+            Intent intent = new Intent(this, LoginActivity.class);
             startActivity(intent);
         } else if (v.equals(availability)) {
             Intent intent = new Intent(this, Availability.class);
