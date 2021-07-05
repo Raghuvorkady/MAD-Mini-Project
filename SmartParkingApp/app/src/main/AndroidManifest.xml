@@ -17,7 +17,6 @@
         <activity android:name=".activities.AvailableSlotsActivity"/>
         <activity android:name=".activities.VehicleEntry" />
         <activity android:name=".activities.RegisterActivity" />
-        <activity android:name=".activities.Availability" />
         <activity android:name=".activities.LoginActivity" />
         <activity android:name=".activities.HomeActivity">
             <intent-filter>
