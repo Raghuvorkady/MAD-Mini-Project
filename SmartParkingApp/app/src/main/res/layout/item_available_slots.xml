@@ -21,7 +21,7 @@
 
         <TextView
             android:id="@+id/building"
-            style="@style/TextViewStyle"
+            style="@style/TextViewStyle.AvailableSlotsItem"
             android:text="@string/building"
             android:textAppearance="@style/TextAppearance.AppCompat.Headline"
             android:textStyle="bold"
@@ -29,20 +29,20 @@
 
         <TextView
             android:id="@+id/address"
-            style="@style/TextViewStyle"
+            style="@style/TextViewStyle.AvailableSlotsItem"
             android:text="@string/address"
             android:textAppearance="@style/TextAppearance.AppCompat.Medium"
             app:drawableLeftCompat="@drawable/ic_address" />
 
         <TextView
             android:id="@+id/total_space"
-            style="@style/TextViewStyle"
+            style="@style/TextViewStyle.AvailableSlotsItem"
             android:text="@string/total_space"
             android:textAppearance="@style/TextAppearance.AppCompat.Title" />
 
         <TextView
             android:id="@+id/available_space"
-            style="@style/TextViewStyle"
+            style="@style/TextViewStyle.AvailableSlotsItem"
             android:text="@string/available_space"
             android:textAppearance="@style/TextAppearance.AppCompat.Title" />
 

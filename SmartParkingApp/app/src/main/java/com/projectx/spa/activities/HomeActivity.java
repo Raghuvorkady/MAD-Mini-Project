@@ -1,5 +1,6 @@
 package com.projectx.spa.activities;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -25,13 +26,19 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         availability.setOnClickListener(this);
     }
 
-    public void onClick(View v) {
-        if (v.equals(login)) {
-            Intent intent = new Intent(this, LoginActivity.class);
-            startActivity(intent);
-        } else if (v.equals(availability)) {
-            Intent intent = new Intent(this, Availability.class);
-            startActivity(intent);
+    @SuppressLint("NonConstantResourceId")
+    @Override
+    public void onClick(View view) {
+        Intent intent = new Intent();
+        switch (view.getId()) {
+            case R.id.login:
+                intent.setClass(this, LoginActivity.class);
+                startActivity(intent);
+                break;
+            case R.id.check:
+                intent.setClass(this, AvailableSlotsActivity.class);
+                startActivity(intent);
+                break;
         }
     }
 }

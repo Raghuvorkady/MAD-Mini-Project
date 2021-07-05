@@ -80,8 +80,8 @@ public class TestActivity extends AppCompatActivity {
                 null,
                 "City Centre-" + random.nextInt(10),
                 "Bengaluru-" + random.nextInt(10),
-                random.nextInt(20),
-                random.nextInt(10),
+                random.nextInt(20) + "",
+                random.nextInt(10) + "",
                 Timestamp.now(),
                 reference);
 
