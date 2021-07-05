@@ -9,6 +9,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.projectx.spa.R;
@@ -44,8 +45,17 @@ public class AvailableSlotsAdapter extends RecyclerView.Adapter<AvailableSlotsAd
         String totalSpaceStr = "Total Space: " + parkingSlots.get(position).getTotalSpace();
         holder.totalSpace.setText(totalSpaceStr);
 
-        String availableSpaceStr = "Available Space: " + parkingSlots.get(position).getAvailableSpace();
+        int availableSpace = parkingSlots.get(position).getAvailableSpace();
+        String availableSpaceStr = "Available Space: " + availableSpace;
         holder.availableSpace.setText(availableSpaceStr);
+
+        if (availableSpace <= 0) {
+            holder.cardLayout.setEnabled(false);
+            holder.cardLayout.setBackgroundColor(ContextCompat.getColor(context, R.color.red_100));
+        } else {
+            holder.cardLayout.setEnabled(true);
+            holder.cardLayout.setBackgroundColor(ContextCompat.getColor(context, R.color.green_100));
+        }
 
         holder.cardLayout.setOnClickListener(new View.OnClickListener() {
             @Override
