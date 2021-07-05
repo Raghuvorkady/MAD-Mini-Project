@@ -70,8 +70,8 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
         if (v.equals(registerBtn)) {
             String email = emailEditText.getText().toString().trim();
             String pwd = passwordEditText.getText().toString().trim();
-            String name = this.nameEditText.getText().toString();
-            String phone = this.phoneEditText.getText().toString();
+            String name = nameEditText.getText().toString();
+            String phone = phoneEditText.getText().toString();
             String place = buildingEditText.getText().toString();
             String local = areaEditText.getText().toString();
             String avail = totalSpaceEditText.getText().toString();
@@ -109,16 +109,12 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
                             if (task.isSuccessful()) {
                                 makeToast("User created");
                                 userId = fAuth.getCurrentUser().getUid();
-                                DocumentReference documentReference = firestore.collection(Constants.USERS).document(userId);
+                                DocumentReference userDocument = firestore.collection(Constants.USERS).document(userId);
 
-                                User user = new User(
-                                        documentReference.getId(),
-                                        name,
-                                        email,
-                                        phone,
-                                        Timestamp.now());
+                                User user = new User(userDocument.getId(), name, email,
+                                        phone, Timestamp.now());
 
-                                documentReference
+                                userDocument
                                         .set(user)
                                         .addOnSuccessListener(new OnSuccessListener<Void>() {
                                             @Override
@@ -134,17 +130,11 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
                                         });
 
                                 // parking data
-                                DocumentReference parkingSlotDocument = firestore.collection(Constants.PARKING_SLOTS).document(userId);
+                                DocumentReference parkingSlotDocument = firestore.collection(Constants.PARKING_SLOTS).document();
 
-                                ParkingSlot parkingSlot = new ParkingSlot(
-                                        parkingSlotDocument.getId(),
-                                        place,
-                                        local,
-                                        avail,
-                                        avail,
-                                        Timestamp.now(),
-                                        documentReference
-                                );
+                                ParkingSlot parkingSlot = new ParkingSlot(parkingSlotDocument.getId(),
+                                        place, local, avail, avail, Timestamp.now(), userDocument);
+
                                 parkingSlotDocument
                                         .set(parkingSlot)
                                         .addOnSuccessListener(new OnSuccessListener<Void>() {
@@ -160,9 +150,11 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
                                             }
                                         });
 
-                                startActivity(new Intent(getApplicationContext(), VehicleEntry.class));//add .class file of vehicle number entry
+                                // add .class file of vehicle number entry
+                                startActivity(new Intent(getApplicationContext(), VehicleEntry.class));
+                                finish();
                             } else {
-                                makeToast("Error !!" + task.getException().getMessage());
+                                makeToast("Error !! " + task.getException().getMessage());
                             }
                         }
                     });
