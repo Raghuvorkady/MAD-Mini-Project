@@ -14,13 +14,13 @@
 
         <ImageView
             android:id="@+id/imageView"
-            style="@style/imageStyle"
+            style="@style/ImageViewStyle"
             android:contentDescription="@string/logo"
             app:srcCompat="@drawable/icon" />
 
         <TextView
             android:id="@+id/textView"
-            style="@style/textStyle"
+            style="@style/TextViewStyle"
             android:fontFamily="@font/aladin"
             android:text="@string/e_park"
             android:textColor="#E6BDBD"
@@ -28,7 +28,7 @@
 
         <TextView
             android:id="@+id/textView3"
-            style="@style/textStyle"
+            style="@style/TextViewStyle"
             android:layout_marginTop="20dp"
             android:layout_marginBottom="20dp"
             android:text="@string/create_new_account" />
@@ -41,49 +41,49 @@
 
             <EditText
                 android:id="@+id/name"
-                style="@style/editTextStyle"
+                style="@style/EditTextStyle"
                 android:autofillHints="@string/full_name"
                 android:hint="@string/full_name"
                 android:inputType="textPersonName" />
 
             <EditText
                 android:id="@+id/email"
-                style="@style/editTextStyle"
+                style="@style/EditTextStyle"
                 android:autofillHints="@string/email"
                 android:hint="@string/email"
                 android:inputType="textEmailAddress" />
 
             <EditText
                 android:id="@+id/password"
-                style="@style/editTextStyle"
+                style="@style/EditTextStyle"
                 android:autofillHints="@string/password"
                 android:hint="@string/password"
                 android:inputType="textPassword" />
 
             <EditText
                 android:id="@+id/phone"
-                style="@style/editTextStyle"
+                style="@style/EditTextStyle"
                 android:autofillHints="@string/phone"
                 android:hint="@string/phone"
                 android:inputType="phone" />
 
             <EditText
                 android:id="@+id/building"
-                style="@style/editTextStyle"
+                style="@style/EditTextStyle"
                 android:autofillHints="@string/building"
                 android:hint="@string/building"
                 android:inputType="textPersonName" />
 
             <EditText
                 android:id="@+id/area"
-                style="@style/editTextStyle"
+                style="@style/EditTextStyle"
                 android:autofillHints="@string/area"
                 android:hint="@string/area"
                 android:inputType="textPersonName" />
 
             <EditText
                 android:id="@+id/slots"
-                style="@style/editTextStyle"
+                style="@style/EditTextStyle"
                 android:autofillHints="@string/total_space_available"
                 android:hint="@string/total_space_available"
                 android:inputType="number" />
@@ -92,14 +92,14 @@
 
         <Button
             android:id="@+id/register"
-            style="@style/buttonStyle"
+            style="@style/ButtonStyle"
             android:layout_marginTop="20dp"
             android:layout_marginBottom="20dp"
             android:text="@string/register" />
 
         <TextView
             android:id="@+id/loginRoute"
-            style="@style/textStyle"
+            style="@style/TextViewStyle"
             android:layout_marginTop="20dp"
             android:layout_marginBottom="20dp"
             android:text="@string/already_registered_login_here"

@@ -8,7 +8,7 @@
 
     <ImageView
         android:id="@+id/imageView"
-        style="@style/imageStyle"
+        style="@style/ImageViewStyle"
         android:contentDescription="@string/logo"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
@@ -17,7 +17,7 @@
 
     <TextView
         android:id="@+id/textView"
-        style="@style/textStyle"
+        style="@style/TextViewStyle"
         android:layout_marginTop="20dp"
         android:layout_marginBottom="40dp"
         android:fontFamily="@font/aladin"
@@ -29,7 +29,7 @@
 
     <TextView
         android:id="@+id/textView3"
-        style="@style/textStyle"
+        style="@style/TextViewStyle"
         android:layout_marginTop="40dp"
         android:text="@string/login_to_e_park"
         app:layout_constraintLeft_toLeftOf="parent"
@@ -38,7 +38,7 @@
 
     <EditText
         android:id="@+id/email"
-        style="@style/editTextStyle"
+        style="@style/EditTextStyle"
         android:layout_marginTop="40dp"
         android:autofillHints="@string/email"
         android:hint="@string/email"
@@ -50,7 +50,7 @@
 
     <EditText
         android:id="@+id/password"
-        style="@style/editTextStyle"
+        style="@style/EditTextStyle"
         android:layout_marginTop="10dp"
         android:autofillHints="@string/password"
         android:hint="@string/password"
@@ -62,7 +62,7 @@
 
     <Button
         android:id="@+id/login"
-        style="@style/buttonStyle"
+        style="@style/ButtonStyle"
         android:text="@string/login"
         app:layout_constraintBottom_toTopOf="@id/reg"
         app:layout_constraintLeft_toLeftOf="parent"

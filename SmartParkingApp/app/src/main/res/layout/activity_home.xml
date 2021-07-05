@@ -8,7 +8,7 @@
 
     <ImageView
         android:id="@+id/imageView"
-        style="@style/imageStyle"
+        style="@style/ImageViewStyle"
         android:contentDescription="@string/logo"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
@@ -17,7 +17,7 @@
 
     <TextView
         android:id="@+id/textView"
-        style="@style/textStyle"
+        style="@style/TextViewStyle"
         android:layout_marginTop="40dp"
         android:layout_marginBottom="40dp"
         android:fontFamily="@font/aladin"
@@ -29,7 +29,7 @@
 
     <Button
         android:id="@+id/login"
-        style="@style/buttonStyle"
+        style="@style/ButtonStyle"
         android:layout_width="wrap_content"
         android:layout_marginBottom="20dp"
         android:text="@string/login_page"
@@ -39,7 +39,7 @@
 
     <Button
         android:id="@+id/check"
-        style="@style/buttonStyle"
+        style="@style/ButtonStyle"
         android:layout_width="wrap_content"
         android:layout_marginBottom="40dp"
         android:text="@string/check_available_space"
