@@ -1,6 +1,9 @@
 # MAD-Mini-Project
-Design Link: https://www.figma.com/file/wRQ4oLs9tY9RT9lJKy1gDp/MAD-Mini-Project?node-id=0%3A1
 
+### References:
+1. Design Link: https://www.figma.com/file/wRQ4oLs9tY9RT9lJKy1gDp/MAD-Mini-Project?node-id=0%3A1
+2. Firebase project: https://console.firebase.google.com/u/5/project/parking-project-bmsit/overview
+3. Link for [Smart-Parking-App.drawio](https://drive.google.com/file/d/1arCMS1N0xiiSIfW5pYaRlcOcgUOqodvu/view?usp=sharing) file.
 
 ### refered video:
 1. https://www.youtube.com/watch?v=nep85PD8U7M --to connect firebase
