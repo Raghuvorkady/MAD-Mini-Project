@@ -23,6 +23,7 @@ import es.dmoral.toasty.Toasty;
 public class FBHelper {
     private final FirebaseFirestore firebaseFirestore;
     private final Context context;
+    private boolean isSuccess = false;
 
     public FBHelper(Context context) {
         this.firebaseFirestore = FirebaseFirestore.getInstance();
@@ -46,7 +47,7 @@ public class FBHelper {
     /**
      * Adds Parking slot object to Firestore
      */
-    public void addDataToFirestore(ParkingSlot parkingSlot) {
+    /*public void addDataToFirestore(ParkingSlot parkingSlot) {
         DocumentReference documentReference = firebaseFirestore.collection(Constants.PARKING_SLOTS).document();
         // db.collection(COLLECTIONS).document("area1").set(slot);
         parkingSlot.setId(documentReference.getId());
@@ -64,6 +65,29 @@ public class FBHelper {
                         makeFailureToast("Data could not be added successfully");
                     }
                 });
+    }*/
+    public <T> boolean addDataToFirestore(T object, String collectionPath) {
+        DocumentReference documentReference = firebaseFirestore.collection(collectionPath).document();
+        // db.collection(COLLECTIONS).document("area1").set(slot);
+        // object.setId(documentReference.getId());
+        // TODO: need to check this
+        documentReference
+                .set(object)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void unused) {
+                        isSuccess = true;
+                        makeSuccessToast("Data added successfully");
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        isSuccess = false;
+                        makeFailureToast("Data could not be added successfully");
+                    }
+                });
+        return isSuccess;
     }
 
     public List<ParkingSlot> readDataFromFirestore() {

@@ -27,18 +27,47 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
 
         login = findViewById(R.id.login);
         availability = findViewById(R.id.check);
-        progressBar= findViewById(R.id.progress);
+        progressBar = findViewById(R.id.progress);
 
         login.setOnClickListener(this);
         availability.setOnClickListener(this);
 
         fAuth = FirebaseAuth.getInstance();
         firestore = FirebaseFirestore.getInstance();
+/*
+        FBHelper fbHelper = new FBHelper(this);
 
-        if (fAuth.getCurrentUser() != null) {
+        User user = new User("id", "testName", "testMail", "1213213", Timestamp.now());
+
+        ParkingSlot parkingSlot = new ParkingSlot("id", "building", "address", "50", "20", Timestamp.now(), fbHelper.toDocumentReference("test/doc1"));
+
+        boolean a = fbHelper.addDataToFirestore(user, Constants.USERS);
+        Log.d("BOOL", a + "");
+        a = fbHelper.addDataToFirestore(parkingSlot, Constants.PARKING_SLOTS);
+        Log.d("BOOL", a + "");*/
+
+        // can be used to either check whether the user has logged in or not
+        // alternative way is to use SharedPref
+
+        /*FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        if (user != null) {
+            // User is signed in
+            String name = user.getDisplayName();
+            String email = user.getEmail();
+            Uri photoUrl = user.getPhotoUrl();
+
+            // Check if user's email is verified
+            boolean emailVerified = user.isEmailVerified();
+
+            // The user's ID, unique to the Firebase project. Do NOT use this value to
+            // authenticate with your backend server, if you have one. Use
+            // FirebaseUser.getIdToken() instead.
+            String uid = user.getUid();
+
             login.setVisibility(View.INVISIBLE);
-        }
-
+        } else {
+            // No user is signed in
+        }*/
     }
 
     @SuppressLint("NonConstantResourceId")
