@@ -40,6 +40,12 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         Intent intent = new Intent();
         if (userSession.isUserLoggedIn()) {
             intent.setClass(this, VehicleEntry.class);
+
+            // Closing all the Activities from stack
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            // Add new Flag to start new Activity
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+
             startActivity(intent);
         }
 

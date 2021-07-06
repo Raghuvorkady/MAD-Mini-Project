@@ -41,8 +41,14 @@ public class VehicleEntry extends AppCompatActivity implements View.OnClickListe
 
         FirebaseAuth.getInstance().signOut();
         userSession.clearUserData();
+        Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
 
-        startActivity(new Intent(getApplicationContext(), LoginActivity.class));
+        // Closing all the Activities
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        // Add new Flag to start new Activity
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+
+        startActivity(intent);
         finish();
     }
 
