@@ -8,6 +8,7 @@ import android.widget.Button;
 import android.widget.ProgressBar;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.projectx.spa.R;
 
@@ -35,10 +36,28 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         fAuth = FirebaseAuth.getInstance();
         firestore = FirebaseFirestore.getInstance();
 
-        if (fAuth.getCurrentUser() != null) {
-            login.setVisibility(View.INVISIBLE);
-        }
+        // can be used to either check whether the user has logged in or not
+        // alternative way is to use SharedPref
 
+        /*FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        if (user != null) {
+            // User is signed in
+            String name = user.getDisplayName();
+            String email = user.getEmail();
+            Uri photoUrl = user.getPhotoUrl();
+
+            // Check if user's email is verified
+            boolean emailVerified = user.isEmailVerified();
+
+            // The user's ID, unique to the Firebase project. Do NOT use this value to
+            // authenticate with your backend server, if you have one. Use
+            // FirebaseUser.getIdToken() instead.
+            String uid = user.getUid();
+
+            login.setVisibility(View.INVISIBLE);
+        } else {
+            // No user is signed in
+        }*/
     }
 
     @SuppressLint("NonConstantResourceId")
