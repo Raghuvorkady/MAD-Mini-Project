@@ -85,7 +85,7 @@ public class TestActivity extends AppCompatActivity {
                 Timestamp.now(),
                 reference);
 
-        fbHelper.addDataToFirestore(parkingSlot);
+//        fbHelper.addDataToFirestore(parkingSlot);
     }
 
     //    to read data from the firebase firestore

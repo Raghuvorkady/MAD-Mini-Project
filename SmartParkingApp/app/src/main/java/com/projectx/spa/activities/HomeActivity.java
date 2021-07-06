@@ -8,7 +8,6 @@ import android.widget.Button;
 import android.widget.ProgressBar;
 
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.projectx.spa.R;
 
@@ -28,13 +27,24 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
 
         login = findViewById(R.id.login);
         availability = findViewById(R.id.check);
-        progressBar= findViewById(R.id.progress);
+        progressBar = findViewById(R.id.progress);
 
         login.setOnClickListener(this);
         availability.setOnClickListener(this);
 
         fAuth = FirebaseAuth.getInstance();
         firestore = FirebaseFirestore.getInstance();
+/*
+        FBHelper fbHelper = new FBHelper(this);
+
+        User user = new User("id", "testName", "testMail", "1213213", Timestamp.now());
+
+        ParkingSlot parkingSlot = new ParkingSlot("id", "building", "address", "50", "20", Timestamp.now(), fbHelper.toDocumentReference("test/doc1"));
+
+        boolean a = fbHelper.addDataToFirestore(user, Constants.USERS);
+        Log.d("BOOL", a + "");
+        a = fbHelper.addDataToFirestore(parkingSlot, Constants.PARKING_SLOTS);
+        Log.d("BOOL", a + "");*/
 
         // can be used to either check whether the user has logged in or not
         // alternative way is to use SharedPref

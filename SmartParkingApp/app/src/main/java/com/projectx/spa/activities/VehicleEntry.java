@@ -32,7 +32,15 @@ public class VehicleEntry extends AppCompatActivity implements View.OnClickListe
 
         userSession = new UserSession(this);
 
+        /*FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        Log.d("USER", user.getDisplayName());
+        String name = "";
+        if (user != null) {
+            name = user.getDisplayName();
+        }*/
+
         textView.setText("Hey, " + userSession.getUserDetails().get(Constants.PREF_EMAIL));
+//        textView.setText("Hey, " + name);
     }
 
     @Override
