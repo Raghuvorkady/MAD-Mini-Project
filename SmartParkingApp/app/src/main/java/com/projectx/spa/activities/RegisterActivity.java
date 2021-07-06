@@ -52,7 +52,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
         buildingEditText = findViewById(R.id.building);
         areaEditText = findViewById(R.id.area);
         totalSpaceEditText = findViewById(R.id.slots);
-        progressBar=findViewById(R.id.progressIndicator);
+        progressBar = findViewById(R.id.progressIndicator);
 
         registerBtn.setOnClickListener(this);
         loginBtn.setOnClickListener(this);
@@ -72,105 +72,108 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
             finish();
         }
         if (v.equals(registerBtn)) {
-
-            String email = emailEditText.getText().toString().trim();
-            String pwd = passwordEditText.getText().toString().trim();
-            String name = nameEditText.getText().toString();
-            String phone = phoneEditText.getText().toString();
-            String place = buildingEditText.getText().toString();
-            String local = areaEditText.getText().toString();
-            String avail = totalSpaceEditText.getText().toString();
-
-            if (TextUtils.isEmpty(email)) {
-                emailEditText.setError("Email is required.");
-                return;
-            }
-            if (TextUtils.isEmpty(pwd)) {
-                passwordEditText.setError("password is required");
-                return;
-            }
-            if (TextUtils.isEmpty(name)) {
-                this.nameEditText.setError("name is required");
-                return;
-            }
-            if (TextUtils.isEmpty(place)) {
-                buildingEditText.setError("phone building name is required");
-                return;
-            }
-            if (TextUtils.isEmpty(avail)) {
-                totalSpaceEditText.setError("Total slots is required");
-                return;
-            }
-            if (pwd.length() < 6) {
-                passwordEditText.setError("password must be atleast 6 characters");
-                return;
-            }
-            progressBar.setVisibility(View.VISIBLE);
-            registerBtn.setVisibility(View.INVISIBLE);
-            loginBtn.setVisibility(View.INVISIBLE);
-            // register in firebase
-            fAuth.createUserWithEmailAndPassword(email, pwd)
-                    .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                        @Override
-                        public void onComplete(@NonNull Task<AuthResult> task) {
-                            if (task.isSuccessful()) {
-                                makeToast("User created");
-                                userId = fAuth.getCurrentUser().getUid();
-                                DocumentReference userDocument = firestore.collection(Constants.USERS).document(userId);
-
-                                User user = new User(userDocument.getId(), name, email,
-                                        phone, Timestamp.now());
-
-                                userDocument
-                                        .set(user)
-                                        .addOnSuccessListener(new OnSuccessListener<Void>() {
-                                            @Override
-                                            public void onSuccess(Void unused) {
-                                                Log.d("TAG", "onSuccess: user profile is created for " + userId);
-
-                                                // parking data
-                                                DocumentReference parkingSlotDocument = firestore.collection(Constants.PARKING_SLOTS).document();
-
-                                                ParkingSlot parkingSlot = new ParkingSlot(parkingSlotDocument.getId(),
-                                                        place, local, avail, avail, Timestamp.now(), userDocument);
-
-                                                parkingSlotDocument
-                                                        .set(parkingSlot)
-                                                        .addOnSuccessListener(new OnSuccessListener<Void>() {
-                                                            @Override
-                                                            public void onSuccess(Void unused) {
-                                                                Log.d("TAG", "onSuccess: user profile is created for " + userId);
-                                                            }
-                                                        })
-                                                        .addOnFailureListener(new OnFailureListener() {
-                                                            @Override
-                                                            public void onFailure(@NonNull Exception e) {
-                                                                Log.d("TAG", "onFailure: " + e.toString());
-                                                            }
-                                                        });
-
-                                                // add .class file of vehicle number entry
-                                                startActivity(new Intent(getApplicationContext(), VehicleEntry.class));
-                                                finish();
-                                            }
-                                        })
-                                        .addOnFailureListener(new OnFailureListener() {
-                                            @Override
-                                            public void onFailure(@NonNull Exception e) {
-                                                Log.d("TAG", "onFailure: " + e.toString());
-                                            }
-                                        });
-
-
-                            } else {
-                                progressBar.setVisibility(View.INVISIBLE);
-                                registerBtn.setVisibility(View.VISIBLE);
-                                loginBtn.setVisibility(View.VISIBLE);
-                                makeToast("Error !! " + task.getException().getMessage());
-                            }
-                        }
-                    });
+            userRegistration();
         }
+    }
+
+    private void userRegistration() {
+        String email = emailEditText.getText().toString().trim();
+        String pwd = passwordEditText.getText().toString().trim();
+        String name = nameEditText.getText().toString();
+        String phone = phoneEditText.getText().toString();
+        String place = buildingEditText.getText().toString();
+        String local = areaEditText.getText().toString();
+        String avail = totalSpaceEditText.getText().toString();
+
+        if (TextUtils.isEmpty(email)) {
+            emailEditText.setError("Email is required.");
+            return;
+        }
+        if (TextUtils.isEmpty(pwd)) {
+            passwordEditText.setError("password is required");
+            return;
+        }
+        if (TextUtils.isEmpty(name)) {
+            this.nameEditText.setError("name is required");
+            return;
+        }
+        if (TextUtils.isEmpty(place)) {
+            buildingEditText.setError("phone building name is required");
+            return;
+        }
+        if (TextUtils.isEmpty(avail)) {
+            totalSpaceEditText.setError("Total slots is required");
+            return;
+        }
+        if (pwd.length() < 6) {
+            passwordEditText.setError("password must be atleast 6 characters");
+            return;
+        }
+        progressBar.setVisibility(View.VISIBLE);
+        registerBtn.setVisibility(View.INVISIBLE);
+        loginBtn.setVisibility(View.INVISIBLE);
+        // register in firebase
+        fAuth.createUserWithEmailAndPassword(email, pwd)
+                .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if (task.isSuccessful()) {
+                            makeToast("User created");
+                            userId = fAuth.getCurrentUser().getUid();
+                            DocumentReference userDocument = firestore.collection(Constants.USERS).document(userId);
+
+                            User user = new User(userDocument.getId(), name, email,
+                                    phone, Timestamp.now());
+
+                            userDocument
+                                    .set(user)
+                                    .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                        @Override
+                                        public void onSuccess(Void unused) {
+                                            Log.d("TAG", "onSuccess: user profile is created for " + userId);
+
+                                            // parking data
+                                            DocumentReference parkingSlotDocument = firestore.collection(Constants.PARKING_SLOTS).document();
+
+                                            ParkingSlot parkingSlot = new ParkingSlot(parkingSlotDocument.getId(),
+                                                    place, local, avail, avail, Timestamp.now(), userDocument);
+
+                                            parkingSlotDocument
+                                                    .set(parkingSlot)
+                                                    .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                                        @Override
+                                                        public void onSuccess(Void unused) {
+                                                            Log.d("TAG", "onSuccess: user profile is created for " + userId);
+                                                        }
+                                                    })
+                                                    .addOnFailureListener(new OnFailureListener() {
+                                                        @Override
+                                                        public void onFailure(@NonNull Exception e) {
+                                                            Log.d("TAG", "onFailure: " + e.toString());
+                                                        }
+                                                    });
+
+                                            // add .class file of vehicle number entry
+                                            startActivity(new Intent(getApplicationContext(), VehicleEntry.class));
+                                            finish();
+                                        }
+                                    })
+                                    .addOnFailureListener(new OnFailureListener() {
+                                        @Override
+                                        public void onFailure(@NonNull Exception e) {
+                                            Log.d("TAG", "onFailure: " + e.toString());
+                                        }
+                                    });
+
+
+                        } else {
+                            progressBar.setVisibility(View.INVISIBLE);
+                            registerBtn.setVisibility(View.VISIBLE);
+                            loginBtn.setVisibility(View.VISIBLE);
+                            makeToast("Error !! " + task.getException().getMessage());
+                        }
+                    }
+                });
     }
 
     private void makeToast(String toastMessage) {
