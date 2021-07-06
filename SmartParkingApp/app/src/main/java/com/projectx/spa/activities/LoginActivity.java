@@ -21,22 +21,31 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.projectx.spa.R;
+import com.projectx.spa.helpers.UserSession;
 
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
 
     private Button logIn;
-    private EditText email, password;
+    private EditText emailEditText, passwordEditText;
     private TextView register, forgot;
     private FirebaseAuth fAuth;
+    private UserSession userSession;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
+        userSession = new UserSession(this);
+        Intent intent = new Intent();
+        if (userSession.isUserLoggedIn()) {
+            intent.setClass(this, VehicleEntry.class);
+            startActivity(intent);
+        }
+
         logIn = findViewById(R.id.login);
-        email = findViewById(R.id.email);
-        password = findViewById(R.id.password);
+        emailEditText = findViewById(R.id.email);
+        passwordEditText = findViewById(R.id.password);
         register = findViewById(R.id.reg);
         forgot = findViewById(R.id.forgot);
 
@@ -85,28 +94,31 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             });
             passwordResetDialog.create().show();
         } else if (v.equals(logIn)) {
-            String emails = email.getText().toString().trim();
-            String pwd = password.getText().toString().trim();
+            String email = emailEditText.getText().toString().trim();
+            String password = passwordEditText.getText().toString().trim();
 
-            if (TextUtils.isEmpty(emails)) {
-                email.setError("Email is required.");
+            if (TextUtils.isEmpty(email)) {
+                emailEditText.setError("Email is required.");
                 return;
             }
-            if (TextUtils.isEmpty(pwd)) {
-                password.setError("password is required");
+            if (TextUtils.isEmpty(password)) {
+                passwordEditText.setError("password is required");
                 return;
             }
-            if (pwd.length() < 6) {
-                password.setError("password must be atleast 6 characters");
+            if (password.length() < 6) {
+                passwordEditText.setError("password must be atleast 6 characters");
                 return;
             }
 
             //authenticating data in firebase
-            fAuth.signInWithEmailAndPassword(emails, pwd)
+            fAuth.signInWithEmailAndPassword(email, password)
                     .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                         @Override
                         public void onComplete(@NonNull Task<AuthResult> task) {
                             if (task.isSuccessful()) {
+
+                                userSession.createUserLoginSession(email, password);
+
                                 makeToast("Sign in successful");
                                 startActivity(new Intent(getApplicationContext(), VehicleEntry.class));//add .class file of vehicle number entry
                                 finish();
