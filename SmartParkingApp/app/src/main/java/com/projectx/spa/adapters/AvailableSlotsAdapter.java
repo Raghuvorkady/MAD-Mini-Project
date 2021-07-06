@@ -8,16 +8,16 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import androidx.annotation.NonNull;
-import androidx.core.content.ContextCompat;
-import androidx.recyclerview.widget.RecyclerView;
-
 import com.projectx.spa.R;
 import com.projectx.spa.activities.Test2Activity;
 import com.projectx.spa.helpers.Constants;
 import com.projectx.spa.models.ParkingSlot;
 
 import java.util.List;
+
+import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
+import androidx.recyclerview.widget.RecyclerView;
 
 public class AvailableSlotsAdapter extends RecyclerView.Adapter<AvailableSlotsAdapter.MyOwnHolder> {
     Context context;

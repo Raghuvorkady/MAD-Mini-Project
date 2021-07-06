@@ -11,10 +11,6 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
-
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -23,6 +19,10 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.projectx.spa.R;
 import com.projectx.spa.helpers.UserSession;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
 
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -82,29 +82,31 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         forgot.setVisibility(View.INVISIBLE);
         register.setVisibility(View.INVISIBLE);
 
-        String emails = emailEditText.getText().toString().trim();
-        String pwd = passwordEditText.getText().toString().trim();
+        String email = emailEditText.getText().toString().trim();
+        String password = passwordEditText.getText().toString().trim();
 
-        if (TextUtils.isEmpty(emails)) {
-            email.setError("Email is required.");
+        if (TextUtils.isEmpty(email)) {
+            emailEditText.setError("Email is required.");
             return;
         }
-        if (TextUtils.isEmpty(pwd)) {
+        if (TextUtils.isEmpty(password)) {
             passwordEditText.setError("password is required");
             return;
         }
-        if (pwd.length() < 6) {
-            password.setError("password must be atleast 6 characters");
+        if (password.length() < 6) {
+            passwordEditText.setError("password must be at least 6 characters");
             return;
         }
 
         //authenticating data in firebase
-        fAuth.signInWithEmailAndPassword(emails, pwd)
+        fAuth.signInWithEmailAndPassword(email, password)
                 .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
+
                             userSession.createUserLoginSession(email, password);
+
                             makeToast("Sign in successful");
                             startActivity(new Intent(getApplicationContext(), VehicleEntry.class));//add .class file of vehicle number entry
                             finish();

@@ -3,10 +3,10 @@ package com.projectx.spa.models;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.google.firebase.Timestamp;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-
-import com.google.firebase.Timestamp;
 
 public class User implements Parcelable {
     private String userId, name, email, phoneNo;
