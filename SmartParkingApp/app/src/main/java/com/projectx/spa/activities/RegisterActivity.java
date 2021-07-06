@@ -24,6 +24,7 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.projectx.spa.R;
 import com.projectx.spa.helpers.Constants;
+import com.projectx.spa.helpers.UserSession;
 import com.projectx.spa.models.ParkingSlot;
 import com.projectx.spa.models.User;
 
@@ -35,6 +36,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
     private FirebaseAuth fAuth;
     private FirebaseFirestore firestore;
     private String userId;
+    private UserSession userSession;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,6 +63,8 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
             startActivity(new Intent(this, HomeActivity.class));//add .class file of vehicle number entry
             finish();
         }
+
+        userSession = new UserSession(this);
     }
 
     public void onClick(View v) {
@@ -70,7 +74,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
         }
         if (v.equals(registerBtn)) {
             String email = emailEditText.getText().toString().trim();
-            String pwd = passwordEditText.getText().toString().trim();
+            String password = passwordEditText.getText().toString().trim();
             String name = nameEditText.getText().toString();
             String phone = phoneEditText.getText().toString();
             String place = buildingEditText.getText().toString();
@@ -81,7 +85,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
                 emailEditText.setError("Email is required.");
                 return;
             }
-            if (TextUtils.isEmpty(pwd)) {
+            if (TextUtils.isEmpty(password)) {
                 passwordEditText.setError("password is required");
                 return;
             }
@@ -97,13 +101,13 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
                 totalSpaceEditText.setError("Total slots is required");
                 return;
             }
-            if (pwd.length() < 6) {
+            if (password.length() < 6) {
                 passwordEditText.setError("password must be atleast 6 characters");
                 return;
             }
 
             // register in firebase
-            fAuth.createUserWithEmailAndPassword(email, pwd)
+            fAuth.createUserWithEmailAndPassword(email, password)
                     .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                         @Override
                         public void onComplete(@NonNull Task<AuthResult> task) {
@@ -150,6 +154,8 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
                                                 Log.d("TAG", "onFailure: " + e.toString());
                                             }
                                         });
+
+                                userSession.createUserLoginSession(email, password);
 
                                 // add .class file of vehicle number entry
                                 startActivity(new Intent(getApplicationContext(), VehicleEntry.class));
