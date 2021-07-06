@@ -57,7 +57,7 @@ public class VehicleEntry extends AppCompatActivity implements View.OnClickListe
         if (isLogoutPressed) {
             super.onBackPressed();
         } else {
-            Toast.makeText(this, "Please the logout button to go back", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Press the logout button to go back", Toast.LENGTH_SHORT).show();
         }
     }
 }
