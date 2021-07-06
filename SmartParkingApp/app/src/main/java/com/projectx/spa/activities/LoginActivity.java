@@ -7,6 +7,7 @@ import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -27,6 +28,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private Button logIn;
     private EditText email, password;
     private TextView register, forgot;
+    private ProgressBar progressBar;
     private FirebaseAuth fAuth;
 
     @Override
@@ -44,6 +46,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         register.setOnClickListener(this);
         forgot.setOnClickListener(this);
 
+        progressBar=findViewById(R.id.progressBar);
+
         fAuth = FirebaseAuth.getInstance();
     }
 
@@ -52,8 +56,10 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             startActivity(new Intent(this, RegisterActivity.class));
         } else if (v.equals(forgot)) {
             EditText resetMail = new EditText(v.getContext());
+            resetMail.setPadding(67,0,0,30);
             resetMail.setHint("email");
             AlertDialog.Builder passwordResetDialog = new AlertDialog.Builder(v.getContext());
+            passwordResetDialog.setCancelable(false);
             passwordResetDialog.setTitle("Reset password?");
             passwordResetDialog.setMessage("Enter your email to receive reset link");
             passwordResetDialog.setView(resetMail);
@@ -85,6 +91,11 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             });
             passwordResetDialog.create().show();
         } else if (v.equals(logIn)) {
+            progressBar.setVisibility(View.VISIBLE);
+            logIn.setVisibility(View.INVISIBLE);
+            forgot.setVisibility(View.INVISIBLE);
+            register.setVisibility(View.INVISIBLE);
+
             String emails = email.getText().toString().trim();
             String pwd = password.getText().toString().trim();
 
@@ -111,6 +122,10 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                                 startActivity(new Intent(getApplicationContext(), VehicleEntry.class));//add .class file of vehicle number entry
                                 finish();
                             } else {
+                                progressBar.setVisibility(View.INVISIBLE);
+                                logIn.setVisibility(View.VISIBLE);
+                                forgot.setVisibility(View.VISIBLE);
+                                register.setVisibility(View.VISIBLE);
                                 makeToast("Error !!" + task.getException().getMessage());
                             }
                         }

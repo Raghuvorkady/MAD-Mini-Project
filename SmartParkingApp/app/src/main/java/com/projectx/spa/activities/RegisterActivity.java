@@ -7,6 +7,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -33,6 +34,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
     private EditText nameEditText, emailEditText, phoneEditText, passwordEditText, buildingEditText, areaEditText, totalSpaceEditText;
     private TextView loginBtn;
     private FirebaseAuth fAuth;
+    private ProgressBar progressBar;
     private FirebaseFirestore firestore;
     private String userId;
 
@@ -50,6 +52,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
         buildingEditText = findViewById(R.id.building);
         areaEditText = findViewById(R.id.area);
         totalSpaceEditText = findViewById(R.id.slots);
+        progressBar=findViewById(R.id.progressIndicator);
 
         registerBtn.setOnClickListener(this);
         loginBtn.setOnClickListener(this);
@@ -69,6 +72,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
             finish();
         }
         if (v.equals(registerBtn)) {
+
             String email = emailEditText.getText().toString().trim();
             String pwd = passwordEditText.getText().toString().trim();
             String name = nameEditText.getText().toString();
@@ -101,7 +105,9 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
                 passwordEditText.setError("password must be atleast 6 characters");
                 return;
             }
-
+            progressBar.setVisibility(View.VISIBLE);
+            registerBtn.setVisibility(View.INVISIBLE);
+            loginBtn.setVisibility(View.INVISIBLE);
             // register in firebase
             fAuth.createUserWithEmailAndPassword(email, pwd)
                     .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
@@ -121,6 +127,31 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
                                             @Override
                                             public void onSuccess(Void unused) {
                                                 Log.d("TAG", "onSuccess: user profile is created for " + userId);
+
+                                                // parking data
+                                                DocumentReference parkingSlotDocument = firestore.collection(Constants.PARKING_SLOTS).document();
+
+                                                ParkingSlot parkingSlot = new ParkingSlot(parkingSlotDocument.getId(),
+                                                        place, local, avail, avail, Timestamp.now(), userDocument);
+
+                                                parkingSlotDocument
+                                                        .set(parkingSlot)
+                                                        .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                                            @Override
+                                                            public void onSuccess(Void unused) {
+                                                                Log.d("TAG", "onSuccess: user profile is created for " + userId);
+                                                            }
+                                                        })
+                                                        .addOnFailureListener(new OnFailureListener() {
+                                                            @Override
+                                                            public void onFailure(@NonNull Exception e) {
+                                                                Log.d("TAG", "onFailure: " + e.toString());
+                                                            }
+                                                        });
+
+                                                // add .class file of vehicle number entry
+                                                startActivity(new Intent(getApplicationContext(), VehicleEntry.class));
+                                                finish();
                                             }
                                         })
                                         .addOnFailureListener(new OnFailureListener() {
@@ -130,31 +161,11 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
                                             }
                                         });
 
-                                // parking data
-                                DocumentReference parkingSlotDocument = firestore.collection(Constants.PARKING_SLOTS).document();
 
-                                ParkingSlot parkingSlot = new ParkingSlot(parkingSlotDocument.getId(),
-                                        place, local, avail, avail, Timestamp.now(), userDocument);
-
-                                parkingSlotDocument
-                                        .set(parkingSlot)
-                                        .addOnSuccessListener(new OnSuccessListener<Void>() {
-                                            @Override
-                                            public void onSuccess(Void unused) {
-                                                Log.d("TAG", "onSuccess: user profile is created for " + userId);
-                                            }
-                                        })
-                                        .addOnFailureListener(new OnFailureListener() {
-                                            @Override
-                                            public void onFailure(@NonNull Exception e) {
-                                                Log.d("TAG", "onFailure: " + e.toString());
-                                            }
-                                        });
-
-                                // add .class file of vehicle number entry
-                                startActivity(new Intent(getApplicationContext(), VehicleEntry.class));
-                                finish();
                             } else {
+                                progressBar.setVisibility(View.INVISIBLE);
+                                registerBtn.setVisibility(View.VISIBLE);
+                                loginBtn.setVisibility(View.VISIBLE);
                                 makeToast("Error !! " + task.getException().getMessage());
                             }
                         }
