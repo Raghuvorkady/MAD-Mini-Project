@@ -37,15 +37,34 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         firestore = FirebaseFirestore.getInstance();
         FBHelper fbHelper = new FBHelper(this);
 
-        /*User user = new User("id", "testName", "testMail", "1213213", Timestamp.now());
+       /* User user = new User("id", "testName", "testMail", "1213213", Timestamp.now());
 
         ParkingSlot parkingSlot = new ParkingSlot("id", "building", "address", "50", "20", Timestamp.now(), fbHelper.toDocumentReference("test/doc1"));
 
         String docId = "testId";
-        boolean a = fbHelper.addDataToFirestore(user, Constants.USERS, docId);
-        Log.d("BOOL", a + "");
-        a = fbHelper.addDataToFirestore(parkingSlot, Constants.PARKING_SLOTS, docId);
-        Log.d("BOOL", a + "");*/
+        fbHelper.addDataToFirestore(user, Constants.USERS, docId, new OnGetDataListener() {
+            @Override
+            public void onSuccess(String dataSnapshotValue) {
+                Log.d("BOOL1", dataSnapshotValue);
+                fbHelper.addDataToFirestore(parkingSlot, Constants.PARKING_SLOTS, docId, new OnGetDataListener() {
+                    @Override
+                    public void onSuccess(String dataSnapshotValue) {
+                        Log.d("BOOL2", dataSnapshotValue);
+                    }
+
+                    @Override
+                    public void onFailure(String str) {
+                        Log.d("BOOL2", str);
+                    }
+                });
+            }
+
+            @Override
+            public void onFailure(String str) {
+                Log.d("BOOL2", str);
+            }
+        });*/
+
 
         // can be used to either check whether the user has logged in or not
         // alternative way is to use SharedPref

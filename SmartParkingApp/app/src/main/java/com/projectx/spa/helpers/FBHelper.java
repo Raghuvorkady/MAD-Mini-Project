@@ -14,6 +14,7 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.projectx.spa.interfaces.OnGetDataListener;
 import com.projectx.spa.interfaces.Settable;
 import com.projectx.spa.models.ParkingSlot;
 
@@ -22,10 +23,10 @@ import java.util.List;
 
 import es.dmoral.toasty.Toasty;
 
+ // TODO: rename to FbHelper
 public class FBHelper {
     private final FirebaseFirestore firebaseFirestore;
     private final Context context;
-    private boolean isSuccess = false;
 
     public FBHelper(Context context) {
         this.firebaseFirestore = FirebaseFirestore.getInstance();
@@ -68,7 +69,9 @@ public class FBHelper {
                     }
                 });
     }*/
-    public <T extends Settable> boolean addDataToFirestore(T object, String collectionPath, String documentPath) {
+
+
+    public <T extends Settable> void addDataToFirestore(T object, String collectionPath, String documentPath, final OnGetDataListener listener) {
         DocumentReference documentReference = firebaseFirestore.collection(collectionPath).document(documentPath);
         object.setId(documentReference.getId());
 
@@ -77,19 +80,19 @@ public class FBHelper {
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void unused) {
-                        isSuccess = true;
+                        listener.onSuccess(documentReference);
+
                         makeSuccessToast("Data added successfully");
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
-                        isSuccess = false;
+                        listener.onFailure("Adding data failed");
+
                         makeFailureToast("Data could not be added successfully");
                     }
                 });
-
-        return isSuccess;
     }
 
     public List<ParkingSlot> readDataFromFirestore() {
