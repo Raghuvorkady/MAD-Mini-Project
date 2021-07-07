@@ -5,11 +5,13 @@ import android.util.Log;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
@@ -71,8 +73,28 @@ public class FBHelper {
                     }
                 });
     }*/
-    public <T extends Settable> void addDataToFirestore(T object, String collectionPath, String documentPath, final OnGetDataListener listener) {
-        DocumentReference documentReference = firebaseFirestore.collection(collectionPath).document(documentPath);
+
+    /**
+     * Adds an object to the Firebase Cloud Firestore based on collectionPath and documentPath.
+     *
+     * @param object         is the object that needs to be added to firestore
+     * @param collectionPath is the path of a Collection
+     * @param documentPath   is the path of a Document
+     * @param listener       is the listener which is used to handle callbacks i.e, onSuccess and onFailure
+     * @implNote documentPath is optional, if value is null then, this method will generate a new unique
+     * id for the document that needs to be created
+     */
+    public <T extends Settable> void addDataToFirestore(@NonNull T object, @NonNull String collectionPath,
+                                                        @Nullable String documentPath, @NonNull final OnGetDataListener listener) {
+        DocumentReference documentReference;
+        CollectionReference collectionReference = firebaseFirestore.collection(collectionPath);
+
+        if (documentPath == null) {
+            documentReference = collectionReference.document();
+        } else {
+            documentReference = collectionReference.document(documentPath);
+        }
+
         object.setId(documentReference.getId());
 
         documentReference
