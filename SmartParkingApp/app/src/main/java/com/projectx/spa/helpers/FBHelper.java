@@ -4,6 +4,8 @@ import android.content.Context;
 import android.util.Log;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -12,12 +14,12 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.projectx.spa.interfaces.Settable;
 import com.projectx.spa.models.ParkingSlot;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import androidx.annotation.NonNull;
 import es.dmoral.toasty.Toasty;
 
 public class FBHelper {
@@ -66,11 +68,10 @@ public class FBHelper {
                     }
                 });
     }*/
-    public <T> boolean addDataToFirestore(T object, String collectionPath) {
-        DocumentReference documentReference = firebaseFirestore.collection(collectionPath).document();
-        // db.collection(COLLECTIONS).document("area1").set(slot);
-        // object.setId(documentReference.getId());
-        // TODO: need to check this
+    public <T extends Settable> boolean addDataToFirestore(T object, String collectionPath, String documentPath) {
+        DocumentReference documentReference = firebaseFirestore.collection(collectionPath).document(documentPath);
+        object.setId(documentReference.getId());
+
         documentReference
                 .set(object)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
@@ -87,6 +88,7 @@ public class FBHelper {
                         makeFailureToast("Data could not be added successfully");
                     }
                 });
+
         return isSuccess;
     }
 

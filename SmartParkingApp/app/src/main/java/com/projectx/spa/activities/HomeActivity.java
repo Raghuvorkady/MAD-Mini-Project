@@ -7,11 +7,12 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ProgressBar;
 
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.projectx.spa.R;
-
-import androidx.appcompat.app.AppCompatActivity;
+import com.projectx.spa.helpers.FBHelper;
 
 public class HomeActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -34,16 +35,16 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
 
         fAuth = FirebaseAuth.getInstance();
         firestore = FirebaseFirestore.getInstance();
-/*
         FBHelper fbHelper = new FBHelper(this);
 
-        User user = new User("id", "testName", "testMail", "1213213", Timestamp.now());
+        /*User user = new User("id", "testName", "testMail", "1213213", Timestamp.now());
 
         ParkingSlot parkingSlot = new ParkingSlot("id", "building", "address", "50", "20", Timestamp.now(), fbHelper.toDocumentReference("test/doc1"));
 
-        boolean a = fbHelper.addDataToFirestore(user, Constants.USERS);
+        String docId = "testId";
+        boolean a = fbHelper.addDataToFirestore(user, Constants.USERS, docId);
         Log.d("BOOL", a + "");
-        a = fbHelper.addDataToFirestore(parkingSlot, Constants.PARKING_SLOTS);
+        a = fbHelper.addDataToFirestore(parkingSlot, Constants.PARKING_SLOTS, docId);
         Log.d("BOOL", a + "");*/
 
         // can be used to either check whether the user has logged in or not
@@ -62,7 +63,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
             // The user's ID, unique to the Firebase project. Do NOT use this value to
             // authenticate with your backend server, if you have one. Use
             // FirebaseUser.getIdToken() instead.
-            String uid = user.getUid();
+            String docId = user.getUid();
 
             login.setVisibility(View.INVISIBLE);
         } else {

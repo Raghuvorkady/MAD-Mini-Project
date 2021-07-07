@@ -4,16 +4,17 @@ import android.os.Build;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import com.google.firebase.Timestamp;
-import com.google.firebase.firestore.DocumentReference;
-
-import java.util.Objects;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 
-public class ParkingSlot implements Parcelable {
+import com.google.firebase.Timestamp;
+import com.google.firebase.firestore.DocumentReference;
+import com.projectx.spa.interfaces.Settable;
+
+import java.util.Objects;
+
+public class ParkingSlot implements Parcelable, Settable {
     private String id;
     private String building;
     private String address;
@@ -41,6 +42,7 @@ public class ParkingSlot implements Parcelable {
         return id;
     }
 
+    @Override
     public void setId(String id) {
         this.id = id;
     }
