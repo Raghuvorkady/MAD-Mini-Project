@@ -23,9 +23,11 @@ import java.util.List;
 
 import es.dmoral.toasty.Toasty;
 
- // TODO: rename to FbHelper
+// TODO: rename to FbHelper
 public class FBHelper {
     private final FirebaseFirestore firebaseFirestore;
+    // todo: add fAuth
+//    private final FirebaseAuth firebaseAuth;
     private final Context context;
 
     public FBHelper(Context context) {
@@ -69,8 +71,6 @@ public class FBHelper {
                     }
                 });
     }*/
-
-
     public <T extends Settable> void addDataToFirestore(T object, String collectionPath, String documentPath, final OnGetDataListener listener) {
         DocumentReference documentReference = firebaseFirestore.collection(collectionPath).document(documentPath);
         object.setId(documentReference.getId());
