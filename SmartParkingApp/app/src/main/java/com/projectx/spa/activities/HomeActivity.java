@@ -41,22 +41,17 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
 
         ParkingSlot parkingSlot = new ParkingSlot("id", "building", "address", "50", "20", Timestamp.now(), fbHelper.toDocumentReference("test/doc1"));
 
-        String docId = "testId";
-        fbHelper.addDataToFirestore(user, Constants.USERS, docId, new OnGetDataListener() {
-            @Override
-            public void onSuccess(String dataSnapshotValue) {
-                Log.d("BOOL1", dataSnapshotValue);
-                fbHelper.addDataToFirestore(parkingSlot, Constants.PARKING_SLOTS, docId, new OnGetDataListener() {
-                    @Override
-                    public void onSuccess(String dataSnapshotValue) {
-                        Log.d("BOOL2", dataSnapshotValue);
-                    }
+        DocumentReference doc = FirebaseFirestore.getInstance().collection("test").document("12345");
 
-                    @Override
-                    public void onFailure(String str) {
-                        Log.d("BOOL2", str);
-                    }
-                });
+        // testing: https://firebase.google.com/docs/firestore/manage-data/add-data?authuser=0#increment_a_numeric_value
+        doc.update("phoneNo", FieldValue.increment(1)).addOnSuccessListener(s -> Log.d("tag", "success"));
+
+        String docId = "testId";*/
+
+        /*fbHelper.addDataToFirestore(user, "test", "12345", new OnGetDataListener() {
+            @Override
+            public void onSuccess(DocumentReference dataSnapshotValue) {
+                Log.d("BOOL1", dataSnapshotValue.toString());
             }
 
             @Override
