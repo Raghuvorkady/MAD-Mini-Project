@@ -37,14 +37,16 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         firestore = FirebaseFirestore.getInstance();
         FBHelper fbHelper = new FBHelper(this);
 
-       /* User user = new User("id", "testName", "testMail", "1213213", Timestamp.now());
+        /*User user = new User("id", "testName", "testMail", "1213213", Timestamp.now());
 
         ParkingSlot parkingSlot = new ParkingSlot("id", "building", "address", "50", "20", Timestamp.now(), fbHelper.toDocumentReference("test/doc1"));
 
         DocumentReference doc = FirebaseFirestore.getInstance().collection("test").document("12345");
 
         // testing: https://firebase.google.com/docs/firestore/manage-data/add-data?authuser=0#increment_a_numeric_value
-        doc.update("phoneNo", FieldValue.increment(1)).addOnSuccessListener(s -> Log.d("tag", "success"));
+        for increment: FieldValue.increment(1)
+        for decrement: FieldValue.increment(-1)
+        doc.update("phoneNo", FieldValue.increment(-1)).addOnSuccessListener(s -> Log.d("tag", "success"));
 
         String docId = "testId";*/
 
