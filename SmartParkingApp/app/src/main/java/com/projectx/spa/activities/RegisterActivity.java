@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
+import android.util.Patterns;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -15,6 +16,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.Timestamp;
 import com.google.firebase.auth.AuthResult;
@@ -76,6 +78,9 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
             finish();
         }
         if (v.equals(registerBtn)) {
+            progressBar.setVisibility(View.VISIBLE);
+            registerBtn.setVisibility(View.INVISIBLE);
+            loginBtn.setVisibility(View.INVISIBLE);
             userRegistration();
         }
     }
@@ -91,31 +96,54 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
 
         if (TextUtils.isEmpty(email)) {
             emailEditText.setError("Email is required.");
+            progressBar.setVisibility(View.INVISIBLE);
+            registerBtn.setVisibility(View.VISIBLE);
+            loginBtn.setVisibility(View.VISIBLE);
             return;
         }
         if (TextUtils.isEmpty(password)) {
             passwordEditText.setError("password is required");
+            progressBar.setVisibility(View.INVISIBLE);
+            registerBtn.setVisibility(View.VISIBLE);
+            loginBtn.setVisibility(View.VISIBLE);
+            return;
+        }
+        if (email.isEmpty() || !(Patterns.EMAIL_ADDRESS.matcher(email).matches())) {
+            this.emailEditText.setError("email is not proper");
+            progressBar.setVisibility(View.INVISIBLE);
+            registerBtn.setVisibility(View.VISIBLE);
+            loginBtn.setVisibility(View.VISIBLE);
             return;
         }
         if (TextUtils.isEmpty(name)) {
             this.nameEditText.setError("name is required");
+            progressBar.setVisibility(View.INVISIBLE);
+            registerBtn.setVisibility(View.VISIBLE);
+            loginBtn.setVisibility(View.VISIBLE);
             return;
         }
         if (TextUtils.isEmpty(place)) {
             buildingEditText.setError("phone building name is required");
+            progressBar.setVisibility(View.INVISIBLE);
+            registerBtn.setVisibility(View.VISIBLE);
+            loginBtn.setVisibility(View.VISIBLE);
             return;
         }
         if (TextUtils.isEmpty(avail)) {
             totalSpaceEditText.setError("Total slots is required");
+            progressBar.setVisibility(View.INVISIBLE);
+            registerBtn.setVisibility(View.VISIBLE);
+            loginBtn.setVisibility(View.VISIBLE);
             return;
         }
         if (password.length() < 6) {
             passwordEditText.setError("password must be atleast 6 characters");
+            progressBar.setVisibility(View.INVISIBLE);
+            registerBtn.setVisibility(View.VISIBLE);
+            loginBtn.setVisibility(View.VISIBLE);
             return;
         }
-        progressBar.setVisibility(View.VISIBLE);
-        registerBtn.setVisibility(View.INVISIBLE);
-        loginBtn.setVisibility(View.INVISIBLE);
+
         // register in firebase
         fAuth.createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
@@ -142,25 +170,34 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
                                         public void onSuccess(DocumentReference dataSnapshotValue) {
                                             Log.d("BOOL2", "Data added successfully");
 
+                                            progressBar.setVisibility(View.INVISIBLE);
+                                            registerBtn.setVisibility(View.VISIBLE);
+                                            loginBtn.setVisibility(View.VISIBLE);
+                                            Log.d("TAG", "onSuccess: user profile is created for " + userId);
+
                                             userSession.createUserLoginSession(name, email);
 
                                             Intent intent = new Intent(getApplicationContext(), VehicleEntry.class);
                                             intent.putExtra("user", user);
                                             startActivity(intent);//add .class file of vehicle number entry
-
-                                            finish();
                                         }
 
                                         @Override
                                         public void onFailure(String str) {
-                                            Log.d("BOOL2", str);
+                                            progressBar.setVisibility(View.INVISIBLE);
+                                            registerBtn.setVisibility(View.VISIBLE);
+                                            loginBtn.setVisibility(View.VISIBLE);
+                                            Log.d("TAG", "onFailure: " + str.toString());
                                         }
                                     });
                                 }
 
                                 @Override
                                 public void onFailure(String str) {
-                                    Log.d("REG", str);
+                                    progressBar.setVisibility(View.INVISIBLE);
+                                    registerBtn.setVisibility(View.VISIBLE);
+                                    loginBtn.setVisibility(View.VISIBLE);
+                                    makeToast("Error !! " + task.getException().getMessage());
                                 }
                             });
                         } else {
@@ -170,10 +207,18 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
                             makeToast("Error !! " + task.getException().getMessage());
                         }
                     }
-                });
+                }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(Exception e) {
+                Log.d("REg", "failed");
+            }
+        });
     }
 
     private void makeToast(String toastMessage) {
+        progressBar.setVisibility(View.INVISIBLE);
+        registerBtn.setVisibility(View.VISIBLE);
+        loginBtn.setVisibility(View.VISIBLE);
         Toast.makeText(this, toastMessage, Toast.LENGTH_SHORT).show();
     }
 }
