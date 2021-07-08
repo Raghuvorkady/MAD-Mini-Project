@@ -10,10 +10,11 @@ import androidx.annotation.RequiresApi;
 
 import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.DocumentReference;
+import com.projectx.spa.interfaces.Settable;
 
 import java.util.Objects;
 
-public class ParkingSlot implements Parcelable {
+public class ParkingSlot implements Parcelable, Settable {
     private String id;
     private String building;
     private String address;
@@ -41,6 +42,7 @@ public class ParkingSlot implements Parcelable {
         return id;
     }
 
+    @Override
     public void setId(String id) {
         this.id = id;
     }

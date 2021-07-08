@@ -32,7 +32,17 @@ public class VehicleEntry extends AppCompatActivity implements View.OnClickListe
 
         userSession = new UserSession(this);
 
-        textView.setText("Hey, " + userSession.getUserDetails().get(Constants.PREF_EMAIL));
+        /*FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        Log.d("USER", user.getDisplayName());
+        String name = "";
+        if (user != null) {
+            name = user.getDisplayName();
+        }*/
+
+        textView.setText("Hey, ");
+        textView.append(userSession.getUserDetails().get(Constants.PREF_NAME));
+        textView.append("\n" + userSession.getUserDetails().get(Constants.PREF_EMAIL));
+//        textView.setText("Hey, " + name);
     }
 
     @Override
@@ -57,7 +67,7 @@ public class VehicleEntry extends AppCompatActivity implements View.OnClickListe
         if (isLogoutPressed) {
             super.onBackPressed();
         } else {
-            Toast.makeText(this, "Please the logout button to go back", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Press the logout button to go back", Toast.LENGTH_SHORT).show();
         }
     }
 }

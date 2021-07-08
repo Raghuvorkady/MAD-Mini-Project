@@ -7,8 +7,6 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import com.google.firebase.firestore.DocumentReference;
 import com.projectx.spa.R;
 import com.projectx.spa.helpers.FBHelper;
@@ -17,6 +15,8 @@ import com.projectx.spa.models.ParkingSlot;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import static com.projectx.spa.helpers.Constants.SAMPLE_KEY;
 
