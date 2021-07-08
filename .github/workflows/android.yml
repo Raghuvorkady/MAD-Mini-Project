@@ -40,11 +40,14 @@ jobs:
           with:
             java-version: 11
         - name: Make gradlew executable
-          run: chmod +x ./SmartParkingApp/gradlew
+          working-directory: ./SmartParkingApp
+          run: chmod +x ./gradlew
         - name: Build with Gradle
-          run: ./SmartParkingApp/gradlew build
+          working-directory: ./SmartParkingApp
+          run: ./gradlew build
         - name: Build debug APK
-          run: bash ./SmartParkingApp/gradlew assembleDebug --stacktrace
+          working-directory: ./SmartParkingApp
+          run: bash ./gradlew assembleDebug --stacktrace
         - name: Upload APK
           uses: actions/upload-artifact@v1
           with:
