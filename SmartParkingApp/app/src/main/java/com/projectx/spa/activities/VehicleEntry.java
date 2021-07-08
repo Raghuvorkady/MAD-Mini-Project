@@ -7,12 +7,12 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.google.firebase.auth.FirebaseAuth;
 import com.projectx.spa.R;
 import com.projectx.spa.helpers.Constants;
 import com.projectx.spa.helpers.UserSession;
-
-import androidx.appcompat.app.AppCompatActivity;
 
 public class VehicleEntry extends AppCompatActivity implements View.OnClickListener {
 
@@ -39,7 +39,9 @@ public class VehicleEntry extends AppCompatActivity implements View.OnClickListe
             name = user.getDisplayName();
         }*/
 
-        textView.setText("Hey, " + userSession.getUserDetails().get(Constants.PREF_EMAIL));
+        textView.setText("Hey, ");
+        textView.append(userSession.getUserDetails().get(Constants.PREF_NAME));
+        textView.append("\n" + userSession.getUserDetails().get(Constants.PREF_EMAIL));
 //        textView.setText("Hey, " + name);
     }
 
