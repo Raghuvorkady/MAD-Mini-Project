@@ -129,7 +129,11 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                                         userSession.createUserLoginSession(user.getName(), user.getEmail());
 
                                         makeToast("Sign in successful");
-                                        startActivity(new Intent(getApplicationContext(), VehicleEntry.class));//add .class file of vehicle number entry
+
+                                        Intent intent = new Intent(getApplicationContext(), VehicleEntry.class);
+                                        intent.putExtra("user", user);
+                                        startActivity(intent);//add .class file of vehicle number entry
+
                                         finish();
                                     }
                                 });
