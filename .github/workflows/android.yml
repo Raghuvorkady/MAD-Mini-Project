@@ -40,7 +40,7 @@ jobs:
           with:
             java-version: 11
         - name: Build debug APK
-          run: bash ./gradlew assembleDebug --stacktrace
+          run: bash ./SmartParkingApp/gradlew assembleDebug --stacktrace
         - name: Upload APK
           uses: actions/upload-artifact@v1
           with:
