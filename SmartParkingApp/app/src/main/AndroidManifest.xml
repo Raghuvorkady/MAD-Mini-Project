@@ -1,6 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.projectx.spa">
+
+    <uses-permission android:name="android.permission.INTERNET"/>
+
+    <uses-sdk android:minSdkVersion="16" android:maxSdkVersion="30" android:targetSdkVersion="30"
+        tools:ignore="GradleOverrides" />
 
     <application
         android:allowBackup="true"
@@ -9,6 +15,14 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.SmartParkingApp">
+
+        <activity android:name=".activities.Test2Activity" />
+        <activity android:name=".activities.TestActivity" />
+        <activity android:name=".activities.AvailableSlotsActivity"/>
+        <activity android:name=".activities.VehicleEntry" />
+        <activity android:name=".activities.RegisterActivity" />
+        <activity android:name=".activities.LoginActivity" />
+        <activity android:name=".activities.HomeActivity">
 
         <activity android:name=".BillsPage" />
 
@@ -21,6 +35,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <meta-data
+            android:name="preloaded_fonts"
+            android:resource="@array/preloaded_fonts" />
 
     </application>
 
