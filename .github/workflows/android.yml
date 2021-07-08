@@ -39,10 +39,14 @@ jobs:
           uses: actions/setup-java@v1
           with:
             java-version: 11
+        - name: Make gradlew executable
+          run: chmod +x ./SmartParkingApp/gradlew
+        - name: Build with Gradle
+          run: ./SmartParkingApp/gradlew build
         - name: Build debug APK
           run: bash ./SmartParkingApp/gradlew assembleDebug --stacktrace
         - name: Upload APK
           uses: actions/upload-artifact@v1
           with:
             name: app
-            path: app/build/outputs/apk/debug/app-debug.apk
+            path: ./SmartParkingApp/app/build/outputs/apk/debug/app-debug.apk
