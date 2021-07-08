@@ -1,8 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.projectx.spa">
 
     <uses-permission android:name="android.permission.INTERNET"/>
+
+    <uses-sdk android:minSdkVersion="16" android:maxSdkVersion="30" android:targetSdkVersion="30"
+        tools:ignore="GradleOverrides" />
 
     <application
         android:allowBackup="true"
