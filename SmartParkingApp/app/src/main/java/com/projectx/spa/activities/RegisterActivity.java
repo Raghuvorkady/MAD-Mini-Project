@@ -76,6 +76,9 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
             finish();
         }
         if (v.equals(registerBtn)) {
+            progressBar.setVisibility(View.VISIBLE);
+            registerBtn.setVisibility(View.INVISIBLE);
+            loginBtn.setVisibility(View.INVISIBLE);
             userRegistration();
         }
     }
@@ -91,31 +94,47 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
 
         if (TextUtils.isEmpty(email)) {
             emailEditText.setError("Email is required.");
+            progressBar.setVisibility(View.INVISIBLE);
+            registerBtn.setVisibility(View.VISIBLE);
+            loginBtn.setVisibility(View.VISIBLE);
             return;
         }
         if (TextUtils.isEmpty(password)) {
             passwordEditText.setError("password is required");
+            progressBar.setVisibility(View.INVISIBLE);
+            registerBtn.setVisibility(View.VISIBLE);
+            loginBtn.setVisibility(View.VISIBLE);
             return;
         }
         if (TextUtils.isEmpty(name)) {
             this.nameEditText.setError("name is required");
+            progressBar.setVisibility(View.INVISIBLE);
+            registerBtn.setVisibility(View.VISIBLE);
+            loginBtn.setVisibility(View.VISIBLE);
             return;
         }
         if (TextUtils.isEmpty(place)) {
             buildingEditText.setError("phone building name is required");
+            progressBar.setVisibility(View.INVISIBLE);
+            registerBtn.setVisibility(View.VISIBLE);
+            loginBtn.setVisibility(View.VISIBLE);
             return;
         }
         if (TextUtils.isEmpty(avail)) {
             totalSpaceEditText.setError("Total slots is required");
+            progressBar.setVisibility(View.INVISIBLE);
+            registerBtn.setVisibility(View.VISIBLE);
+            loginBtn.setVisibility(View.VISIBLE);
             return;
         }
         if (password.length() < 6) {
             passwordEditText.setError("password must be atleast 6 characters");
+            progressBar.setVisibility(View.INVISIBLE);
+            registerBtn.setVisibility(View.VISIBLE);
+            loginBtn.setVisibility(View.VISIBLE);
             return;
         }
-        progressBar.setVisibility(View.VISIBLE);
-        registerBtn.setVisibility(View.INVISIBLE);
-        loginBtn.setVisibility(View.INVISIBLE);
+
         // register in firebase
         fAuth.createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
@@ -134,6 +153,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
                                     .addOnSuccessListener(new OnSuccessListener<Void>() {
                                         @Override
                                         public void onSuccess(Void unused) {
+
                                             Log.d("TAG", "onSuccess: user profile is created for " + userId);
 
                                             // parking data
@@ -147,12 +167,18 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
                                                     .addOnSuccessListener(new OnSuccessListener<Void>() {
                                                         @Override
                                                         public void onSuccess(Void unused) {
+                                                            progressBar.setVisibility(View.INVISIBLE);
+                                                            registerBtn.setVisibility(View.VISIBLE);
+                                                            loginBtn.setVisibility(View.VISIBLE);
                                                             Log.d("TAG", "onSuccess: user profile is created for " + userId);
                                                         }
                                                     })
                                                     .addOnFailureListener(new OnFailureListener() {
                                                         @Override
                                                         public void onFailure(@NonNull Exception e) {
+                                                            progressBar.setVisibility(View.INVISIBLE);
+                                                            registerBtn.setVisibility(View.VISIBLE);
+                                                            loginBtn.setVisibility(View.VISIBLE);
                                                             Log.d("TAG", "onFailure: " + e.toString());
                                                         }
                                                     });
@@ -183,6 +209,9 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
     }
 
     private void makeToast(String toastMessage) {
+        progressBar.setVisibility(View.INVISIBLE);
+        registerBtn.setVisibility(View.VISIBLE);
+        loginBtn.setVisibility(View.VISIBLE);
         Toast.makeText(this, toastMessage, Toast.LENGTH_SHORT).show();
     }
 }

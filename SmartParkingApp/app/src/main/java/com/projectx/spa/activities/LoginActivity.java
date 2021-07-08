@@ -87,14 +87,29 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
         if (TextUtils.isEmpty(email)) {
             emailEditText.setError("Email is required.");
+
+            progressBar.setVisibility(View.INVISIBLE);
+            logIn.setVisibility(View.VISIBLE);
+            forgot.setVisibility(View.VISIBLE);
+            register.setVisibility(View.VISIBLE);
             return;
         }
         if (TextUtils.isEmpty(password)) {
             passwordEditText.setError("password is required");
+
+            progressBar.setVisibility(View.INVISIBLE);
+            logIn.setVisibility(View.VISIBLE);
+            forgot.setVisibility(View.VISIBLE);
+            register.setVisibility(View.VISIBLE);
             return;
         }
         if (password.length() < 6) {
             passwordEditText.setError("password must be at least 6 characters");
+
+            progressBar.setVisibility(View.INVISIBLE);
+            logIn.setVisibility(View.VISIBLE);
+            forgot.setVisibility(View.VISIBLE);
+            register.setVisibility(View.VISIBLE);
             return;
         }
 
@@ -145,6 +160,9 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                     @Override
                     public void onFailure(@NonNull Exception e) {
                         makeToast("Error ! Reset Link is not sent" + e.getMessage());
+
+
+
                     }
                 });
 
