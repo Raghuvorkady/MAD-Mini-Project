@@ -23,6 +23,12 @@
         <activity android:name=".activities.RegisterActivity" />
         <activity android:name=".activities.LoginActivity" />
         <activity android:name=".activities.HomeActivity">
+
+        <activity android:name=".BillsPage" />
+
+        <activity android:name=".Details" />
+
+        <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
