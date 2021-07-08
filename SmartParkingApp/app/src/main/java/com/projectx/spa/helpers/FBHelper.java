@@ -46,6 +46,8 @@ public class FBHelper {
 
     /**
      * Returns a DocumentReference representation of the string object (DocumentReference).
+     *
+     * @param documentReference value can be a Document path or Document id
      */
     public DocumentReference toDocumentReference(String documentReference) {
         return firebaseFirestore.document(documentReference);

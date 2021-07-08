@@ -142,7 +142,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
                                         public void onSuccess(DocumentReference dataSnapshotValue) {
                                             Log.d("BOOL2", "Data added successfully");
 
-                                            userSession.createUserLoginSession(email, password);
+                                            userSession.createUserLoginSession(name, email);
 
                                             // add .class file of vehicle number entry
                                             startActivity(new Intent(getApplicationContext(), VehicleEntry.class));
