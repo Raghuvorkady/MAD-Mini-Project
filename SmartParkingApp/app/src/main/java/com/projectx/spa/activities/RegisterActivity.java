@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
+import android.util.Patterns;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -101,6 +102,13 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
         }
         if (TextUtils.isEmpty(password)) {
             passwordEditText.setError("password is required");
+            progressBar.setVisibility(View.INVISIBLE);
+            registerBtn.setVisibility(View.VISIBLE);
+            loginBtn.setVisibility(View.VISIBLE);
+            return;
+        }
+        if (email.isEmpty() || !(Patterns.EMAIL_ADDRESS.matcher(email).matches())){
+            this.emailEditText.setError("email is not proper");
             progressBar.setVisibility(View.INVISIBLE);
             registerBtn.setVisibility(View.VISIBLE);
             loginBtn.setVisibility(View.VISIBLE);

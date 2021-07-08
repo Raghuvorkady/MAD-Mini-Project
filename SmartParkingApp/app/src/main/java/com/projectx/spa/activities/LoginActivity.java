@@ -4,6 +4,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Patterns;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -103,6 +104,14 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             register.setVisibility(View.VISIBLE);
             return;
         }
+        if (email.isEmpty() || !(Patterns.EMAIL_ADDRESS.matcher(email).matches())){
+            emailEditText.setError("email is not proper");
+            progressBar.setVisibility(View.INVISIBLE);
+            logIn.setVisibility(View.VISIBLE);
+            forgot.setVisibility(View.VISIBLE);
+            register.setVisibility(View.VISIBLE);
+            return;
+        }
         if (password.length() < 6) {
             passwordEditText.setError("password must be at least 6 characters");
 
@@ -160,8 +169,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                     @Override
                     public void onFailure(@NonNull Exception e) {
                         makeToast("Error ! Reset Link is not sent" + e.getMessage());
-
-
 
                     }
                 });
