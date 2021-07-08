@@ -9,25 +9,25 @@ on:
      - 'main'
 
 jobs:
-  unit_tests:
-    name: Run Unit Tests
-    runs-on: ubuntu-latest
+#   unit_tests:
+#     name: Run Unit Tests
+#     runs-on: ubuntu-latest
 
-    steps:
-    - uses: actions/checkout@v2
-    - name: Unit tests
-      run: ./gradlew test
+#     steps:
+#     - uses: actions/checkout@v2
+#     - name: Unit tests
+#       run: ./gradlew test
       
-  android_tests:
-    runs-on: [ macos-latest ]
-    steps:
-      - uses: actions/checkout@v2
+#   android_tests:
+#     runs-on: [ macos-latest ]
+#     steps:
+#       - uses: actions/checkout@v2
 
-      - name: Instrumentation Tests
-        uses: reactivecircus/android-emulator-runner@v2
-        with: 
-          api-level: 29
-          script: ./gradlew connectedAndroidTest
+#       - name: Instrumentation Tests
+#         uses: reactivecircus/android-emulator-runner@v2
+#         with: 
+#           api-level: 29
+#           script: ./gradlew connectedAndroidTest
 
   apk:
       name: Generate APK
