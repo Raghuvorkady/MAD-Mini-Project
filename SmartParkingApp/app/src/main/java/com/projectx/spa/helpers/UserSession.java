@@ -15,11 +15,11 @@ public class UserSession {
         editor = sharedPreferences.edit();
     }
 
-    public void createUserLoginSession(String name, String email) {
+    public void createUserLoginSession(String id, String name, String email) {
         editor.putBoolean(Constants.PREF_USER_LOGIN_STATUS, true);
+        editor.putString(Constants.PREF_ID, id);
         editor.putString(Constants.PREF_NAME, name);
         editor.putString(Constants.PREF_EMAIL, email);
-//        editor.putString(Constants.PREF_PASSWORD, password);
         editor.commit();
     }
 
@@ -28,7 +28,7 @@ public class UserSession {
 
         user.put(Constants.PREF_NAME, sharedPreferences.getString(Constants.PREF_NAME, null));
         user.put(Constants.PREF_EMAIL, sharedPreferences.getString(Constants.PREF_EMAIL, null));
-//        user.put(Constants.PREF_PASSWORD, sharedPreferences.getString(Constants.PREF_PASSWORD, null));
+        user.put(Constants.PREF_ID, sharedPreferences.getString(Constants.PREF_ID, null));
 
         return user;
     }

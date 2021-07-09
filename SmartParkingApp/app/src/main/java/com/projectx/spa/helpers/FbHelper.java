@@ -3,8 +3,10 @@ package com.projectx.spa.helpers;
 import android.content.Context;
 import android.util.Log;
 import android.widget.Toast;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -23,14 +25,13 @@ import java.util.List;
 
 import es.dmoral.toasty.Toasty;
 
-// TODO: rename to FbHelper
-public class FBHelper {
+public class FbHelper {
     private final FirebaseFirestore firebaseFirestore;
     // todo: add fAuth
 //    private final FirebaseAuth firebaseAuth;
     private final Context context;
 
-    public FBHelper(Context context) {
+    public FbHelper(Context context) {
         this.firebaseFirestore = FirebaseFirestore.getInstance();
         this.context = context;
     }

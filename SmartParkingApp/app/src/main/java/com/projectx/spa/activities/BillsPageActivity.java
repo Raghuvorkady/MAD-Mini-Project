@@ -14,7 +14,6 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.Timestamp;
-import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -22,16 +21,11 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.projectx.spa.R;
 import com.projectx.spa.helpers.Constants;
-import com.projectx.spa.helpers.FBHelper;
-import com.projectx.spa.interfaces.OnGetDataListener;
 import com.projectx.spa.models.Vehicles;
 
 import java.text.DateFormat;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
 
 public class BillsPageActivity extends AppCompatActivity {
 
@@ -107,7 +101,7 @@ public class BillsPageActivity extends AppCompatActivity {
                                         t3.append(" " + extime);
 
                                         DocumentReference doc = db.collection(Constants.PARKED_VEHICLES).document(document.getId());
-                                        doc.update("exittime", exitTime)
+                                        doc.update("exitTime", exitTime)
                                                 // TODO: 09-07-2021 add on failure
                                                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                                                     @Override

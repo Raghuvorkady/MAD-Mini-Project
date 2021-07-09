@@ -1,24 +1,6 @@
 package com.projectx.spa.activities;
 
-import android.content.Intent;
-import android.os.Bundle;
-import android.util.Log;
-import android.view.View;
-import android.widget.TextView;
-import android.widget.Toast;
-
-import com.google.firebase.firestore.DocumentReference;
-import com.projectx.spa.R;
-import com.projectx.spa.helpers.FBHelper;
-import com.projectx.spa.models.ParkingSlot;
-
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.Locale;
-
-import androidx.appcompat.app.AppCompatActivity;
-
-import static com.projectx.spa.helpers.Constants.SAMPLE_KEY;
+/*
 
 public class Test2Activity extends AppCompatActivity {
     ParkingSlot parkingSlot;
@@ -26,7 +8,7 @@ public class Test2Activity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_test2);
+        setContentView(R.layout.activity_main);
 
         TextView textView = findViewById(R.id.text);
 
@@ -56,4 +38,4 @@ public class Test2Activity extends AppCompatActivity {
     private void makeToast(String toastMessage) {
         Toast.makeText(this, toastMessage, Toast.LENGTH_SHORT).show();
     }
-}
+}*/

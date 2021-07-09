@@ -1,18 +1,13 @@
 package com.projectx.spa.models;
 
-import android.os.Build;
 import android.os.Parcel;
 import android.os.Parcelable;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.annotation.RequiresApi;
 
 import com.google.firebase.Timestamp;
-import com.google.firebase.firestore.DocumentReference;
 import com.projectx.spa.interfaces.Settable;
-
-import java.util.Objects;
 
 public class Vehicles implements Parcelable, Settable {
     private String id;

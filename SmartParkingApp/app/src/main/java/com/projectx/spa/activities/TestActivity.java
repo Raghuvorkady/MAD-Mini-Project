@@ -5,6 +5,12 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.Timestamp;
@@ -19,7 +25,7 @@ import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.projectx.spa.R;
 import com.projectx.spa.adapters.AvailableSlotsAdapter;
-import com.projectx.spa.helpers.FBHelper;
+import com.projectx.spa.helpers.FbHelper;
 import com.projectx.spa.models.ParkingSlot;
 
 import java.util.ArrayList;
@@ -28,15 +34,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 public class TestActivity extends AppCompatActivity {
     private List<ParkingSlot> parkingSlots;
-    private FBHelper fbHelper;
+    private FbHelper fbHelper;
     private DocumentReference documentReference;
 
     @Override
@@ -44,7 +44,7 @@ public class TestActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_test);
 
-        fbHelper = new FBHelper(this);
+        fbHelper = new FbHelper(this);
         documentReference = FirebaseFirestore.getInstance().collection("test").document("doc2");
 
         parkingSlots = new ArrayList<>();

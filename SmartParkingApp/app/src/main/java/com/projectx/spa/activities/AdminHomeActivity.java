@@ -6,22 +6,16 @@ import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
-import com.google.firebase.firestore.QuerySnapshot;
 import com.projectx.spa.R;
 import com.projectx.spa.helpers.Constants;
-import com.projectx.spa.helpers.FBHelper;
+import com.projectx.spa.helpers.FbHelper;
 import com.projectx.spa.models.ParkingSlot;
 import com.projectx.spa.models.User;
 
@@ -32,20 +26,21 @@ public class AdminHomeActivity extends AppCompatActivity {
     String id;
     static String TAG = DetailsActivity.class.getSimpleName();
     FirebaseFirestore db = FirebaseFirestore.getInstance();
-User user;
+    User user;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        //Intent it=getIntent();
-        user = new User("VpnN3ycQOyRjg5vpqPoO6ag5lBb2", "testName", "testMail", "1213213", Timestamp.now());
-        //user=it.getParcelableExtra("user");
+        setContentView(R.layout.activity_admin_home);
+        Intent it = getIntent();
+        // user = new User("VpnN3ycQOyRjg5vpqPoO6ag5lBb2", "testName", "testMail", "1213213", Timestamp.now());
+        user = it.getParcelableExtra("user");
         t1 = findViewById(R.id.pt2);
         t2 = findViewById(R.id.pt3);
         t3 = findViewById(R.id.pt5);
         t4 = findViewById(R.id.pt6);
-        id=user.getId();
-        FBHelper fh=new FBHelper(getApplicationContext());
+        id = user.getId();
+        FbHelper fh = new FbHelper(getApplicationContext());
         DocumentReference documentReference = FirebaseFirestore.getInstance().collection(Constants.PARKING_SLOTS).document(user.getId());
         trackSingleDocumentTest(documentReference);
     }
@@ -54,7 +49,6 @@ User user;
         Intent it = new Intent(this, DetailsActivity.class);
         it.putExtra("id", id);
         startActivity(it);
-        finalize();
     }
 
     private void trackSingleDocumentTest(DocumentReference documentReference) {
@@ -68,8 +62,8 @@ User user;
 
                 if (snapshot != null && snapshot.exists()) {
                     Log.d("TAG1", "Current data: " + snapshot);
-                    ParkingSlot ps=snapshot.toObject(ParkingSlot.class);
-                    String name=user.getName();
+                    ParkingSlot ps = snapshot.toObject(ParkingSlot.class);
+                    String name = user.getName();
                     String building = ps.getBuilding();
                     String land = ps.getAddress();
                     avail = ps.getAvailableSpace();
@@ -77,7 +71,7 @@ User user;
                     t1.setText(name.toUpperCase());
                     t2.setText(building);
                     t3.setText(land);
-                    t4.setText(""+avail);
+                    t4.setText("" + avail);
 
                 } else {
                     Log.d("TAG1", "Current data: null");
