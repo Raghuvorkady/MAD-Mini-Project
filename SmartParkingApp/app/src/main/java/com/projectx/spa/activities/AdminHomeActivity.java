@@ -16,6 +16,7 @@ import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.projectx.spa.R;
 import com.projectx.spa.helpers.Constants;
 import com.projectx.spa.helpers.FbHelper;
+import com.projectx.spa.helpers.UserSession;
 import com.projectx.spa.models.ParkingSlot;
 import com.projectx.spa.models.User;
 
@@ -26,22 +27,24 @@ public class AdminHomeActivity extends AppCompatActivity {
     String id;
     static String TAG = DetailsActivity.class.getSimpleName();
     FirebaseFirestore db = FirebaseFirestore.getInstance();
-    User user;
+    UserSession userSession;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_admin_home);
-        Intent it = getIntent();
         // user = new User("VpnN3ycQOyRjg5vpqPoO6ag5lBb2", "testName", "testMail", "1213213", Timestamp.now());
-        user = it.getParcelableExtra("user");
+
         t1 = findViewById(R.id.pt2);
         t2 = findViewById(R.id.pt3);
         t3 = findViewById(R.id.pt5);
         t4 = findViewById(R.id.pt6);
-        id = user.getId();
+
         FbHelper fh = new FbHelper(getApplicationContext());
-        DocumentReference documentReference = FirebaseFirestore.getInstance().collection(Constants.PARKING_SLOTS).document(user.getId());
+
+        userSession = new UserSession(this);
+        id = userSession.getUserDetails().get(Constants.PREF_ID);
+        DocumentReference documentReference = FirebaseFirestore.getInstance().collection(Constants.PARKING_SLOTS).document(id);
         trackSingleDocumentTest(documentReference);
     }
 
@@ -63,7 +66,7 @@ public class AdminHomeActivity extends AppCompatActivity {
                 if (snapshot != null && snapshot.exists()) {
                     Log.d("TAG1", "Current data: " + snapshot);
                     ParkingSlot ps = snapshot.toObject(ParkingSlot.class);
-                    String name = user.getName();
+                    String name = userSession.getUserDetails().get(Constants.PREF_NAME);
                     String building = ps.getBuilding();
                     String land = ps.getAddress();
                     avail = ps.getAvailableSpace();

@@ -4,6 +4,8 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 
+import androidx.annotation.NonNull;
+
 import java.util.HashMap;
 
 public class UserSession {
@@ -15,7 +17,7 @@ public class UserSession {
         editor = sharedPreferences.edit();
     }
 
-    public void createUserLoginSession(String id, String name, String email) {
+    public void createUserLoginSession(@NonNull String id, @NonNull String name, @NonNull String email) {
         editor.putBoolean(Constants.PREF_USER_LOGIN_STATUS, true);
         editor.putString(Constants.PREF_ID, id);
         editor.putString(Constants.PREF_NAME, name);

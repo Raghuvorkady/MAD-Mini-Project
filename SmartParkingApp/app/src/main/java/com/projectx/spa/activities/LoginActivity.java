@@ -45,6 +45,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_login);
 
         userSession = new UserSession(this);
@@ -57,7 +58,9 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             // Add new Flag to start new Activity
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 
-            String id = userSession.getUserDetails().get(Constants.PREF_ID);
+            startActivity(intent);
+            finish();
+            /*String id = userSession.getUserDetails().get(Constants.PREF_ID);
             FbHelper fbHelper = new FbHelper(getApplicationContext());
             DocumentReference doc = fbHelper.toDocumentReference(Constants.USERS + "/" + id);
             doc.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
@@ -67,9 +70,9 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
                     intent.putExtra("user", user);
 
-                    startActivity(intent);
+
                 }
-            });
+            });*/
         }
 
         logIn = findViewById(R.id.login);
@@ -163,12 +166,12 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
                                         Log.d("NAME", user.getName() + " ");
 
-                                        userSession.createUserLoginSession(user.getId(), user.getName(), user.getEmail());
+                                        userSession.createUserLoginSession(id, user.getName(), user.getEmail());
 
                                         makeToast("Sign in successful");
 
                                         Intent intent = new Intent(getApplicationContext(), AdminHomeActivity.class);
-                                        intent.putExtra("user", user);
+
                                         startActivity(intent);//add .class file of vehicle number entry
 
                                         finish();

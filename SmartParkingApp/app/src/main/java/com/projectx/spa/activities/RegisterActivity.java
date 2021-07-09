@@ -178,7 +178,6 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
                                             userSession.createUserLoginSession(userId, name, email);
 
                                             Intent intent = new Intent(getApplicationContext(), AdminHomeActivity.class);
-                                            intent.putExtra("user", user);
                                             startActivity(intent);//add .class file of vehicle number entry
                                         }
 

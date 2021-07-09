@@ -13,6 +13,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.projectx.spa.R;
 import com.projectx.spa.helpers.FbHelper;
+import com.projectx.spa.helpers.UserSession;
 
 public class HomeActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -32,6 +33,11 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
 
         login.setOnClickListener(this);
         availability.setOnClickListener(this);
+
+        UserSession userSession = new UserSession(this);
+        if (userSession.isUserLoggedIn()) {
+            login.setText("vehicle entry");
+        }
 
         /*fAuth = FirebaseAuth.getInstance();
         firestore = FirebaseFirestore.getInstance();
@@ -95,17 +101,13 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         availability.setVisibility(View.INVISIBLE);
         progressBar.setVisibility(View.VISIBLE);
         switch (view.getId()) {
-
             case R.id.login:
                 intent.setClass(this, LoginActivity.class);
                 startActivity(intent);
-
                 break;
             case R.id.check:
                 intent.setClass(this, AvailableSlotsActivity.class);
                 startActivity(intent);
-
-
                 break;
         }
         login.setVisibility(View.VISIBLE);
