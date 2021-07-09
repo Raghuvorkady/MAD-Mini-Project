@@ -9,8 +9,6 @@ import android.widget.ProgressBar;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.firestore.FirebaseFirestore;
 import com.projectx.spa.R;
 import com.projectx.spa.helpers.FBHelper;
 
@@ -18,8 +16,8 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
 
     private Button login, availability;
     private ProgressBar progressBar;
-    private FirebaseAuth fAuth;
-    private FirebaseFirestore firestore;
+    /*private FirebaseAuth fAuth;
+    private FirebaseFirestore firestore;*/
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,8 +31,8 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         login.setOnClickListener(this);
         availability.setOnClickListener(this);
 
-        fAuth = FirebaseAuth.getInstance();
-        firestore = FirebaseFirestore.getInstance();
+        /*fAuth = FirebaseAuth.getInstance();
+        firestore = FirebaseFirestore.getInstance();*/
         FBHelper fbHelper = new FBHelper(this);
 
         /*User user = new User("id", "testName", "testMail", "1213213", Timestamp.now());
