@@ -10,6 +10,7 @@ import android.widget.ProgressBar;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.projectx.spa.R;
+import com.projectx.spa.helpers.UserSession;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -19,13 +20,21 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
     private ProgressBar progressBar;
     private FirebaseAuth fAuth;
     private FirebaseFirestore firestore;
+    private UserSession userSession;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
-
         login = findViewById(R.id.login);
+        userSession = new UserSession(this);
+        Intent intent = new Intent();
+        if (userSession.isUserLoggedIn()) {
+            login.setText("vehicle entry");
+            
+        }
+
         availability = findViewById(R.id.check);
         progressBar = findViewById(R.id.progress);
 

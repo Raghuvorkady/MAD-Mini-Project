@@ -95,7 +95,6 @@
             style="@style/ButtonStyle"
             android:layout_marginTop="20dp"
             android:layout_marginBottom="20dp"
-            android:textColor="#4CAF50"
             android:text="@string/register" />
 
         <TextView
