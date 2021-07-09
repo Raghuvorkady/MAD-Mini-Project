@@ -6,7 +6,7 @@ on:
       - '!main'
 
 jobs:
-  Update main Branch:
+  Update_main_Branch:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
