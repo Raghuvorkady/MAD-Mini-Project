@@ -28,7 +28,7 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.projectx.spa.R;
 import com.projectx.spa.helpers.Constants;
-import com.projectx.spa.helpers.FBHelper;
+import com.projectx.spa.helpers.FbHelper;
 import com.projectx.spa.helpers.UserSession;
 import com.projectx.spa.models.User;
 
@@ -40,16 +40,18 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private ProgressBar progressBar;
     private FirebaseAuth fAuth;
     private UserSession userSession;
+    private User user;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_login);
 
         userSession = new UserSession(this);
         Intent intent = new Intent();
         if (userSession.isUserLoggedIn()) {
-            intent.setClass(this, VehicleEntry.class);
+            intent.setClass(this, AdminHomeActivity.class);
 
             // Closing all the Activities from stack
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
@@ -57,6 +59,20 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 
             startActivity(intent);
+            finish();
+            /*String id = userSession.getUserDetails().get(Constants.PREF_ID);
+            FbHelper fbHelper = new FbHelper(getApplicationContext());
+            DocumentReference doc = fbHelper.toDocumentReference(Constants.USERS + "/" + id);
+            doc.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                @Override
+                public void onSuccess(DocumentSnapshot documentSnapshot) {
+                    user = documentSnapshot.toObject(User.class);
+
+                    intent.putExtra("user", user);
+
+
+                }
+            });*/
         }
 
         logIn = findViewById(R.id.login);
@@ -111,7 +127,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             register.setVisibility(View.VISIBLE);
             return;
         }
-        if (email.isEmpty() || !(Patterns.EMAIL_ADDRESS.matcher(email).matches())){
+        if (email.isEmpty() || !(Patterns.EMAIL_ADDRESS.matcher(email).matches())) {
             emailEditText.setError("email is not proper");
             progressBar.setVisibility(View.INVISIBLE);
             logIn.setVisibility(View.VISIBLE);
@@ -140,7 +156,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                             if (currentUser != null) {
                                 String id = currentUser.getUid();
 
-                                FBHelper fbHelper = new FBHelper(getApplicationContext());
+                                FbHelper fbHelper = new FbHelper(getApplicationContext());
                                 DocumentReference doc = fbHelper.toDocumentReference(Constants.USERS + "/" + id);
 
                                 doc.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
@@ -150,12 +166,12 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
                                         Log.d("NAME", user.getName() + " ");
 
-                                        userSession.createUserLoginSession(user.getName(), user.getEmail());
+                                        userSession.createUserLoginSession(id, user.getName(), user.getEmail());
 
                                         makeToast("Sign in successful");
 
-                                        Intent intent = new Intent(getApplicationContext(), VehicleEntry.class);
-                                        intent.putExtra("user", user);
+                                        Intent intent = new Intent(getApplicationContext(), AdminHomeActivity.class);
+
                                         startActivity(intent);//add .class file of vehicle number entry
 
                                         finish();

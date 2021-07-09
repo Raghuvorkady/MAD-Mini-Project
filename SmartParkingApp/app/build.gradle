@@ -52,6 +52,8 @@ dependencies {
 
     // other dependencies
     implementation 'com.github.GrenderG:Toasty:1.5.0'
+    implementation 'com.github.GrenderG:Toasty:1.5.0'
+    implementation 'ru.egslava:MaskedEditText:1.0.5'
     implementation 'androidx.multidex:multidex:2.0.1'
 
     // Firebase dependencies

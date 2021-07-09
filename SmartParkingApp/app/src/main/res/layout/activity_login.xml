@@ -64,7 +64,6 @@
         android:id="@+id/login"
         style="@style/ButtonStyle"
         android:text="@string/login"
-        android:textColor="#4CAF50"
         app:layout_constraintBottom_toTopOf="@id/reg"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent" />
