@@ -6,6 +6,13 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
+import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.firestore.DocumentChange;
 import com.google.firebase.firestore.EventListener;
@@ -17,22 +24,15 @@ import com.google.firebase.firestore.QuerySnapshot;
 import com.projectx.spa.R;
 import com.projectx.spa.adapters.AvailableSlotsAdapter;
 import com.projectx.spa.helpers.Constants;
-import com.projectx.spa.helpers.FBHelper;
+import com.projectx.spa.helpers.FbHelper;
 import com.projectx.spa.models.ParkingSlot;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import androidx.annotation.Nullable;
-import androidx.annotation.RequiresApi;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
-
 public class AvailableSlotsActivity extends AppCompatActivity implements SwipeRefreshLayout.OnRefreshListener {
     private List<ParkingSlot> parkingSlots;
-    private FBHelper fbHelper;
+    private FbHelper fbHelper;
 
     private RecyclerView recyclerView;
     private SwipeRefreshLayout swipeRefreshLayout;
@@ -46,10 +46,10 @@ public class AvailableSlotsActivity extends AppCompatActivity implements SwipeRe
         recyclerView = findViewById(R.id.recycler_view);
         swipeRefreshLayout = findViewById(R.id.swipe_refresh_layout);
 
-        fbHelper = new FBHelper(this);
+        fbHelper = new FbHelper(this);
 
-       parkingSlots = new ArrayList<>();
-       updateRecyclerView();
+        parkingSlots = new ArrayList<>();
+        updateRecyclerView();
 
         swipeRefreshLayout.setOnRefreshListener(this);
 

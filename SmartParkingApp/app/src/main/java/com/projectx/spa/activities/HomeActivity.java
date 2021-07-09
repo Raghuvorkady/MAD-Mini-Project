@@ -9,8 +9,10 @@ import android.widget.ProgressBar;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.projectx.spa.R;
-import com.projectx.spa.helpers.FBHelper;
+import com.projectx.spa.helpers.FbHelper;
 
 public class HomeActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -31,9 +33,9 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         login.setOnClickListener(this);
         availability.setOnClickListener(this);
 
-        /*fAuth = FirebaseAuth.getInstance();
-        firestore = FirebaseFirestore.getInstance();*/
-        FBHelper fbHelper = new FBHelper(this);
+        fAuth = FirebaseAuth.getInstance();
+        firestore = FirebaseFirestore.getInstance();
+        FbHelper fbHelper = new FbHelper(this);
 
         /*User user = new User("id", "testName", "testMail", "1213213", Timestamp.now());
 
