@@ -3,29 +3,35 @@ package com.projectx.spa.models;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import com.google.firebase.Timestamp;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-public class User implements Parcelable {
-    private String userId, name, email, phoneNo;
+import com.google.firebase.Timestamp;
+import com.projectx.spa.interfaces.Settable;
+
+public class User implements Parcelable, Settable {
+    private String id, name, email, phoneNo;
     private Timestamp createdTime;
 
     public User() {
     }
 
-    public User(@Nullable String userId, @NonNull String name, @NonNull String email,
+    public User(@Nullable String id, @NonNull String name, @NonNull String email,
                 @NonNull String phoneNo, @NonNull Timestamp createdTime) {
-        this.userId = userId;
+        this.id = id;
         this.name = name;
         this.email = email;
         this.phoneNo = phoneNo;
         this.createdTime = createdTime;
     }
 
-    public String getUserId() {
-        return userId;
+    public String getId() {
+        return id;
+    }
+
+    @Override
+    public void setId(String id) {
+        this.id = id;
     }
 
     public String getName() {
@@ -43,10 +49,10 @@ public class User implements Parcelable {
     public Timestamp getCreatedTime() {
         return createdTime;
     }
-
     // Parcelable implementations
+
     protected User(Parcel in) {
-        userId = in.readString();
+        id = in.readString();
         name = in.readString();
         email = in.readString();
         phoneNo = in.readString();
@@ -72,7 +78,7 @@ public class User implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel parcel, int i) {
-        parcel.writeString(userId);
+        parcel.writeString(id);
         parcel.writeString(name);
         parcel.writeString(email);
         parcel.writeString(phoneNo);
@@ -83,7 +89,7 @@ public class User implements Parcelable {
     @Override
     public String toString() {
         return "User{" +
-                "userId='" + userId + '\'' +
+                "userId='" + id + '\'' +
                 ", name='" + name + '\'' +
                 ", email='" + email + '\'' +
                 ", phoneNo='" + phoneNo + '\'' +

@@ -12,9 +12,11 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.Timestamp;
 import com.google.firebase.auth.AuthResult;
@@ -23,12 +25,11 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.projectx.spa.R;
 import com.projectx.spa.helpers.Constants;
+import com.projectx.spa.helpers.FBHelper;
 import com.projectx.spa.helpers.UserSession;
+import com.projectx.spa.interfaces.OnGetDataListener;
 import com.projectx.spa.models.ParkingSlot;
 import com.projectx.spa.models.User;
-
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
 
 public class RegisterActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -107,7 +108,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
             loginBtn.setVisibility(View.VISIBLE);
             return;
         }
-        if (email.isEmpty() || !(Patterns.EMAIL_ADDRESS.matcher(email).matches())){
+        if (email.isEmpty() || !(Patterns.EMAIL_ADDRESS.matcher(email).matches())) {
             this.emailEditText.setError("email is not proper");
             progressBar.setVisibility(View.INVISIBLE);
             registerBtn.setVisibility(View.VISIBLE);
@@ -151,61 +152,54 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
                         if (task.isSuccessful()) {
                             makeToast("User created");
                             userId = fAuth.getCurrentUser().getUid();
-                            DocumentReference userDocument = firestore.collection(Constants.USERS).document(userId);
 
-                            User user = new User(userDocument.getId(), name, email,
-                                    phone, Timestamp.now());
+                            FBHelper fbHelper = new FBHelper(getApplicationContext());
 
-                            userDocument
-                                    .set(user)
-                                    .addOnSuccessListener(new OnSuccessListener<Void>() {
+                            User user = new User(null, name, email, phone, Timestamp.now());
+
+                            fbHelper.addDataToFirestore(user, Constants.USERS, userId, new OnGetDataListener() {
+                                @Override
+                                public void onSuccess(DocumentReference userDocument) {
+                                    Log.d("REG", userDocument.toString());
+
+                                    ParkingSlot parkingSlot = new ParkingSlot(null,
+                                            place, local, avail, avail, Timestamp.now(), userDocument);
+
+                                    fbHelper.addDataToFirestore(parkingSlot, Constants.PARKING_SLOTS, userId, new OnGetDataListener() {
                                         @Override
-                                        public void onSuccess(Void unused) {
+                                        public void onSuccess(DocumentReference dataSnapshotValue) {
+                                            Log.d("BOOL2", "Data added successfully");
 
+                                            progressBar.setVisibility(View.INVISIBLE);
+                                            registerBtn.setVisibility(View.VISIBLE);
+                                            loginBtn.setVisibility(View.VISIBLE);
                                             Log.d("TAG", "onSuccess: user profile is created for " + userId);
 
-                                            // parking data
-                                            DocumentReference parkingSlotDocument = firestore.collection(Constants.PARKING_SLOTS).document();
+                                            userSession.createUserLoginSession(name, email);
 
-                                            ParkingSlot parkingSlot = new ParkingSlot(parkingSlotDocument.getId(),
-                                                    place, local, avail, avail, Timestamp.now(), userDocument);
-
-                                            parkingSlotDocument
-                                                    .set(parkingSlot)
-                                                    .addOnSuccessListener(new OnSuccessListener<Void>() {
-                                                        @Override
-                                                        public void onSuccess(Void unused) {
-                                                            progressBar.setVisibility(View.INVISIBLE);
-                                                            registerBtn.setVisibility(View.VISIBLE);
-                                                            loginBtn.setVisibility(View.VISIBLE);
-                                                            Log.d("TAG", "onSuccess: user profile is created for " + userId);
-                                                        }
-                                                    })
-                                                    .addOnFailureListener(new OnFailureListener() {
-                                                        @Override
-                                                        public void onFailure(@NonNull Exception e) {
-                                                            progressBar.setVisibility(View.INVISIBLE);
-                                                            registerBtn.setVisibility(View.VISIBLE);
-                                                            loginBtn.setVisibility(View.VISIBLE);
-                                                            Log.d("TAG", "onFailure: " + e.toString());
-                                                        }
-                                                    });
-
-                                            userSession.createUserLoginSession(email, password);
-
-                                            // add .class file of vehicle number entry
-                                            startActivity(new Intent(getApplicationContext(), VehicleEntry.class));
-                                            finish();
+                                            Intent intent = new Intent(getApplicationContext(), VehicleEntry.class);
+                                            intent.putExtra("user", user);
+                                            startActivity(intent);//add .class file of vehicle number entry
                                         }
-                                    })
-                                    .addOnFailureListener(new OnFailureListener() {
+
                                         @Override
-                                        public void onFailure(@NonNull Exception e) {
-                                            Log.d("TAG", "onFailure: " + e.toString());
+                                        public void onFailure(String str) {
+                                            progressBar.setVisibility(View.INVISIBLE);
+                                            registerBtn.setVisibility(View.VISIBLE);
+                                            loginBtn.setVisibility(View.VISIBLE);
+                                            Log.d("TAG", "onFailure: " + str.toString());
                                         }
                                     });
+                                }
 
-
+                                @Override
+                                public void onFailure(String str) {
+                                    progressBar.setVisibility(View.INVISIBLE);
+                                    registerBtn.setVisibility(View.VISIBLE);
+                                    loginBtn.setVisibility(View.VISIBLE);
+                                    makeToast("Error !! " + task.getException().getMessage());
+                                }
+                            });
                         } else {
                             progressBar.setVisibility(View.INVISIBLE);
                             registerBtn.setVisibility(View.VISIBLE);
@@ -213,7 +207,12 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
                             makeToast("Error !! " + task.getException().getMessage());
                         }
                     }
-                });
+                }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(Exception e) {
+                Log.d("REg", "failed");
+            }
+        });
     }
 
     private void makeToast(String toastMessage) {
