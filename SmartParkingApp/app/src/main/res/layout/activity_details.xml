@@ -2,35 +2,42 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    xmlns:mask="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Details">
+    tools:context=".activities.DetailsActivity">
 
-    <EditText
-        android:id="@+id/editTextTextPersonName"
+
+
+    <br.com.sapereaude.maskedEditText.MaskedEditText
+        android:id="@+id/phone_input"
         android:layout_width="match_parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="20dp"
+        android:inputType="text|textCapCharacters"
+        android:textAllCaps="true"
+        android:imeOptions="actionDone"
         android:layout_marginTop="144dp"
-        android:layout_marginRight="20dp"
-        android:background="@drawable/custom_input"
         android:drawableStart="@drawable/car_48px"
-        android:drawableLeft="@drawable/car_48px"
-        android:drawablePadding="12dp"
+        android:layout_marginLeft="20dp"
+        android:background="@drawable/custom_input"
+        android:layout_marginRight="20dp"
         android:ems="10"
-        android:hint="@string/enter_vehicle_number"
-        android:importantForAutofill="no"
-        android:inputType="textPersonName"
-        android:maxLength="13"
         android:paddingStart="12dp"
         android:paddingLeft="5dp"
         android:paddingTop="10dp"
+        android:drawablePadding="12dp"
         android:paddingEnd="12dp"
         android:paddingRight="5dp"
         android:paddingBottom="10dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:typeface="monospace"
+        android:hint="AA00BB1111"
+        android:textColorHint="@android:color/darker_gray"
+        mask:mask="##-##-##-####"
+        mask:keep_hint="false"
+        android:drawableLeft="@drawable/car_48px" />
 
     <androidx.cardview.widget.CardView
         android:id="@+id/pc1"

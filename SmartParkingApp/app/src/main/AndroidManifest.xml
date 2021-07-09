@@ -10,11 +10,11 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.SmartParkingApp">
 
-        <activity android:name=".BillsPage" />
+        <activity android:name=".activities.BillsPageActivity" />
 
-        <activity android:name=".Details" />
+        <activity android:name=".activities.DetailsActivity" />
 
-        <activity android:name=".MainActivity">
+        <activity android:name=".activities.AdminHomeActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
