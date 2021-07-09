@@ -18,8 +18,8 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
 
     private Button login, availability;
     private ProgressBar progressBar;
-    private FirebaseAuth fAuth;
-    private FirebaseFirestore firestore;
+    /*private FirebaseAuth fAuth;
+    private FirebaseFirestore firestore;*/
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,9 +33,9 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         login.setOnClickListener(this);
         availability.setOnClickListener(this);
 
-        fAuth = FirebaseAuth.getInstance();
+        /*fAuth = FirebaseAuth.getInstance();
         firestore = FirebaseFirestore.getInstance();
-        FbHelper fbHelper = new FbHelper(this);
+        FbHelper fbHelper = new FbHelper(this);*/
 
         /*User user = new User("id", "testName", "testMail", "1213213", Timestamp.now());
 
