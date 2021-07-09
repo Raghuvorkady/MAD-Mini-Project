@@ -7,13 +7,12 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ProgressBar;
 
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.projectx.spa.R;
-import com.projectx.spa.helpers.FBHelper;
-import com.projectx.spa.helpers.UserSession;
-
-import androidx.appcompat.app.AppCompatActivity;
+import com.projectx.spa.helpers.FbHelper;
 
 public class HomeActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -21,21 +20,13 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
     private ProgressBar progressBar;
     private FirebaseAuth fAuth;
     private FirebaseFirestore firestore;
-    private UserSession userSession;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
-        login = findViewById(R.id.login);
-        userSession = new UserSession(this);
-        Intent intent = new Intent();
-        if (userSession.isUserLoggedIn()) {
-            login.setText("vehicle entry");
-            
-        }
 
+        login = findViewById(R.id.login);
         availability = findViewById(R.id.check);
         progressBar = findViewById(R.id.progress);
 
@@ -44,7 +35,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
 
         fAuth = FirebaseAuth.getInstance();
         firestore = FirebaseFirestore.getInstance();
-        FBHelper fbHelper = new FBHelper(this);
+        FbHelper fbHelper = new FbHelper(this);
 
         /*User user = new User("id", "testName", "testMail", "1213213", Timestamp.now());
 

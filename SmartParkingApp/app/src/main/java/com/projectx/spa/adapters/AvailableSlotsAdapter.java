@@ -1,23 +1,20 @@
 package com.projectx.spa.adapters;
 
 import android.content.Context;
-import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.projectx.spa.R;
-import com.projectx.spa.activities.Test2Activity;
-import com.projectx.spa.helpers.Constants;
-import com.projectx.spa.models.ParkingSlot;
-
-import java.util.List;
-
 import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.projectx.spa.R;
+import com.projectx.spa.models.ParkingSlot;
+
+import java.util.List;
 
 public class AvailableSlotsAdapter extends RecyclerView.Adapter<AvailableSlotsAdapter.MyOwnHolder> {
     Context context;
@@ -57,14 +54,14 @@ public class AvailableSlotsAdapter extends RecyclerView.Adapter<AvailableSlotsAd
             holder.cardLayout.setBackgroundColor(ContextCompat.getColor(context, R.color.green_100));
         }
 
-        holder.cardLayout.setOnClickListener(new View.OnClickListener() {
+        /*holder.cardLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(context, Test2Activity.class);
                 intent.putExtra(Constants.SAMPLE_KEY, parkingSlots.get(position));
                 context.startActivity(intent);
             }
-        });
+        });*/
     }
 
     @Override

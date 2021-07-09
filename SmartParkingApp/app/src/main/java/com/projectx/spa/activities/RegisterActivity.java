@@ -25,7 +25,7 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.projectx.spa.R;
 import com.projectx.spa.helpers.Constants;
-import com.projectx.spa.helpers.FBHelper;
+import com.projectx.spa.helpers.FbHelper;
 import com.projectx.spa.helpers.UserSession;
 import com.projectx.spa.interfaces.OnGetDataListener;
 import com.projectx.spa.models.ParkingSlot;
@@ -153,7 +153,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
                             makeToast("User created");
                             userId = fAuth.getCurrentUser().getUid();
 
-                            FBHelper fbHelper = new FBHelper(getApplicationContext());
+                            FbHelper fbHelper = new FbHelper(getApplicationContext());
 
                             User user = new User(null, name, email, phone, Timestamp.now());
 
@@ -175,9 +175,9 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
                                             loginBtn.setVisibility(View.VISIBLE);
                                             Log.d("TAG", "onSuccess: user profile is created for " + userId);
 
-                                            userSession.createUserLoginSession(name, email);
+                                            userSession.createUserLoginSession(userId, name, email);
 
-                                            Intent intent = new Intent(getApplicationContext(), VehicleEntry.class);
+                                            Intent intent = new Intent(getApplicationContext(), AdminHomeActivity.class);
                                             intent.putExtra("user", user);
                                             startActivity(intent);//add .class file of vehicle number entry
                                         }
