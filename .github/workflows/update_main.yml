@@ -6,7 +6,7 @@ on:
       - '!main'
 
 jobs:
-  updateAuthors:
+  Update_main_Branch:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -18,7 +18,7 @@ jobs:
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v3
         with:
-          commit-message: update main branch
-          title: Update main
+          commit-message: update main branch by ${{ github.sender }}
+          title: PR for ${{ github.event.commits[0].message }}
           body: Credit new contributors by updating AUTHORS
           branch: main

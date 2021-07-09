@@ -63,6 +63,7 @@
             <EditText
                 android:id="@+id/phone"
                 style="@style/EditTextStyle"
+                android:maxLength="10"
                 android:autofillHints="@string/phone"
                 android:hint="@string/phone"
                 android:inputType="phone" />
