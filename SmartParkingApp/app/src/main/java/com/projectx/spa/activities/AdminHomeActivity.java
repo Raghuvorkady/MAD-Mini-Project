@@ -3,11 +3,15 @@ package com.projectx.spa.activities;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
@@ -18,6 +22,8 @@ import com.projectx.spa.helpers.Constants;
 import com.projectx.spa.helpers.FbHelper;
 import com.projectx.spa.helpers.UserSession;
 import com.projectx.spa.models.ParkingSlot;
+
+import es.dmoral.toasty.Toasty;
 
 public class AdminHomeActivity extends AppCompatActivity {
 
@@ -86,5 +92,38 @@ public class AdminHomeActivity extends AppCompatActivity {
         Log.d(TAG, "ADMIN vehicles");
         Intent intent = new Intent(this, ParkedVehiclesActivity.class);
         startActivity(intent);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.user_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle item selection
+        switch (item.getItemId()) {
+            case R.id.menu_profile:
+                profilePage();
+                return true;
+            case R.id.menu_logout:
+                logOut();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
+    private void logOut() {
+        Toasty.success(this, "Logout successful", Toasty.LENGTH_SHORT).show();
+        FirebaseAuth.getInstance().signOut();
+        userSession.clearUserData();
+        finish();
+    }
+
+    private void profilePage() {
+        Log.d(TAG, "yet to implement");
     }
 }
