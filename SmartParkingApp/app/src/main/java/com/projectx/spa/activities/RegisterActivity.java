@@ -129,6 +129,20 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
             loginBtn.setVisibility(View.VISIBLE);
             return;
         }
+        if (TextUtils.isEmpty(phone)) {
+            this.phoneEditText.setError("phone number required");
+            progressBar.setVisibility(View.INVISIBLE);
+            registerBtn.setVisibility(View.VISIBLE);
+            loginBtn.setVisibility(View.VISIBLE);
+            return;
+        }
+        if (phone.length() != 11) {
+            phoneEditText.setError("Invalid phone number");
+            progressBar.setVisibility(View.INVISIBLE);
+            registerBtn.setVisibility(View.VISIBLE);
+            loginBtn.setVisibility(View.VISIBLE);
+            return;
+        }
         if (TextUtils.isEmpty(place)) {
             buildingEditText.setError("phone building name is required");
             progressBar.setVisibility(View.INVISIBLE);

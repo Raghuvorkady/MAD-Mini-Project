@@ -7,6 +7,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -22,16 +23,19 @@ import com.projectx.spa.helpers.Constants;
 import com.projectx.spa.helpers.UserSession;
 import com.projectx.spa.models.ParkingSlot;
 
+import androidx.cardview.widget.CardView;
 import es.dmoral.toasty.Toasty;
 
-public class AdminHomeActivity extends AppCompatActivity {
+public class AdminHomeActivity extends AppCompatActivity implements View.OnClickListener{
 
     TextView nameTextView, buildingTextView, landTextView, availableTextView;
+    CardView parkedVehicle,history;
     int availableSpace;
     String id;
     private final String TAG = getClass().getSimpleName();
     FirebaseFirestore db = FirebaseFirestore.getInstance();
     UserSession userSession;
+    ProgressBar progress;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,7 +47,12 @@ public class AdminHomeActivity extends AppCompatActivity {
         buildingTextView = findViewById(R.id.building_text_view);
         landTextView = findViewById(R.id.land_text_view);
         availableTextView = findViewById(R.id.linear_layout1_available_slots);
+        parkedVehicle=findViewById(R.id.contraint_layout3_info_card);
+        history=findViewById(R.id.out_card);
+        progress=findViewById(R.id.loading);
 
+        parkedVehicle.setOnClickListener(this);
+        history.setOnClickListener(this);
 
         userSession = new UserSession(this);
         id = userSession.getUserDetails().get(Constants.PREF_ID);
@@ -51,6 +60,25 @@ public class AdminHomeActivity extends AppCompatActivity {
         trackSingleDocumentTest(documentReference);
     }
 
+    @Override
+    public void onClick(View view) {
+        parkedVehicle.setVisibility(View.INVISIBLE);
+        history.setVisibility(View.INVISIBLE);
+        progress.setVisibility(View.VISIBLE);
+
+        Intent intent=new Intent();
+        if (view.equals(parkedVehicle)){
+            intent.setClass(this, ParkedVehiclesActivity.class);
+            startActivity(intent);
+        }
+        if (view.equals(history)){
+            intent.setClass(this, ParkedHistoryActivity.class);
+            startActivity(intent);
+        }
+        parkedVehicle.setVisibility(View.VISIBLE);
+        history.setVisibility(View.VISIBLE);
+        progress.setVisibility(View.INVISIBLE);
+    }
     private void trackSingleDocumentTest(DocumentReference documentReference) {
         documentReference.addSnapshotListener(new EventListener<DocumentSnapshot>() {
             @Override
@@ -103,9 +131,9 @@ public class AdminHomeActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle item selection
         switch (item.getItemId()) {
-            case R.id.menu_profile:
-                profilePage();
-                return true;
+           //case R.id.menu_profile:
+           //     profilePage();
+            //    return true;
             case R.id.menu_logout:
                 logOut();
                 return true;
@@ -121,7 +149,7 @@ public class AdminHomeActivity extends AppCompatActivity {
         finish();
     }
 
-    private void profilePage() {
-        Log.d(TAG, "yet to implement");
-    }
+    //private void profilePage() {
+    //    Log.d(TAG, "yet to implement");
+   // }
 }

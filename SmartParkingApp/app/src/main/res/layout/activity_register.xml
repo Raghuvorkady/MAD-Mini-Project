@@ -60,13 +60,17 @@
                 android:hint="@string/password"
                 android:inputType="textPassword" />
 
-            <EditText
+            <com.santalu.maskara.widget.MaskEditText
                 android:id="@+id/phone"
                 style="@style/EditTextStyle"
-                android:maxLength="10"
+                android:maxLength="11"
                 android:autofillHints="@string/phone"
                 android:hint="@string/phone"
-                android:inputType="phone" />
+                android:inputType="phone"
+                app:mask="_____ _____"
+                app:maskCharacter="_"
+                app:maskStyle="normal"
+                tools:ignore="MissingClass" />
 
             <EditText
                 android:id="@+id/building"
