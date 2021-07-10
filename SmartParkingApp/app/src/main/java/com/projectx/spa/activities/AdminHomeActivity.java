@@ -85,7 +85,6 @@ public class AdminHomeActivity extends AppCompatActivity {
     public void viewParkedVehicles(View view) {
         Log.d(TAG, "ADMIN vehicles");
         Intent intent = new Intent(this, ParkedVehiclesActivity.class);
-        intent.putExtra("id", id);
         startActivity(intent);
     }
 }

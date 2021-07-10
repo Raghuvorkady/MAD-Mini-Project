@@ -1,6 +1,7 @@
 package com.projectx.spa.adapters;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,7 +11,9 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.projectx.spa.R;
+import com.projectx.spa.activities.BillsPageActivity;
 import com.projectx.spa.models.Vehicles;
 
 import java.text.SimpleDateFormat;
@@ -35,21 +38,34 @@ public class ParkedVehiclesAdapter extends RecyclerView.Adapter<ParkedVehiclesAd
 
     @Override
     public void onBindViewHolder(ParkedVehiclesAdapter.MyOwnHolder holder, int position) {
-        holder.vehicleNoTextView.setText(parkedVehiclesList.get(position).getVehicleNumber());
+        Vehicles vehicle = parkedVehiclesList.get(position);
+        holder.vehicleNoTextView.setText(vehicle.getVehicleNumber());
 
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy hh:mm:ss a");
 
-        String entryTimeStr = "Entry Time: " + dateFormat.format(parkedVehiclesList.get(position).getEntryTime().toDate());
+        String entryTimeStr = "Entry Time: " + dateFormat.format(vehicle.getEntryTime().toDate());
         holder.entryTimeTextView.setText(entryTimeStr);
 
-        /*holder.cardLayout.setOnClickListener(new View.OnClickListener() {
+        holder.cardLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(context, Test2Activity.class);
-                intent.putExtra(Constants.SAMPLE_KEY, parkingSlots.get(position));
-                context.startActivity(intent);
+                MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(context)
+                        .setTitle("Are you sure")
+                        .setMessage("Mark as vehicle (" + vehicle.getVehicleNumber() + ") out")
+                        .setNeutralButton("Cancel", (dialogInterface, i) -> {
+                        })
+                        .setNegativeButton("No", (dialogInterface, i) -> {
+                        })
+                        .setPositiveButton("Yes", (dialogInterface, i) -> {
+                            Intent it1 = new Intent(context, BillsPageActivity.class);
+                            it1.putExtra("number", vehicle.getVehicleNumber());
+                            it1.putExtra("id", vehicle.getId());
+                            context.startActivity(it1);
+                        });
+
+                alertDialogBuilder.show();
             }
-        });*/
+        });
     }
 
     @Override
@@ -66,7 +82,7 @@ public class ParkedVehiclesAdapter extends RecyclerView.Adapter<ParkedVehiclesAd
             super(itemView);
             vehicleNoTextView = itemView.findViewById(R.id.item_parked_vehicle_vehicle_number);
             entryTimeTextView = itemView.findViewById(R.id.item_parked_vehicle_entry_time);
-            cardLayout = itemView.findViewById(R.id.parked_history_card_layout);
+            cardLayout = itemView.findViewById(R.id.parked_vehicles_card_layout);
         }
     }
 }

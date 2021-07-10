@@ -39,15 +39,11 @@ public class ParkedVehiclesActivity extends AppCompatActivity implements SwipeRe
     private RecyclerView recyclerView;
     private SwipeRefreshLayout swipeRefreshLayout;
     private ParkedVehiclesAdapter parkedVehiclesAdapter;
-    private String id;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_parked_vehicles);
-
-        Intent intent = getIntent();
-        id = intent.getStringExtra("id");
 
         recyclerView = findViewById(R.id.recycler_view);
         swipeRefreshLayout = findViewById(R.id.parked_vehicles_swipe_refresh_layout);
@@ -76,8 +72,7 @@ public class ParkedVehiclesActivity extends AppCompatActivity implements SwipeRe
     }
 
     private void trackMultipleDocuments() {
-        Query query = FirebaseFirestore.getInstance()
-                .collection(Constants.PARKED_VEHICLES);
+        Query query = FirebaseFirestore.getInstance().collection(Constants.PARKED_VEHICLES);
 
         ListenerRegistration registration = query.addSnapshotListener(new EventListener<QuerySnapshot>() {
             @RequiresApi(api = Build.VERSION_CODES.N)
@@ -160,7 +155,6 @@ public class ParkedVehiclesActivity extends AppCompatActivity implements SwipeRe
 
     public void detailsPage(View view) {
         Intent it = new Intent(this, DetailsActivity.class);
-        it.putExtra("id", id);
         startActivity(it);
     }
 }

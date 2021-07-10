@@ -19,6 +19,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.projectx.spa.R;
 import com.projectx.spa.helpers.Constants;
 import com.projectx.spa.helpers.FbHelper;
+import com.projectx.spa.helpers.UserSession;
 import com.projectx.spa.interfaces.OnGetDataListener;
 import com.projectx.spa.models.Vehicles;
 
@@ -37,7 +38,7 @@ public class DetailsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_details);
         Intent intent = getIntent();
-        id = intent.getStringExtra("id");
+        id = new UserSession(this).getUserDetails().get(Constants.PREF_ID);
         Log.d(TAG, id);
         // Log is recommended
 
@@ -55,32 +56,16 @@ public class DetailsActivity extends AppCompatActivity {
         /*e1.setFilters(new InputFilter[] {new InputFilter.AllCaps()});*/
     }
 
-    public void outPage(View view) {
-        s = e1.getText().toString();
-        if (!s.equals("AA-00-BB-1111")) {
-            System.out.println(s);
-            e1.setText("");
-            if (s.matches("^[A-Z]{2}[-][0-9]{2}[-][A-Z]{2}[-][0-9]{4}$")) {
-                Intent it1 = new Intent(this, BillsPageActivity.class);
-                it1.putExtra("number", s);
-                it1.putExtra("id", id);
-                startActivity(it1);
-                finish();
-            } else {
-                Toast.makeText(this, "wrong format", Toast.LENGTH_LONG).show();
-            }
-        }
-    }
-
     @RequiresApi(api = Build.VERSION_CODES.Q)
     public void inPage(View view) {
         if (Integer.parseInt(avail) > 0) {
             s = e1.getText().toString();
             if (!s.equals("AA-00-BB-1111")) {
                 System.out.println(s);
-                e1.setText("");
 //                Intent it = new Intent(this, AdminHomeActivity.class);
-                if (s.matches("^[A-Z]{2}[-][0-9]{2}[-][A-Z]{2}[-][0-9]{4}$")) {
+//                if (s.matches("^[A-Z]{2}[-][0-9]{2}[-][A-Z]{2}[-][0-9]{4}$")) {
+                if (true) {
+                    e1.setText("");
                     Log.d(TAG, s);
                     new AlertDialog.Builder(this)
                             .setTitle("Insert entry")
