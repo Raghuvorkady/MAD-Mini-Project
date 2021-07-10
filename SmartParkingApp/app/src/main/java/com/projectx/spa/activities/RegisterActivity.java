@@ -22,7 +22,6 @@ import com.google.firebase.Timestamp;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.FirebaseFirestore;
 import com.projectx.spa.R;
 import com.projectx.spa.helpers.Constants;
 import com.projectx.spa.helpers.FbHelper;
@@ -43,9 +42,8 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
     private EditText areaEditText;
     private EditText totalSpaceEditText;
     private TextView loginBtn;
-    private FirebaseAuth fAuth;
+    private FirebaseAuth firebaseAuth;
     private ProgressBar progressBar;
-    private FirebaseFirestore firestore;
     private String userId;
     private UserSession userSession;
 
@@ -68,11 +66,10 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
         registerBtn.setOnClickListener(this);
         loginBtn.setOnClickListener(this);
 
-        fAuth = FirebaseAuth.getInstance();
-        firestore = FirebaseFirestore.getInstance();
+        firebaseAuth = FirebaseAuth.getInstance();
 
-        if (fAuth.getCurrentUser() != null) {
-            startActivity(new Intent(this, HomeActivity.class));//add .class file of vehicle number entry
+        if (firebaseAuth.getCurrentUser() != null) {
+            startActivity(new Intent(this, HomeActivity.class));
             finish();
         }
 
@@ -85,9 +82,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
             finish();
         }
         if (v.equals(registerBtn)) {
-            progressBar.setVisibility(View.VISIBLE);
-            registerBtn.setVisibility(View.INVISIBLE);
-            loginBtn.setVisibility(View.INVISIBLE);
+            unHideProgressBar();
             userRegistration();
         }
     }
@@ -97,68 +92,54 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
         String password = passwordEditText.getText().toString().trim();
         String name = nameEditText.getText().toString();
         String phone = phoneEditText.getText().toString();
-        String place = buildingEditText.getText().toString();
-        String local = areaEditText.getText().toString();
-        String avail = totalSpaceEditText.getText().toString();
+        String building = buildingEditText.getText().toString();
+        String address = areaEditText.getText().toString();
+        String totalSpace = totalSpaceEditText.getText().toString();
 
         if (TextUtils.isEmpty(email)) {
             emailEditText.setError("Email is required.");
-            progressBar.setVisibility(View.INVISIBLE);
-            registerBtn.setVisibility(View.VISIBLE);
-            loginBtn.setVisibility(View.VISIBLE);
+            hideProgressBar();
             return;
         }
         if (TextUtils.isEmpty(password)) {
             passwordEditText.setError("password is required");
-            progressBar.setVisibility(View.INVISIBLE);
-            registerBtn.setVisibility(View.VISIBLE);
-            loginBtn.setVisibility(View.VISIBLE);
+            hideProgressBar();
             return;
         }
         if (email.isEmpty() || !(Patterns.EMAIL_ADDRESS.matcher(email).matches())) {
             this.emailEditText.setError("email is not proper");
-            progressBar.setVisibility(View.INVISIBLE);
-            registerBtn.setVisibility(View.VISIBLE);
-            loginBtn.setVisibility(View.VISIBLE);
+            hideProgressBar();
             return;
         }
         if (TextUtils.isEmpty(name)) {
             this.nameEditText.setError("name is required");
-            progressBar.setVisibility(View.INVISIBLE);
-            registerBtn.setVisibility(View.VISIBLE);
-            loginBtn.setVisibility(View.VISIBLE);
+            hideProgressBar();
             return;
         }
-        if (TextUtils.isEmpty(place)) {
+        if (TextUtils.isEmpty(building)) {
             buildingEditText.setError("phone building name is required");
-            progressBar.setVisibility(View.INVISIBLE);
-            registerBtn.setVisibility(View.VISIBLE);
-            loginBtn.setVisibility(View.VISIBLE);
+            hideProgressBar();
             return;
         }
-        if (TextUtils.isEmpty(avail)) {
+        if (TextUtils.isEmpty(totalSpace)) {
             totalSpaceEditText.setError("Total slots is required");
-            progressBar.setVisibility(View.INVISIBLE);
-            registerBtn.setVisibility(View.VISIBLE);
-            loginBtn.setVisibility(View.VISIBLE);
+            hideProgressBar();
             return;
         }
         if (password.length() < 6) {
             passwordEditText.setError("password must be atleast 6 characters");
-            progressBar.setVisibility(View.INVISIBLE);
-            registerBtn.setVisibility(View.VISIBLE);
-            loginBtn.setVisibility(View.VISIBLE);
+            hideProgressBar();
             return;
         }
 
         // register in firebase
-        fAuth.createUserWithEmailAndPassword(email, password)
+        firebaseAuth.createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
                             makeToast("User created");
-                            userId = fAuth.getCurrentUser().getUid();
+                            userId = firebaseAuth.getCurrentUser().getUid();
 
                             FbHelper fbHelper = new FbHelper(getApplicationContext());
 
@@ -170,16 +151,14 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
                                     Log.d("REG", userDocument.toString());
 
                                     ParkingSlot parkingSlot = new ParkingSlot(null,
-                                            place, local, avail, avail, Timestamp.now(), userDocument);
+                                            building, address, totalSpace, totalSpace, Timestamp.now(), userDocument);
 
                                     fbHelper.addDataToFirestore(parkingSlot, Constants.PARKING_SLOTS, userId, new OnGetDataListener() {
                                         @Override
                                         public void onSuccess(DocumentReference dataSnapshotValue) {
                                             Log.d("BOOL2", "Data added successfully");
 
-                                            progressBar.setVisibility(View.INVISIBLE);
-                                            registerBtn.setVisibility(View.VISIBLE);
-                                            loginBtn.setVisibility(View.VISIBLE);
+                                            hideProgressBar();
                                             Log.d("TAG", "onSuccess: user profile is created for " + userId);
 
                                             userSession.createUserLoginSession(userId, name, email);
@@ -190,9 +169,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
 
                                         @Override
                                         public void onFailure(String str) {
-                                            progressBar.setVisibility(View.INVISIBLE);
-                                            registerBtn.setVisibility(View.VISIBLE);
-                                            loginBtn.setVisibility(View.VISIBLE);
+                                            hideProgressBar();
                                             Log.d("TAG", "onFailure: " + str.toString());
                                         }
                                     });
@@ -200,16 +177,12 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
 
                                 @Override
                                 public void onFailure(String str) {
-                                    progressBar.setVisibility(View.INVISIBLE);
-                                    registerBtn.setVisibility(View.VISIBLE);
-                                    loginBtn.setVisibility(View.VISIBLE);
+                                    hideProgressBar();
                                     makeToast("Error !! " + task.getException().getMessage());
                                 }
                             });
                         } else {
-                            progressBar.setVisibility(View.INVISIBLE);
-                            registerBtn.setVisibility(View.VISIBLE);
-                            loginBtn.setVisibility(View.VISIBLE);
+                            hideProgressBar();
                             makeToast("Error !! " + task.getException().getMessage());
                         }
                     }
@@ -222,9 +195,19 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
     }
 
     private void makeToast(String toastMessage) {
+        hideProgressBar();
+        Toast.makeText(this, toastMessage, Toast.LENGTH_SHORT).show();
+    }
+
+    private void hideProgressBar() {
         progressBar.setVisibility(View.INVISIBLE);
         registerBtn.setVisibility(View.VISIBLE);
         loginBtn.setVisibility(View.VISIBLE);
-        Toast.makeText(this, toastMessage, Toast.LENGTH_SHORT).show();
+    }
+
+    private void unHideProgressBar() {
+        progressBar.setVisibility(View.VISIBLE);
+        registerBtn.setVisibility(View.INVISIBLE);
+        loginBtn.setVisibility(View.INVISIBLE);
     }
 }
