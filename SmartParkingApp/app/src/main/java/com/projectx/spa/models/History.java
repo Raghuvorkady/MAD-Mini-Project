@@ -6,7 +6,9 @@ import android.os.Parcelable;
 import com.google.firebase.Timestamp;
 import com.projectx.spa.interfaces.Settable;
 
-public class History implements Parcelable, Settable {
+import java.io.Serializable;
+
+public class History implements Parcelable, Settable{
     private String id;
     private String vehicleNumber;
     private Timestamp entryTime;
@@ -17,12 +19,12 @@ public class History implements Parcelable, Settable {
 
     }
 
-    public History(String id, Vehicles vehicles, int amt) {
+    public History(String id, Vehicles vehicles, String amt) {
         this.id = id;
         this.vehicleNumber = vehicles.getVehicleNumber();
         this.entryTime = vehicles.getEntryTime();
         this.exitTime = vehicles.getExitTime();
-        this.amount = amount;
+        this.amount = amt;
     }
 
     protected History(Parcel in) {

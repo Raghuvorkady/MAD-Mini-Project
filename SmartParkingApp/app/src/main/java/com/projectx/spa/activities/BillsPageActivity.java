@@ -14,6 +14,7 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.Timestamp;
+import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -78,7 +79,8 @@ public class BillsPageActivity extends AppCompatActivity {
 
     private void database() {
         if (Integer.parseInt(availableSpace) <= Integer.parseInt(totalSpace)) {
-            firebaseFirestore.collection(Constants.PARKED_VEHICLES)
+            String collectionReference=Constants.PARKING_SLOTS+"/"+id+"/"+Constants.PARKED_VEHICLES;
+            firebaseFirestore.collection(collectionReference)
                     .get()
                     .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                         @Override
@@ -101,7 +103,7 @@ public class BillsPageActivity extends AppCompatActivity {
                                         entryTimeTextView.append(" " + entime);
                                         exitTimeTextView.append(" " + extime);
 
-                                        DocumentReference doc = firebaseFirestore.collection(Constants.PARKED_VEHICLES).document(document.getId());
+                                        DocumentReference doc = firebaseFirestore.collection(collectionReference).document(document.getId());
                                         doc.update("exitTime", exitTime)
                                                 // TODO: 09-07-2021 add on failure
                                                 .addOnSuccessListener(new OnSuccessListener<Void>() {
@@ -115,8 +117,9 @@ public class BillsPageActivity extends AppCompatActivity {
                                                         int amt = (int) Math.ceil(minutes_difference * 10 / 20);
                                                         amountTextView.append("" + amt);
                                                         Log.d(TAG, String.valueOf(minutes_difference));
-                                                        DocumentReference historyDocument = firebaseFirestore.collection(Constants.PARKED_HISTORY).document();
-                                                        History history=new History(historyDocument.getId(), vehicles, amt);
+                                                        CollectionReference collectionReference2 = firebaseFirestore.collection(Constants.PARKING_SLOTS).document(id).collection(Constants.PARKED_HISTORY);
+                                                        DocumentReference historyDocument =collectionReference2.document();
+                                                        History history=new History(historyDocument.getId(), vehicles, String.valueOf(amt));
                                                         moveFirestoreDocument(document.getReference(), historyDocument, history);
 
                                                     }
@@ -185,6 +188,12 @@ public class BillsPageActivity extends AppCompatActivity {
                 } else {
                     Log.d(TAG, "get failed with ", task.getException());
                 }
+            }
+        })
+        .addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure( Exception e) {
+                Log.d(TAG,"move error"+e);
             }
         });
     }

@@ -71,7 +71,8 @@ public class DetailsActivity extends AppCompatActivity {
                             .setPositiveButton(android.R.string.yes, (dialog, which) -> {
                                 Vehicles vehicles = new Vehicles(null, vehicleNumber, Timestamp.now());
                                 FbHelper fbHelper = new FbHelper(getApplicationContext());
-                                fbHelper.addDataToFirestore(vehicles, Constants.PARKED_VEHICLES, null, new OnGetDataListener() {
+                                String collectionReference=Constants.PARKING_SLOTS+"/"+id+"/"+Constants.PARKED_VEHICLES;
+                                fbHelper.addDataToFirestore(vehicles, collectionReference, null, new OnGetDataListener() {
                                     @Override
                                     public void onSuccess(DocumentReference dataSnapshotValue) {
                                         Toast.makeText(DetailsActivity.this, "added successfully", Toast.LENGTH_LONG).show();

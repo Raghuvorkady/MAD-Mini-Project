@@ -26,6 +26,7 @@ import com.projectx.spa.R;
 import com.projectx.spa.adapters.ParkedVehiclesAdapter;
 import com.projectx.spa.helpers.Constants;
 import com.projectx.spa.helpers.FbHelper;
+import com.projectx.spa.helpers.UserSession;
 import com.projectx.spa.models.Vehicles;
 
 import java.util.ArrayList;
@@ -35,6 +36,7 @@ public class ParkedVehiclesActivity extends AppCompatActivity implements SwipeRe
     private final String TAG = getClass().getSimpleName();
     private List<Vehicles> parkedVehiclesList;
     private FbHelper fbHelper;
+    String id;
 
     private RecyclerView recyclerView;
     private SwipeRefreshLayout swipeRefreshLayout;
@@ -44,7 +46,7 @@ public class ParkedVehiclesActivity extends AppCompatActivity implements SwipeRe
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_parked_vehicles);
-
+        id = new UserSession(this).getUserDetails().get(Constants.PREF_ID);
         recyclerView = findViewById(R.id.recycler_view);
         swipeRefreshLayout = findViewById(R.id.parked_vehicles_swipe_refresh_layout);
 
@@ -72,7 +74,8 @@ public class ParkedVehiclesActivity extends AppCompatActivity implements SwipeRe
     }
 
     private void trackMultipleDocuments() {
-        Query query = FirebaseFirestore.getInstance().collection(Constants.PARKED_VEHICLES);
+        String collectionReference=Constants.PARKING_SLOTS+"/"+id+"/"+Constants.PARKED_VEHICLES;
+        Query query = FirebaseFirestore.getInstance().collection(collectionReference);
 
         ListenerRegistration registration = query.addSnapshotListener(new EventListener<QuerySnapshot>() {
             @RequiresApi(api = Build.VERSION_CODES.N)
