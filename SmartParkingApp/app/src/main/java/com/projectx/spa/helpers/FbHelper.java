@@ -165,13 +165,72 @@ public class FbHelper {
         Toasty.error(context, toastMessage, Toast.LENGTH_SHORT, true).show();
     }
 
-    /*DocumentReference docRef = db.collection("cities").document("LAB");
-        docRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+    // TODO: 10-07-2021 trackMultipleDocuments
+    /*private <T> void trackMultipleDocuments(String collectionReference, List<T> objectList, ) {
+        Query query = FirebaseFirestore.getInstance().collection(collectionReference);
+
+        ListenerRegistration registration = query.addSnapshotListener(new EventListener<QuerySnapshot>() {
+            @RequiresApi(api = Build.VERSION_CODES.N)
             @Override
-            public void onSuccess(DocumentSnapshot documentSnapshot) {
-                City city = documentSnapshot.toObject(City.class);
-                textView.setText(city.toString());
+            public void onEvent(@Nullable QuerySnapshot value,
+                                @Nullable FirebaseFirestoreException e) {
+                if (e != null) {
+                    Log.w("TAG2", "Listen failed.", e);
+                    return;
+                }
+
+                if (value != null) {
+                    for (DocumentChange dc : value.getDocumentChanges()) {
+                        ParkedVehicle parkedVehicle = dc.getDocument().toObject();
+                        String str = parkedVehicle.toString();
+
+                        switch (dc.getType()) {
+                            case ADDED:
+                                objectList.add(parkedVehicle);
+                                parkedVehiclesAdapter.notifyItemInserted(objectList.size() - 1);
+                                Log.d("ADDED", "New : " + str);
+//                                makeToast("ADDED\n" + str);
+                                break;
+                            case MODIFIED:
+                                try {
+                                    int index = objectList.indexOf(parkedVehicle);
+                                    objectList.set(index, parkedVehicle);
+                                    parkedVehiclesAdapter.notifyDataSetChanged();
+                                } catch (IndexOutOfBoundsException indexException) {
+                                    indexException.printStackTrace();
+                                }
+                                Log.d("MODIFIED", "Modified : " + str);
+//                                makeToast("MODIFIED\n" + str);
+                                break;
+                            case REMOVED:
+                                try {
+                                    int index = objectList.indexOf(parkedVehicle);
+                                    objectList.remove(parkedVehicle);
+                                    parkedVehiclesAdapter.notifyItemRemoved(index);
+                                } catch (IndexOutOfBoundsException indexException) {
+                                    indexException.printStackTrace();
+                                }
+                                Log.d("REMOVED", "Removed : " + str);
+//                                makeToast("REMOVED\n" + str);
+                                break;
+                        }
+                    }
+                }
+
+                // it will read all the documents present in the Collection on detecting any change
+                *//*for (QueryDocumentSnapshot doc : value) {
+                    if (doc.exists()) {
+                        Map<String, Object> data = doc.getData();
+                        String str = "name: " + data.get("name") + "\nemail: " + data.get("email") + "\nrandomInt: " + data.get("randomInt");
+                        Log.d("TAG1", str);
+                        makeToast(str);
+                    }
+                }*//*
             }
-        });*/
+        });
+
+        // Stop listening to changes
+//        registration.remove();
+    }*/
 
 }
