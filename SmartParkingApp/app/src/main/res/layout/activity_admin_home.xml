@@ -159,11 +159,10 @@
         </androidx.cardview.widget.CardView>
 
         <androidx.cardview.widget.CardView
-            android:id="@+id/out_card"
+            android:id="@+id/history_card"
             android:layout_width="240dp"
             android:layout_height="100dp"
             android:layout_marginTop="20dp"
-            android:onClick="historyPage"
             app:cardBackgroundColor="#ccffff"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
