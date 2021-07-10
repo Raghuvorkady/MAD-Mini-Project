@@ -27,14 +27,14 @@ import com.projectx.spa.adapters.ParkedVehiclesAdapter;
 import com.projectx.spa.helpers.Constants;
 import com.projectx.spa.helpers.FbHelper;
 import com.projectx.spa.helpers.UserSession;
-import com.projectx.spa.models.Vehicles;
+import com.projectx.spa.models.ParkedVehicle;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class ParkedVehiclesActivity extends AppCompatActivity implements SwipeRefreshLayout.OnRefreshListener {
     private final String TAG = getClass().getSimpleName();
-    private List<Vehicles> parkedVehiclesList;
+    private List<ParkedVehicle> parkedVehicles;
     private FbHelper fbHelper;
     String id;
 
@@ -52,7 +52,7 @@ public class ParkedVehiclesActivity extends AppCompatActivity implements SwipeRe
 
         fbHelper = new FbHelper(this);
 
-        parkedVehiclesList = new ArrayList<>();
+        parkedVehicles = new ArrayList<>();
         updateRecyclerView();
 
         swipeRefreshLayout.setOnRefreshListener(this);
@@ -68,7 +68,7 @@ public class ParkedVehiclesActivity extends AppCompatActivity implements SwipeRe
     }
 
     public void updateRecyclerView() {
-        parkedVehiclesAdapter = new ParkedVehiclesAdapter(this, parkedVehiclesList);
+        parkedVehiclesAdapter = new ParkedVehiclesAdapter(this, parkedVehicles);
         recyclerView.setAdapter(parkedVehiclesAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
     }
@@ -89,20 +89,20 @@ public class ParkedVehiclesActivity extends AppCompatActivity implements SwipeRe
 
                 if (value != null) {
                     for (DocumentChange dc : value.getDocumentChanges()) {
-                        Vehicles parkingVehicles = dc.getDocument().toObject(Vehicles.class);
-                        String str = parkingVehicles.toString();
+                        ParkedVehicle parkedVehicle = dc.getDocument().toObject(ParkedVehicle.class);
+                        String str = parkedVehicle.toString();
 
                         switch (dc.getType()) {
                             case ADDED:
-                                parkedVehiclesList.add(parkingVehicles);
-                                parkedVehiclesAdapter.notifyItemInserted(parkedVehiclesList.size() - 1);
+                                parkedVehicles.add(parkedVehicle);
+                                parkedVehiclesAdapter.notifyItemInserted(parkedVehicles.size() - 1);
                                 Log.d("ADDED", "New : " + str);
 //                                makeToast("ADDED\n" + str);
                                 break;
                             case MODIFIED:
                                 try {
-                                    int index = parkedVehiclesList.indexOf(parkingVehicles);
-                                    parkedVehiclesList.set(index, parkingVehicles);
+                                    int index = parkedVehicles.indexOf(parkedVehicle);
+                                    parkedVehicles.set(index, parkedVehicle);
                                     parkedVehiclesAdapter.notifyDataSetChanged();
                                 } catch (IndexOutOfBoundsException indexException) {
                                     indexException.printStackTrace();
@@ -112,8 +112,8 @@ public class ParkedVehiclesActivity extends AppCompatActivity implements SwipeRe
                                 break;
                             case REMOVED:
                                 try {
-                                    int index = parkedVehiclesList.indexOf(parkingVehicles);
-                                    parkedVehiclesList.remove(parkingVehicles);
+                                    int index = parkedVehicles.indexOf(parkedVehicle);
+                                    parkedVehicles.remove(parkedVehicle);
                                     parkedVehiclesAdapter.notifyItemRemoved(index);
                                 } catch (IndexOutOfBoundsException indexException) {
                                     indexException.printStackTrace();

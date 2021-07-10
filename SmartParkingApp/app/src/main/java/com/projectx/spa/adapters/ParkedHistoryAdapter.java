@@ -11,7 +11,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.projectx.spa.R;
-import com.projectx.spa.models.History;
+import com.projectx.spa.models.ParkedHistory;
 
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
@@ -19,11 +19,11 @@ import java.util.List;
 
 public class ParkedHistoryAdapter extends RecyclerView.Adapter<ParkedHistoryAdapter.MyOwnHolder> {
     Context context;
-    List<History> parkedHistoryList;
+    List<ParkedHistory> parkedHistories;
 
-    public ParkedHistoryAdapter(Context context, List<History> parkedHistoryList) {
+    public ParkedHistoryAdapter(Context context, List<ParkedHistory> parkedHistories) {
         this.context = context;
-        this.parkedHistoryList = parkedHistoryList;
+        this.parkedHistories = parkedHistories;
     }
 
     @NonNull
@@ -36,19 +36,19 @@ public class ParkedHistoryAdapter extends RecyclerView.Adapter<ParkedHistoryAdap
 
     @Override
     public void onBindViewHolder(ParkedHistoryAdapter.MyOwnHolder holder, int position) {
-        holder.vehicleNoTextView.setText(parkedHistoryList.get(position).getVehicleNumber());
+        holder.vehicleNoTextView.setText(parkedHistories.get(position).getVehicleNumber());
 
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy hh:mm:ss a");
 
-        String entryTimeStr = "Entry Time: " + dateFormat.format(parkedHistoryList.get(position).getEntryTime().toDate());
+        String entryTimeStr = "Entry Time: " + dateFormat.format(parkedHistories.get(position).getEntryTime().toDate());
         holder.entryTimeTextView.setText(entryTimeStr);
 
-        String exitTimeStr = "Exit Time: " + dateFormat.format(parkedHistoryList.get(position).getExitTime().toDate());
+        String exitTimeStr = "Exit Time: " + dateFormat.format(parkedHistories.get(position).getExitTime().toDate());
         holder.exitTimeTextView.setText(exitTimeStr);
 
 
-        int amount = Integer.parseInt(parkedHistoryList.get(position).getAmount());
-        DecimalFormat decimalFormat = new DecimalFormat("#.00");
+        double amount = parkedHistories.get(position).getAmountPaid();
+        DecimalFormat decimalFormat = new DecimalFormat("#0.00");
         decimalFormat.setPositivePrefix("₹ ");
         holder.amountPaidTextView.setText(decimalFormat.format(amount));
 //        holder.amountPaidTextView.append("\n" + "₨" + "500" );
@@ -65,7 +65,7 @@ public class ParkedHistoryAdapter extends RecyclerView.Adapter<ParkedHistoryAdap
 
     @Override
     public int getItemCount() {
-        return parkedHistoryList.size();
+        return parkedHistories.size();
     }
 
     public static class MyOwnHolder extends RecyclerView.ViewHolder {

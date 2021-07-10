@@ -23,8 +23,8 @@ import com.google.firebase.firestore.QuerySnapshot;
 import com.projectx.spa.R;
 import com.projectx.spa.helpers.Constants;
 import com.projectx.spa.helpers.UserSession;
-import com.projectx.spa.models.History;
-import com.projectx.spa.models.Vehicles;
+import com.projectx.spa.models.ParkedHistory;
+import com.projectx.spa.models.ParkedVehicle;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -88,16 +88,15 @@ public class BillsPageActivity extends AppCompatActivity {
                             if (task.isSuccessful()) {
                                 for (QueryDocumentSnapshot document : task.getResult()) {
                                     Log.d(TAG, document.getId() + " => " + document.getData());
-                                    Vehicles vehicles = document.toObject(Vehicles.class);
+                                    ParkedVehicle parkedVehicle = document.toObject(ParkedVehicle.class);
 
-                                    if (vehicles.getVehicleNumber().equals(vehicleNumber)) {
+                                    if (parkedVehicle.getVehicleNumber().equals(vehicleNumber)) {
                                         flag = true;
                                         int val = Integer.parseInt(availableSpace) + 1;
-                                        Date entryDate = vehicles.getEntryTime().toDate();
+                                        Date entryDate = parkedVehicle.getEntryTime().toDate();
                                         vehicleNumberTextView.setText(vehicleNumber);
                                         DateFormat timeFormat = new SimpleDateFormat("HH:mm:ss");
                                         exitTime = Timestamp.now();
-                                        vehicles.setExitTime(exitTime);
                                         Date exittime = exitTime.toDate();
                                         String entime = timeFormat.format(entryDate);
                                         String extime = timeFormat.format(exittime);
@@ -120,8 +119,9 @@ public class BillsPageActivity extends AppCompatActivity {
                                                         Log.d(TAG, String.valueOf(minutes_difference));
                                                         CollectionReference collectionReference2 = firebaseFirestore.collection(Constants.PARKING_SLOTS).document(id).collection(Constants.PARKED_HISTORY);
                                                         DocumentReference historyDocument = collectionReference2.document();
-                                                        History history = new History(historyDocument.getId(), vehicles, String.valueOf(amt));
-                                                        moveFirestoreDocument(document.getReference(), historyDocument, history);
+                                                        ParkedHistory parkedHistory = new ParkedHistory(historyDocument.getId(),
+                                                                parkedVehicle.getVehicleNumber(), parkedVehicle.getEntryTime(), exitTime, amt);
+                                                        moveFirestoreDocument(document.getReference(), historyDocument, parkedHistory);
                                                     }
                                                 });
                                         Log.d(TAG, exitTime.toDate().toString());
@@ -149,14 +149,14 @@ public class BillsPageActivity extends AppCompatActivity {
         Toast.makeText(this, toastMessage, Toast.LENGTH_LONG).show();
     }
 
-    public void moveFirestoreDocument(DocumentReference fromPath, final DocumentReference toPath, History history) {
+    public void moveFirestoreDocument(DocumentReference fromPath, final DocumentReference toPath, ParkedHistory parkedHistory) {
         fromPath.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                 if (task.isSuccessful()) {
                     DocumentSnapshot document = task.getResult();
                     if (document != null) {
-                        toPath.set(history)
+                        toPath.set(parkedHistory)
                                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                                     @Override
                                     public void onSuccess(Void aVoid) {
