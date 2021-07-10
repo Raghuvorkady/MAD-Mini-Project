@@ -21,6 +21,7 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.projectx.spa.R;
 import com.projectx.spa.helpers.Constants;
+import com.projectx.spa.helpers.UserSession;
 import com.projectx.spa.models.Vehicles;
 
 import java.text.DateFormat;
@@ -28,11 +29,11 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class BillsPageActivity extends AppCompatActivity {
+    private final String TAG = getClass().getSimpleName();
 
     TextView t1, t2, t3, t4;
     String avail, total, str, id;
     boolean flag = false;
-    static String TAG = DetailsActivity.class.getSimpleName();
     FirebaseFirestore db = FirebaseFirestore.getInstance();
 
     Timestamp exitTime;
@@ -49,7 +50,7 @@ public class BillsPageActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
         str = intent.getStringExtra("number");
-        id = intent.getStringExtra("id");
+        id = new UserSession(this).getUserDetails().get(Constants.PREF_ID);
 
         DocumentReference docRef = db.collection(Constants.PARKING_SLOTS).document(id);
         docRef.get()
@@ -186,10 +187,10 @@ public class BillsPageActivity extends AppCompatActivity {
         });
     }
 
-    @Override
+    /*@Override
     public void onBackPressed() {
         Intent setIntent = new Intent(BillsPageActivity.this, AdminHomeActivity.class);
         startActivity(setIntent);
         finish();
-    }
+    }*/
 }

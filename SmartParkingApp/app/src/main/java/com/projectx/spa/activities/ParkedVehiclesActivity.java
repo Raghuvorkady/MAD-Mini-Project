@@ -1,5 +1,6 @@
 package com.projectx.spa.activities;
 
+import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
@@ -22,34 +23,34 @@ import com.google.firebase.firestore.ListenerRegistration;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.projectx.spa.R;
-import com.projectx.spa.adapters.AvailableSlotsAdapter;
+import com.projectx.spa.adapters.ParkedVehiclesAdapter;
 import com.projectx.spa.helpers.Constants;
 import com.projectx.spa.helpers.FbHelper;
-import com.projectx.spa.models.ParkingSlot;
+import com.projectx.spa.models.Vehicles;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class AvailableSlotsActivity extends AppCompatActivity implements SwipeRefreshLayout.OnRefreshListener {
+public class ParkedVehiclesActivity extends AppCompatActivity implements SwipeRefreshLayout.OnRefreshListener {
     private final String TAG = getClass().getSimpleName();
-
-    private List<ParkingSlot> parkingSlots;
+    private List<Vehicles> parkedVehiclesList;
     private FbHelper fbHelper;
 
     private RecyclerView recyclerView;
     private SwipeRefreshLayout swipeRefreshLayout;
-    private AvailableSlotsAdapter availableSlotsAdapter;
+    private ParkedVehiclesAdapter parkedVehiclesAdapter;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_available_slots);
+        setContentView(R.layout.activity_parked_vehicles);
 
         recyclerView = findViewById(R.id.recycler_view);
-        swipeRefreshLayout = findViewById(R.id.swipe_refresh_layout);
+        swipeRefreshLayout = findViewById(R.id.parked_vehicles_swipe_refresh_layout);
 
         fbHelper = new FbHelper(this);
 
-        parkingSlots = new ArrayList<>();
+        parkedVehiclesList = new ArrayList<>();
         updateRecyclerView();
 
         swipeRefreshLayout.setOnRefreshListener(this);
@@ -65,14 +66,13 @@ public class AvailableSlotsActivity extends AppCompatActivity implements SwipeRe
     }
 
     public void updateRecyclerView() {
-        availableSlotsAdapter = new AvailableSlotsAdapter(this, parkingSlots);
-        recyclerView.setAdapter(availableSlotsAdapter);
+        parkedVehiclesAdapter = new ParkedVehiclesAdapter(this, parkedVehiclesList);
+        recyclerView.setAdapter(parkedVehiclesAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
     }
 
     private void trackMultipleDocuments() {
-        Query query = FirebaseFirestore.getInstance()
-                .collection(Constants.PARKING_SLOTS);
+        Query query = FirebaseFirestore.getInstance().collection(Constants.PARKED_VEHICLES);
 
         ListenerRegistration registration = query.addSnapshotListener(new EventListener<QuerySnapshot>() {
             @RequiresApi(api = Build.VERSION_CODES.N)
@@ -86,21 +86,21 @@ public class AvailableSlotsActivity extends AppCompatActivity implements SwipeRe
 
                 if (value != null) {
                     for (DocumentChange dc : value.getDocumentChanges()) {
-                        ParkingSlot parkingSlot = dc.getDocument().toObject(ParkingSlot.class);
-                        String str = parkingSlot.toString();
+                        Vehicles parkingVehicles = dc.getDocument().toObject(Vehicles.class);
+                        String str = parkingVehicles.toString();
 
                         switch (dc.getType()) {
                             case ADDED:
-                                parkingSlots.add(parkingSlot);
-                                availableSlotsAdapter.notifyItemInserted(parkingSlots.size() - 1);
+                                parkedVehiclesList.add(parkingVehicles);
+                                parkedVehiclesAdapter.notifyItemInserted(parkedVehiclesList.size() - 1);
                                 Log.d("ADDED", "New : " + str);
 //                                makeToast("ADDED\n" + str);
                                 break;
                             case MODIFIED:
                                 try {
-                                    int index = parkingSlots.indexOf(parkingSlot);
-                                    parkingSlots.set(index, parkingSlot);
-                                    availableSlotsAdapter.notifyDataSetChanged();
+                                    int index = parkedVehiclesList.indexOf(parkingVehicles);
+                                    parkedVehiclesList.set(index, parkingVehicles);
+                                    parkedVehiclesAdapter.notifyDataSetChanged();
                                 } catch (IndexOutOfBoundsException indexException) {
                                     indexException.printStackTrace();
                                 }
@@ -109,9 +109,9 @@ public class AvailableSlotsActivity extends AppCompatActivity implements SwipeRe
                                 break;
                             case REMOVED:
                                 try {
-                                    int index = parkingSlots.indexOf(parkingSlot);
-                                    parkingSlots.remove(parkingSlot);
-                                    availableSlotsAdapter.notifyItemRemoved(index);
+                                    int index = parkedVehiclesList.indexOf(parkingVehicles);
+                                    parkedVehiclesList.remove(parkingVehicles);
+                                    parkedVehiclesAdapter.notifyItemRemoved(index);
                                 } catch (IndexOutOfBoundsException indexException) {
                                     indexException.printStackTrace();
                                 }
@@ -139,7 +139,7 @@ public class AvailableSlotsActivity extends AppCompatActivity implements SwipeRe
     }
 
     private void makeToast(String toastMessage) {
-        Toast.makeText(AvailableSlotsActivity.this, toastMessage, Toast.LENGTH_SHORT).show();
+        Toast.makeText(ParkedVehiclesActivity.this, toastMessage, Toast.LENGTH_SHORT).show();
     }
 
     private void makeSnackMessage(String str) {
@@ -151,5 +151,10 @@ public class AvailableSlotsActivity extends AppCompatActivity implements SwipeRe
             }
         });
         snackbar.show();
+    }
+
+    public void detailsPage(View view) {
+        Intent it = new Intent(this, DetailsActivity.class);
+        startActivity(it);
     }
 }

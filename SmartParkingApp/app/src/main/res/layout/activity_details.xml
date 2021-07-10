@@ -43,10 +43,10 @@
         android:id="@+id/pc1"
         android:layout_width="200dp"
         android:layout_height="130dp"
-        android:layout_marginBottom="60dp"
+        android:layout_marginTop="60dp"
         android:onClick="inPage"
         app:cardBackgroundColor="#ccffff"
-        app:layout_constraintBottom_toTopOf="@id/pc2"
+        app:layout_constraintTop_toBottomOf="@id/phone_input"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent">
 
@@ -60,35 +60,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/in"
-                android:textSize="40sp"
-                android:textStyle="bold" />
-
-        </LinearLayout>
-
-    </androidx.cardview.widget.CardView>
-
-    <androidx.cardview.widget.CardView
-        android:id="@+id/pc2"
-        android:layout_width="200dp"
-        android:layout_height="130dp"
-        android:layout_marginTop="60dp"
-        android:layout_marginBottom="40dp"
-        android:onClick="outPage"
-        app:cardBackgroundColor="#ccffff"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent">
-
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:orientation="vertical">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/out"
                 android:textSize="40sp"
                 android:textStyle="bold" />
 

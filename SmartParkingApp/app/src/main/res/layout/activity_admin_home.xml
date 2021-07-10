@@ -124,10 +124,10 @@
 
         <androidx.cardview.widget.CardView
             android:id="@+id/pc1"
-            android:layout_width="200dp"
+            android:layout_width="wrap_content"
             android:layout_height="100dp"
             android:layout_marginTop="20dp"
-            android:onClick="detailsPage"
+            android:onClick="viewParkedVehicles"
             app:cardBackgroundColor="#ccffff"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -136,22 +136,21 @@
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
+                android:gravity="center"
+                android:padding="8dp"
                 android:orientation="vertical">
 
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="60dp"
-                    android:layout_marginLeft="60dp"
                     android:contentDescription="@string/vehicle_image"
                     android:src="@drawable/car_48px" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/enter_info"
-                    android:textSize="40sp"
+                    android:text="Parked Vehicles"
+                    android:textSize="30sp"
                     android:textStyle="bold" />
 
             </LinearLayout>

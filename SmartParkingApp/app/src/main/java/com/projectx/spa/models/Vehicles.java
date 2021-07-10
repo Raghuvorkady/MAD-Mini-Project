@@ -89,4 +89,17 @@ public class Vehicles implements Parcelable, Settable {
         dest.writeParcelable(entryTime, flags);
         dest.writeParcelable(exitTime, flags);
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Vehicles vehicles = (Vehicles) o;
+        return id.equals(vehicles.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return id.hashCode();
+    }
 }

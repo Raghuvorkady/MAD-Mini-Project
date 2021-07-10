@@ -31,6 +31,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ParkedHistoryActivity extends AppCompatActivity implements SwipeRefreshLayout.OnRefreshListener {
+    private final String TAG = getClass().getSimpleName();
     private List<Vehicles> parkedHistoryList;
     private FbHelper fbHelper;
 
