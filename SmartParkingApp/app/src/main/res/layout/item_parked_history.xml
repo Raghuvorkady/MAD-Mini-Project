@@ -7,7 +7,7 @@
     android:layout_marginBottom="2dp">
 
     <LinearLayout
-        android:id="@+id/card_layout"
+        android:id="@+id/parked_history_card_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="#ffffff"
@@ -20,7 +20,7 @@
         android:paddingBottom="12dp">
 
         <TextView
-            android:id="@+id/building"
+            android:id="@+id/item_vehicle_number"
             style="@style/TextViewStyle.AvailableSlotsItem"
             android:drawablePadding="8dp"
             android:text="Vehicle Number"
@@ -29,13 +29,13 @@
             app:drawableLeftCompat="@drawable/ic_car" />
 
         <TextView
-            android:id="@+id/total_space"
+            android:id="@+id/item_entry_time"
             style="@style/TextViewStyle.AvailableSlotsItem"
             android:text="@string/entry_time"
             android:textAppearance="@style/TextAppearance.AppCompat.Title" />
 
         <TextView
-            android:id="@+id/available_space"
+            android:id="@+id/item_exit_time"
             style="@style/TextViewStyle.AvailableSlotsItem"
             android:text="@string/exit_time"
             android:textAppearance="@style/TextAppearance.AppCompat.Title" />
