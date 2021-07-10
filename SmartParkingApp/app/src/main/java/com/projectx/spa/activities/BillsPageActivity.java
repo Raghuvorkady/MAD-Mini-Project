@@ -79,7 +79,7 @@ public class BillsPageActivity extends AppCompatActivity {
 
     private void database() {
         if (Integer.parseInt(availableSpace) <= Integer.parseInt(totalSpace)) {
-            String collectionReference=Constants.PARKING_SLOTS+"/"+id+"/"+Constants.PARKED_VEHICLES;
+            String collectionReference = Constants.PARKING_SLOTS + "/" + id + "/" + Constants.PARKED_VEHICLES;
             firebaseFirestore.collection(collectionReference)
                     .get()
                     .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -97,6 +97,7 @@ public class BillsPageActivity extends AppCompatActivity {
                                         vehicleNumberTextView.setText(vehicleNumber);
                                         DateFormat timeFormat = new SimpleDateFormat("HH:mm:ss");
                                         exitTime = Timestamp.now();
+                                        vehicles.setExitTime(exitTime);
                                         Date exittime = exitTime.toDate();
                                         String entime = timeFormat.format(entryDate);
                                         String extime = timeFormat.format(exittime);
@@ -118,10 +119,9 @@ public class BillsPageActivity extends AppCompatActivity {
                                                         amountTextView.append("" + amt);
                                                         Log.d(TAG, String.valueOf(minutes_difference));
                                                         CollectionReference collectionReference2 = firebaseFirestore.collection(Constants.PARKING_SLOTS).document(id).collection(Constants.PARKED_HISTORY);
-                                                        DocumentReference historyDocument =collectionReference2.document();
-                                                        History history=new History(historyDocument.getId(), vehicles, String.valueOf(amt));
+                                                        DocumentReference historyDocument = collectionReference2.document();
+                                                        History history = new History(historyDocument.getId(), vehicles, String.valueOf(amt));
                                                         moveFirestoreDocument(document.getReference(), historyDocument, history);
-
                                                     }
                                                 });
                                         Log.d(TAG, exitTime.toDate().toString());
@@ -190,12 +190,12 @@ public class BillsPageActivity extends AppCompatActivity {
                 }
             }
         })
-        .addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure( Exception e) {
-                Log.d(TAG,"move error"+e);
-            }
-        });
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(Exception e) {
+                        Log.d(TAG, "move error" + e);
+                    }
+                });
     }
 
     /*@Override

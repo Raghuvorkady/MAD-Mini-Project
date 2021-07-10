@@ -6,9 +6,7 @@ import android.os.Parcelable;
 import com.google.firebase.Timestamp;
 import com.projectx.spa.interfaces.Settable;
 
-import java.io.Serializable;
-
-public class History implements Parcelable, Settable{
+public class History implements Parcelable, Settable {
     private String id;
     private String vehicleNumber;
     private Timestamp entryTime;
@@ -16,15 +14,43 @@ public class History implements Parcelable, Settable{
     private String amount;
 
     public History() {
-
     }
 
-    public History(String id, Vehicles vehicles, String amt) {
+    public History(String id, Vehicles vehicles, String amount) {
         this.id = id;
         this.vehicleNumber = vehicles.getVehicleNumber();
         this.entryTime = vehicles.getEntryTime();
         this.exitTime = vehicles.getExitTime();
-        this.amount = amt;
+        this.amount = amount;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    @Override
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public String getVehicleNumber() {
+        return vehicleNumber;
+    }
+
+    public Timestamp getEntryTime() {
+        return entryTime;
+    }
+
+    public Timestamp getExitTime() {
+        return exitTime;
+    }
+
+    public String getAmount() {
+        return amount;
+    }
+
+    public static Creator<History> getCREATOR() {
+        return CREATOR;
     }
 
     protected History(Parcel in) {
@@ -53,16 +79,24 @@ public class History implements Parcelable, Settable{
     }
 
     @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(id);
-        dest.writeString(vehicleNumber);
-        dest.writeParcelable(entryTime, flags);
-        dest.writeParcelable(exitTime, flags);
-        dest.writeString(amount);
+    public void writeToParcel(Parcel parcel, int i) {
+        parcel.writeString(id);
+        parcel.writeString(vehicleNumber);
+        parcel.writeParcelable(entryTime, i);
+        parcel.writeParcelable(exitTime, i);
+        parcel.writeString(amount);
     }
 
     @Override
-    public void setId(String id) {
-        this.id = id;
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        History history = (History) o;
+        return id.equals(history.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return id.hashCode();
     }
 }

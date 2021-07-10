@@ -26,14 +26,14 @@ import com.projectx.spa.adapters.ParkedHistoryAdapter;
 import com.projectx.spa.helpers.Constants;
 import com.projectx.spa.helpers.FbHelper;
 import com.projectx.spa.helpers.UserSession;
-import com.projectx.spa.models.Vehicles;
+import com.projectx.spa.models.History;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class ParkedHistoryActivity extends AppCompatActivity implements SwipeRefreshLayout.OnRefreshListener {
     private final String TAG = getClass().getSimpleName();
-    private List<Vehicles> parkedHistoryList;
+    private List<History> parkedHistoryList;
     private FbHelper fbHelper;
     String id;
     private RecyclerView recyclerView;
@@ -72,9 +72,8 @@ public class ParkedHistoryActivity extends AppCompatActivity implements SwipeRef
     }
 
     private void trackMultipleDocuments() {
-        String collectionReference=Constants.PARKING_SLOTS+"/"+id+"/"+Constants.PARKED_HISTORY;
-        Query query = FirebaseFirestore.getInstance()
-                .collection(collectionReference);
+        String collectionReference = Constants.PARKING_SLOTS + "/" + id + "/" + Constants.PARKED_HISTORY;
+        Query query = FirebaseFirestore.getInstance().collection(collectionReference);
 
         ListenerRegistration registration = query.addSnapshotListener(new EventListener<QuerySnapshot>() {
             @RequiresApi(api = Build.VERSION_CODES.N)
@@ -88,7 +87,7 @@ public class ParkedHistoryActivity extends AppCompatActivity implements SwipeRef
 
                 if (value != null) {
                     for (DocumentChange dc : value.getDocumentChanges()) {
-                        Vehicles parkingHistory = dc.getDocument().toObject(Vehicles.class);
+                        History parkingHistory = dc.getDocument().toObject(History.class);
                         String str = parkingHistory.toString();
 
                         switch (dc.getType()) {

@@ -11,7 +11,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.projectx.spa.R;
-import com.projectx.spa.models.Vehicles;
+import com.projectx.spa.models.History;
 
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
@@ -19,9 +19,9 @@ import java.util.List;
 
 public class ParkedHistoryAdapter extends RecyclerView.Adapter<ParkedHistoryAdapter.MyOwnHolder> {
     Context context;
-    List<Vehicles> parkedHistoryList;
+    List<History> parkedHistoryList;
 
-    public ParkedHistoryAdapter(Context context, List<Vehicles> parkedHistoryList) {
+    public ParkedHistoryAdapter(Context context, List<History> parkedHistoryList) {
         this.context = context;
         this.parkedHistoryList = parkedHistoryList;
     }
@@ -47,8 +47,7 @@ public class ParkedHistoryAdapter extends RecyclerView.Adapter<ParkedHistoryAdap
         holder.exitTimeTextView.setText(exitTimeStr);
 
 
-        // TODO: 10-07-2021 remove hardcoded value
-        int amount = 500;
+        int amount = Integer.parseInt(parkedHistoryList.get(position).getAmount());
         DecimalFormat decimalFormat = new DecimalFormat("#.00");
         decimalFormat.setPositivePrefix("₹ ");
         holder.amountPaidTextView.setText(decimalFormat.format(amount));
