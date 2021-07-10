@@ -89,7 +89,6 @@ public class DetailsActivity extends AppCompatActivity {
                                 });
                             })
                             .setNegativeButton(android.R.string.no, null)
-                            .setIcon(android.R.drawable.ic_dialog_alert)
                             .show();
                 } else {
                     Log.d(TAG, "wrong");
