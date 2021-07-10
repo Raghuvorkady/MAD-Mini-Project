@@ -32,9 +32,16 @@ import com.projectx.spa.models.ParkingSlot;
 import com.projectx.spa.models.User;
 
 public class RegisterActivity extends AppCompatActivity implements View.OnClickListener {
+    private final String TAG = getClass().getSimpleName();
 
     private Button registerBtn;
-    private EditText nameEditText, emailEditText, phoneEditText, passwordEditText, buildingEditText, areaEditText, totalSpaceEditText;
+    private EditText nameEditText;
+    private EditText emailEditText;
+    private EditText phoneEditText;
+    private EditText passwordEditText;
+    private EditText buildingEditText;
+    private EditText areaEditText;
+    private EditText totalSpaceEditText;
     private TextView loginBtn;
     private FirebaseAuth fAuth;
     private ProgressBar progressBar;

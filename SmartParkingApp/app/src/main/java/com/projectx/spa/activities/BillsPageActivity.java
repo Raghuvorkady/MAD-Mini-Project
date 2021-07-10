@@ -29,10 +29,11 @@ import java.util.Date;
 
 public class BillsPageActivity extends AppCompatActivity {
 
+    private final String TAG = getClass().getSimpleName();
+
     TextView t1, t2, t3, t4;
     String avail, total, str, id;
     boolean flag = false;
-    static String TAG = DetailsActivity.class.getSimpleName();
     FirebaseFirestore db = FirebaseFirestore.getInstance();
 
     Timestamp exitTime;

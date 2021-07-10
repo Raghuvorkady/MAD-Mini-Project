@@ -24,7 +24,7 @@ public class AdminHomeActivity extends AppCompatActivity {
     TextView t1, t2, t3, t4;
     int avail;
     String id;
-    static String TAG = DetailsActivity.class.getSimpleName();
+    private final String TAG = getClass().getSimpleName();
     FirebaseFirestore db = FirebaseFirestore.getInstance();
     UserSession userSession;
 
@@ -86,5 +86,9 @@ public class AdminHomeActivity extends AppCompatActivity {
     public void historyPage(View view) {
         Intent intent = new Intent(this, ParkedHistoryActivity.class);
         startActivity(intent);
+    }
+
+    public void viewParkedVehicles(View view) {
+        Log.d(TAG, "ADMIN vehicles");
     }
 }

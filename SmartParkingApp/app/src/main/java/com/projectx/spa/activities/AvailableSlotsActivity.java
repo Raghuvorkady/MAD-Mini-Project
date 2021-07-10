@@ -31,13 +31,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class AvailableSlotsActivity extends AppCompatActivity implements SwipeRefreshLayout.OnRefreshListener {
+    private final String TAG = getClass().getSimpleName();
+
     private List<ParkingSlot> parkingSlots;
     private FbHelper fbHelper;
 
     private RecyclerView recyclerView;
     private SwipeRefreshLayout swipeRefreshLayout;
     private AvailableSlotsAdapter availableSlotsAdapter;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

@@ -35,6 +35,8 @@ import java.util.Map;
 import java.util.Random;
 
 public class TestActivity extends AppCompatActivity {
+    private final String TAG = getClass().getSimpleName();
+
     private List<ParkingSlot> parkingSlots;
     private FbHelper fbHelper;
     private DocumentReference documentReference;

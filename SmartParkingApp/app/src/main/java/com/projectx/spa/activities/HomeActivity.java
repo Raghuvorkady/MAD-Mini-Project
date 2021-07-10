@@ -9,13 +9,11 @@ import android.widget.ProgressBar;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.firestore.FirebaseFirestore;
 import com.projectx.spa.R;
-import com.projectx.spa.helpers.FbHelper;
 import com.projectx.spa.helpers.UserSession;
 
 public class HomeActivity extends AppCompatActivity implements View.OnClickListener {
+    private final String TAG = getClass().getSimpleName();
 
     private Button login, availability;
     private ProgressBar progressBar;

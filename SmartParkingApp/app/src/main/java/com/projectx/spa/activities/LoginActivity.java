@@ -33,6 +33,7 @@ import com.projectx.spa.helpers.UserSession;
 import com.projectx.spa.models.User;
 
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
+    private final String TAG = getClass().getSimpleName();
 
     private Button logIn;
     private EditText emailEditText, passwordEditText;

@@ -25,10 +25,10 @@ import com.projectx.spa.models.Vehicles;
 import br.com.sapereaude.maskedEditText.MaskedEditText;
 
 public class DetailsActivity extends AppCompatActivity {
+    private final String TAG = getClass().getSimpleName();
 
     MaskedEditText e1;
     String s;
-    static String TAG = DetailsActivity.class.getSimpleName();
     String avail, id;
     FirebaseFirestore db = FirebaseFirestore.getInstance();
 
