@@ -34,6 +34,7 @@
         <activity android:name=".activities.DetailsActivity" />
         <activity android:name=".activities.BillsPageActivity" />
         <activity android:name=".activities.ParkedHistoryActivity" />
+        <activity android:name=".activities.ParkedVehiclesActivity" />
         <activity android:name=".activities.TestActivity" />
 
         <meta-data

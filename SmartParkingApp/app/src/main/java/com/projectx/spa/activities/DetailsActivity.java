@@ -80,7 +80,7 @@ public class DetailsActivity extends AppCompatActivity {
                 System.out.println(s);
                 e1.setText("");
                 Intent it = new Intent(this, AdminHomeActivity.class);
-                if ((s.matches("^[A-Z]{2}[-][0-9]{2}[-][A-Z]{2}[-][0-9]{4}$"))) {
+                if (s.matches("^[A-Z]{2}[-][0-9]{2}[-][A-Z]{2}[-][0-9]{4}$")) {
                     Log.d(TAG, s);
                     new AlertDialog.Builder(this)
                             .setTitle("Insert entry")
