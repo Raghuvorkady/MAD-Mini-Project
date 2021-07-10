@@ -21,7 +21,7 @@ import com.projectx.spa.helpers.Constants;
 import com.projectx.spa.helpers.FbHelper;
 import com.projectx.spa.helpers.UserSession;
 import com.projectx.spa.interfaces.OnGetDataListener;
-import com.projectx.spa.models.Vehicles;
+import com.projectx.spa.models.ParkedVehicle;
 import com.santalu.maskara.widget.MaskEditText;
 
 public class DetailsActivity extends AppCompatActivity {
@@ -69,10 +69,10 @@ public class DetailsActivity extends AppCompatActivity {
                             .setTitle("Insert entry")
                             .setMessage("Are you sure you want to insert " + vehicleNumber + "?")
                             .setPositiveButton(android.R.string.yes, (dialog, which) -> {
-                                Vehicles vehicles = new Vehicles(null, vehicleNumber, Timestamp.now());
+                                ParkedVehicle parkedVehicle = new ParkedVehicle(null, vehicleNumber, Timestamp.now());
                                 FbHelper fbHelper = new FbHelper(getApplicationContext());
-                                String collectionReference=Constants.PARKING_SLOTS+"/"+id+"/"+Constants.PARKED_VEHICLES;
-                                fbHelper.addDataToFirestore(vehicles, collectionReference, null, new OnGetDataListener() {
+                                String collectionReference = Constants.PARKING_SLOTS + "/" + id + "/" + Constants.PARKED_VEHICLES;
+                                fbHelper.addDataToFirestore(parkedVehicle, collectionReference, null, new OnGetDataListener() {
                                     @Override
                                     public void onSuccess(DocumentReference dataSnapshotValue) {
                                         Toast.makeText(DetailsActivity.this, "added successfully", Toast.LENGTH_LONG).show();

@@ -14,18 +14,18 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.projectx.spa.R;
 import com.projectx.spa.activities.BillsPageActivity;
-import com.projectx.spa.models.Vehicles;
+import com.projectx.spa.models.ParkedVehicle;
 
 import java.text.SimpleDateFormat;
 import java.util.List;
 
 public class ParkedVehiclesAdapter extends RecyclerView.Adapter<ParkedVehiclesAdapter.MyOwnHolder> {
     Context context;
-    List<Vehicles> parkedVehiclesList;
+    List<ParkedVehicle> parkedVehicles;
 
-    public ParkedVehiclesAdapter(Context context, List<Vehicles> parkedVehiclesList) {
+    public ParkedVehiclesAdapter(Context context, List<ParkedVehicle> parkedVehicles) {
         this.context = context;
-        this.parkedVehiclesList = parkedVehiclesList;
+        this.parkedVehicles = parkedVehicles;
     }
 
     @NonNull
@@ -38,7 +38,7 @@ public class ParkedVehiclesAdapter extends RecyclerView.Adapter<ParkedVehiclesAd
 
     @Override
     public void onBindViewHolder(ParkedVehiclesAdapter.MyOwnHolder holder, int position) {
-        Vehicles vehicle = parkedVehiclesList.get(position);
+        ParkedVehicle vehicle = parkedVehicles.get(position);
         holder.vehicleNoTextView.setText(vehicle.getVehicleNumber());
 
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy hh:mm:ss a");
@@ -70,7 +70,7 @@ public class ParkedVehiclesAdapter extends RecyclerView.Adapter<ParkedVehiclesAd
 
     @Override
     public int getItemCount() {
-        return parkedVehiclesList.size();
+        return parkedVehicles.size();
     }
 
     public static class MyOwnHolder extends RecyclerView.ViewHolder {

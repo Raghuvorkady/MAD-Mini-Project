@@ -26,14 +26,14 @@ import com.projectx.spa.adapters.ParkedHistoryAdapter;
 import com.projectx.spa.helpers.Constants;
 import com.projectx.spa.helpers.FbHelper;
 import com.projectx.spa.helpers.UserSession;
-import com.projectx.spa.models.History;
+import com.projectx.spa.models.ParkedHistory;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class ParkedHistoryActivity extends AppCompatActivity implements SwipeRefreshLayout.OnRefreshListener {
     private final String TAG = getClass().getSimpleName();
-    private List<History> parkedHistoryList;
+    private List<ParkedHistory> parkedHistories;
     private FbHelper fbHelper;
     String id;
     private RecyclerView recyclerView;
@@ -50,7 +50,7 @@ public class ParkedHistoryActivity extends AppCompatActivity implements SwipeRef
 
         fbHelper = new FbHelper(this);
 
-        parkedHistoryList = new ArrayList<>();
+        parkedHistories = new ArrayList<>();
         updateRecyclerView();
 
         swipeRefreshLayout.setOnRefreshListener(this);
@@ -66,7 +66,7 @@ public class ParkedHistoryActivity extends AppCompatActivity implements SwipeRef
     }
 
     public void updateRecyclerView() {
-        parkedHistoryAdapter = new ParkedHistoryAdapter(this, parkedHistoryList);
+        parkedHistoryAdapter = new ParkedHistoryAdapter(this, parkedHistories);
         recyclerView.setAdapter(parkedHistoryAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
     }
@@ -87,20 +87,20 @@ public class ParkedHistoryActivity extends AppCompatActivity implements SwipeRef
 
                 if (value != null) {
                     for (DocumentChange dc : value.getDocumentChanges()) {
-                        History parkingHistory = dc.getDocument().toObject(History.class);
-                        String str = parkingHistory.toString();
+                        ParkedHistory parkedHistory = dc.getDocument().toObject(ParkedHistory.class);
+                        String str = parkedHistory.toString();
 
                         switch (dc.getType()) {
                             case ADDED:
-                                parkedHistoryList.add(parkingHistory);
-                                parkedHistoryAdapter.notifyItemInserted(parkedHistoryList.size() - 1);
+                                parkedHistories.add(parkedHistory);
+                                parkedHistoryAdapter.notifyItemInserted(parkedHistories.size() - 1);
                                 Log.d("ADDED", "New : " + str);
 //                                makeToast("ADDED\n" + str);
                                 break;
                             case MODIFIED:
                                 try {
-                                    int index = parkedHistoryList.indexOf(parkingHistory);
-                                    parkedHistoryList.set(index, parkingHistory);
+                                    int index = parkedHistories.indexOf(parkedHistory);
+                                    parkedHistories.set(index, parkedHistory);
                                     parkedHistoryAdapter.notifyDataSetChanged();
                                 } catch (IndexOutOfBoundsException indexException) {
                                     indexException.printStackTrace();
@@ -110,8 +110,8 @@ public class ParkedHistoryActivity extends AppCompatActivity implements SwipeRef
                                 break;
                             case REMOVED:
                                 try {
-                                    int index = parkedHistoryList.indexOf(parkingHistory);
-                                    parkedHistoryList.remove(parkingHistory);
+                                    int index = parkedHistories.indexOf(parkedHistory);
+                                    parkedHistories.remove(parkedHistory);
                                     parkedHistoryAdapter.notifyItemRemoved(index);
                                 } catch (IndexOutOfBoundsException indexException) {
                                     indexException.printStackTrace();
