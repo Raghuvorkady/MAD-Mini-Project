@@ -62,17 +62,18 @@ public class AdminHomeActivity extends AppCompatActivity {
 
                 if (snapshot != null && snapshot.exists()) {
                     Log.d("TAG1", "Current data: " + snapshot);
-                    ParkingSlot ps = snapshot.toObject(ParkingSlot.class);
-                    String name = userSession.getUserDetails().get(Constants.PREF_NAME);
-                    String building = ps.getBuilding();
-                    String land = ps.getAddress();
-                    availableSpace = ps.getAvailableSpace();
+                    ParkingSlot parkingSlot = snapshot.toObject(ParkingSlot.class);
+                    if (parkingSlot != null) {
+                        String name = userSession.getUserDetails().get(Constants.PREF_NAME);
+                        String building = parkingSlot.getBuilding();
+                        String land = parkingSlot.getAddress();
+                        availableSpace = parkingSlot.getAvailableSpace();
 
-                    nameTextView.setText(name.toUpperCase());
-                    buildingTextView.setText(building);
-                    landTextView.setText(land);
-                    availableTextView.setText("" + availableSpace);
-
+                        nameTextView.setText(name);
+                        buildingTextView.setText(building);
+                        landTextView.setText(land);
+                        availableTextView.setText(String.valueOf(availableSpace));
+                    }
                 } else {
                     Log.d("TAG1", "Current data: null");
 
