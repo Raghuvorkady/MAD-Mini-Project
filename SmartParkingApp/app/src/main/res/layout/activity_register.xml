@@ -19,7 +19,7 @@
             app:srcCompat="@drawable/icon" />
 
         <TextView
-            android:id="@+id/textView"
+            android:id="@+id/bill_activity_bill"
             style="@style/TextViewStyle"
             android:fontFamily="@font/aladin"
             android:text="@string/e_park"
@@ -27,7 +27,7 @@
             tools:text="title" />
 
         <TextView
-            android:id="@+id/textView3"
+            android:id="@+id/bill_activity_exit_time"
             style="@style/TextViewStyle"
             android:layout_marginTop="20dp"
             android:layout_marginBottom="20dp"

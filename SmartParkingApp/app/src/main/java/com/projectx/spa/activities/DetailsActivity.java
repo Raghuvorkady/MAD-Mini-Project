@@ -22,16 +22,15 @@ import com.projectx.spa.helpers.FbHelper;
 import com.projectx.spa.helpers.UserSession;
 import com.projectx.spa.interfaces.OnGetDataListener;
 import com.projectx.spa.models.Vehicles;
-
-import br.com.sapereaude.maskedEditText.MaskedEditText;
+import com.santalu.maskara.widget.MaskEditText;
 
 public class DetailsActivity extends AppCompatActivity {
     private final String TAG = getClass().getSimpleName();
 
-    MaskedEditText e1;
-    String s;
-    String avail, id;
-    FirebaseFirestore db = FirebaseFirestore.getInstance();
+    MaskEditText maskEditText;
+    String vehicleNumber;
+    String availableSpace, id;
+    FirebaseFirestore firebaseFirestore = FirebaseFirestore.getInstance();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,44 +41,43 @@ public class DetailsActivity extends AppCompatActivity {
         Log.d(TAG, id);
         // Log is recommended
 
-        DocumentReference docRef = db.collection(Constants.PARKING_SLOTS).document(id);
+        DocumentReference docRef = firebaseFirestore.collection(Constants.PARKING_SLOTS).document(id);
         docRef.get()
                 .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
                     @Override
                     public void onSuccess(DocumentSnapshot documentSnapshot) {
-                        avail = documentSnapshot.get("availableSpace").toString();
-                        Log.d(TAG, "avail=" + avail);
+                        availableSpace = documentSnapshot.get("availableSpace").toString();
+                        Log.d(TAG, "avail=" + availableSpace);
                     }
                 });
 
-        e1 = findViewById(R.id.phone_input);
+        maskEditText = findViewById(R.id.vehicle_edit_text);
         /*e1.setFilters(new InputFilter[] {new InputFilter.AllCaps()});*/
     }
 
     @RequiresApi(api = Build.VERSION_CODES.Q)
     public void inPage(View view) {
-        if (Integer.parseInt(avail) > 0) {
-            s = e1.getText().toString();
-            if (!s.equals("AA-00-BB-1111")) {
-                System.out.println(s);
-//                Intent it = new Intent(this, AdminHomeActivity.class);
-//                if (s.matches("^[A-Z]{2}[-][0-9]{2}[-][A-Z]{2}[-][0-9]{4}$")) {
-                if (true) {
-                    e1.setText("");
-                    Log.d(TAG, s);
+        if (Integer.parseInt(availableSpace) > 0) {
+            vehicleNumber = maskEditText.getText().toString();
+            if (!vehicleNumber.equals("AA-00-BB-1111")) {
+                System.out.println(vehicleNumber);
+                // Intent it = new Intent(this, AdminHomeActivity.class);
+                if ((vehicleNumber.matches("^[A-Z]{2}[-][0-9]{2}[-][A-Z]{2}[-][0-9]{4}$"))) {
+                    maskEditText.setText("");
+                    Log.d(TAG, vehicleNumber);
                     new AlertDialog.Builder(this)
                             .setTitle("Insert entry")
-                            .setMessage("Are you sure you want to insert " + s + "?")
+                            .setMessage("Are you sure you want to insert " + vehicleNumber + "?")
                             .setPositiveButton(android.R.string.yes, (dialog, which) -> {
-                                Vehicles vh = new Vehicles(null, s, Timestamp.now());
+                                Vehicles vehicles = new Vehicles(null, vehicleNumber, Timestamp.now());
                                 FbHelper fbHelper = new FbHelper(getApplicationContext());
-                                fbHelper.addDataToFirestore(vh, Constants.PARKED_VEHICLES, null, new OnGetDataListener() {
+                                fbHelper.addDataToFirestore(vehicles, Constants.PARKED_VEHICLES, null, new OnGetDataListener() {
                                     @Override
                                     public void onSuccess(DocumentReference dataSnapshotValue) {
                                         Toast.makeText(DetailsActivity.this, "added successfully", Toast.LENGTH_LONG).show();
-                                        int val = Integer.parseInt(avail) - 1;
-                                        db.collection(Constants.PARKING_SLOTS).document(id).update("availableSpace", val);
-//                                        startActivity(it);
+                                        int updatedAvailableSpace = Integer.parseInt(availableSpace) - 1;
+                                        firebaseFirestore.collection(Constants.PARKING_SLOTS).document(id).update("availableSpace", updatedAvailableSpace);
+                                        // startActivity(it);
                                         finish();
                                     }
 

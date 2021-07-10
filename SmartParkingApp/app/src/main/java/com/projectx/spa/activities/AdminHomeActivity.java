@@ -11,7 +11,6 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
@@ -19,16 +18,14 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.projectx.spa.R;
 import com.projectx.spa.helpers.Constants;
-import com.projectx.spa.helpers.FbHelper;
 import com.projectx.spa.helpers.UserSession;
 import com.projectx.spa.models.ParkingSlot;
-
-import es.dmoral.toasty.Toasty;
+import com.projectx.spa.models.User;
 
 public class AdminHomeActivity extends AppCompatActivity {
 
-    TextView t1, t2, t3, t4;
-    int avail;
+    TextView nameTextView, buildingTextView, landTextView, availableTextView;
+    int availableSpace;
     String id;
     private final String TAG = getClass().getSimpleName();
     FirebaseFirestore db = FirebaseFirestore.getInstance();
@@ -40,12 +37,11 @@ public class AdminHomeActivity extends AppCompatActivity {
         setContentView(R.layout.activity_admin_home);
         // user = new User("VpnN3ycQOyRjg5vpqPoO6ag5lBb2", "testName", "testMail", "1213213", Timestamp.now());
 
-        t1 = findViewById(R.id.pt2);
-        t2 = findViewById(R.id.pt3);
-        t3 = findViewById(R.id.pt5);
-        t4 = findViewById(R.id.pt6);
+        nameTextView = findViewById(R.id.name_text_view);
+        buildingTextView = findViewById(R.id.building_text_view);
+        landTextView = findViewById(R.id.land_text_view);
+        availableTextView = findViewById(R.id.linear_layout1_available_slots);
 
-        FbHelper fh = new FbHelper(getApplicationContext());
 
         userSession = new UserSession(this);
         id = userSession.getUserDetails().get(Constants.PREF_ID);
@@ -68,12 +64,12 @@ public class AdminHomeActivity extends AppCompatActivity {
                     String name = userSession.getUserDetails().get(Constants.PREF_NAME);
                     String building = ps.getBuilding();
                     String land = ps.getAddress();
-                    avail = ps.getAvailableSpace();
+                    availableSpace = ps.getAvailableSpace();
 
-                    t1.setText(name.toUpperCase());
-                    t2.setText(building);
-                    t3.setText(land);
-                    t4.setText("" + avail);
+                    nameTextView.setText(name.toUpperCase());
+                    buildingTextView.setText(building);
+                    landTextView.setText(land);
+                    availableTextView.setText("" + availableSpace);
 
                 } else {
                     Log.d("TAG1", "Current data: null");
