@@ -29,11 +29,11 @@ import java.util.Date;
 
 public class BillsPageActivity extends AppCompatActivity {
 
-    TextView t1, t2, t3, t4;
-    String avail, total, str, id;
+    TextView vehicleNumberTextView, entryTimeTextView, exitTimeTextView, amountTextView;
+    String availableSpace, totalSpace, vehicleNumber, id;
     boolean flag = false;
     static String TAG = DetailsActivity.class.getSimpleName();
-    FirebaseFirestore db = FirebaseFirestore.getInstance();
+    FirebaseFirestore firebaseFirestore = FirebaseFirestore.getInstance();
 
     Timestamp exitTime;
 
@@ -42,24 +42,24 @@ public class BillsPageActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_bills_page);
 
-        t1 = findViewById(R.id.textView5);
-        t2 = findViewById(R.id.textView2);
-        t3 = findViewById(R.id.textView3);
-        t4 = findViewById(R.id.textView6);
+        vehicleNumberTextView = findViewById(R.id.bill_activity_vehicle_number);
+        entryTimeTextView = findViewById(R.id.bill_activity_entry_time);
+        exitTimeTextView = findViewById(R.id.bill_activity_exit_time);
+        amountTextView = findViewById(R.id.amount);
 
         Intent intent = getIntent();
-        str = intent.getStringExtra("number");
+        vehicleNumber = intent.getStringExtra("number");
         id = intent.getStringExtra("id");
 
-        DocumentReference docRef = db.collection(Constants.PARKING_SLOTS).document(id);
+        DocumentReference docRef = firebaseFirestore.collection(Constants.PARKING_SLOTS).document(id);
         docRef.get()
                 .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
                     @Override
                     public void onSuccess(DocumentSnapshot documentSnapshot) {
-                        avail = documentSnapshot.get("availableSpace").toString();
-                        total = documentSnapshot.get("totalSpace").toString();
-                        Log.d(TAG, "avail=" + avail);
-                        Log.d(TAG, "total=" + total);
+                        availableSpace = documentSnapshot.get("availableSpace").toString();
+                        totalSpace = documentSnapshot.get("totalSpace").toString();
+                        Log.d(TAG, "avail=" + availableSpace);
+                        Log.d(TAG, "total=" + totalSpace);
 
                         database();
                     }
@@ -75,8 +75,8 @@ public class BillsPageActivity extends AppCompatActivity {
     }
 
     private void database() {
-        if (Integer.parseInt(avail) <= Integer.parseInt(total)) {
-            db.collection(Constants.PARKED_VEHICLES)
+        if (Integer.parseInt(availableSpace) <= Integer.parseInt(totalSpace)) {
+            firebaseFirestore.collection(Constants.PARKED_VEHICLES)
                     .get()
                     .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                         @Override
@@ -86,35 +86,34 @@ public class BillsPageActivity extends AppCompatActivity {
                                     Log.d(TAG, document.getId() + " => " + document.getData());
                                     Vehicles vehicles = document.toObject(Vehicles.class);
 
-                                    if (vehicles.getVehicleNumber().equals(str)) {
+                                    if (vehicles.getVehicleNumber().equals(vehicleNumber)) {
                                         flag = true;
-                                        int val = Integer.parseInt(avail) + 1;
+                                        int val = Integer.parseInt(availableSpace) + 1;
                                         Date entryDate = vehicles.getEntryTime().toDate();
-                                        t1.setText(str);
+                                        vehicleNumberTextView.setText(vehicleNumber);
                                         DateFormat timeFormat = new SimpleDateFormat("HH:mm:ss");
-                                        SimpleDateFormat formatter = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
                                         exitTime = Timestamp.now();
                                         Date exittime = exitTime.toDate();
                                         String entime = timeFormat.format(entryDate);
                                         String extime = timeFormat.format(exittime);
-                                        t2.append(" " + entime);
-                                        t3.append(" " + extime);
+                                        entryTimeTextView.append(" " + entime);
+                                        exitTimeTextView.append(" " + extime);
 
-                                        DocumentReference doc = db.collection(Constants.PARKED_VEHICLES).document(document.getId());
+                                        DocumentReference doc = firebaseFirestore.collection(Constants.PARKED_VEHICLES).document(document.getId());
                                         doc.update("exitTime", exitTime)
                                                 // TODO: 09-07-2021 add on failure
                                                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                                                     @Override
                                                     public void onSuccess(Void aVoid) {
                                                         // TODO: 09-07-2021 onsuccess for updating
-                                                        db.collection(Constants.PARKING_SLOTS).document(id).update("availableSpace", val);
+                                                        firebaseFirestore.collection(Constants.PARKING_SLOTS).document(id).update("availableSpace", val);
                                                         Log.d(TAG, "updated successfully");
                                                         long time_difference = exittime.getTime() - entryDate.getTime();
                                                         long minutes_difference = (time_difference / 1000) / 60;
                                                         int amt = (int) Math.ceil(minutes_difference * 10 / 20);
-                                                        t4.append("" + amt);
+                                                        amountTextView.append("" + amt);
                                                         Log.d(TAG, String.valueOf(minutes_difference));
-                                                        moveFirestoreDocument(document.getReference(), db.collection(Constants.PARKED_HISTORY).document());
+                                                        moveFirestoreDocument(document.getReference(), firebaseFirestore.collection(Constants.PARKED_HISTORY).document());
 
                                                     }
                                                 });

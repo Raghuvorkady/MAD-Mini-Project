@@ -8,7 +8,7 @@
     tools:context=".activities.AdminHomeActivity">
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/pl1"
+        android:id="@+id/admin_home_constraint_layout1"
         android:layout_width="match_parent"
         android:layout_height="300dp"
         android:background="@drawable/background_top"
@@ -16,7 +16,7 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <TextView
-            android:id="@+id/pt1"
+            android:id="@+id/constraint_layout1_text_view_hey"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="28dp"
@@ -29,7 +29,7 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:id="@+id/pt2"
+            android:id="@+id/name_text_view"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="28dp"
@@ -39,10 +39,10 @@
             android:textColor="@color/black"
             android:textSize="35sp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/pt1" />
+            app:layout_constraintTop_toBottomOf="@id/constraint_layout1_text_view_hey" />
 
         <TextView
-            android:id="@+id/pt3"
+            android:id="@+id/building_text_view"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="28dp"
@@ -52,10 +52,10 @@
             android:textColor="@color/black"
             android:textSize="30sp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/pt2" />
+            app:layout_constraintTop_toBottomOf="@id/name_text_view" />
 
         <TextView
-            android:id="@+id/pt5"
+            android:id="@+id/land_text_view"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="28dp"
@@ -65,23 +65,23 @@
             android:textColor="@color/black"
             android:textSize="25sp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/pt3" />
+            app:layout_constraintTop_toBottomOf="@id/building_text_view" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/pl3"
+        android:id="@+id/admin_home_contraint_layout2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="@drawable/background_white_top"
-        app:layout_constraintBottom_toBottomOf="@+id/pl1"
+        app:layout_constraintBottom_toBottomOf="@+id/admin_home_constraint_layout1"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/pl1"
+        app:layout_constraintTop_toBottomOf="@+id/admin_home_constraint_layout1"
         app:layout_constraintVertical_bias="0.448">
 
         <LinearLayout
-            android:id="@+id/pl2"
+            android:id="@+id/constraint_layout2_linear_layout1"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical"
@@ -90,7 +90,7 @@
             app:layout_constraintTop_toTopOf="parent">
 
             <TextView
-                android:id="@+id/pt4"
+                android:id="@+id/linear_layout1_no_slots"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="center_horizontal"
@@ -100,7 +100,7 @@
                 android:textSize="30sp" />
 
             <TextView
-                android:id="@+id/pt6"
+                android:id="@+id/linear_layout1_available_slots"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center_horizontal"
@@ -115,15 +115,15 @@
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/pl4"
+        android:id="@+id/admin_home_constraint_layout3"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/pl3">
+        app:layout_constraintTop_toBottomOf="@id/admin_home_contraint_layout2">
 
         <androidx.cardview.widget.CardView
-            android:id="@+id/pc1"
+            android:id="@+id/contraint_layout3_info_card"
             android:layout_width="200dp"
             android:layout_height="100dp"
             android:layout_marginTop="20dp"
@@ -131,7 +131,7 @@
             app:cardBackgroundColor="#ccffff"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@id/pl4">
+            app:layout_constraintTop_toTopOf="@id/admin_home_constraint_layout3">
 
             <LinearLayout
                 android:layout_width="wrap_content"
@@ -159,7 +159,7 @@
         </androidx.cardview.widget.CardView>
 
         <androidx.cardview.widget.CardView
-            android:id="@+id/pc2"
+            android:id="@+id/out_card"
             android:layout_width="200dp"
             android:layout_height="100dp"
             android:layout_marginTop="40dp"
@@ -167,7 +167,7 @@
             app:cardBackgroundColor="#ccffff"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/pc1">
+            app:layout_constraintTop_toBottomOf="@id/contraint_layout3_info_card">
 
             <LinearLayout
                 android:layout_width="wrap_content"
