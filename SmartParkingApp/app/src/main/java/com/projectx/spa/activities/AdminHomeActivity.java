@@ -11,6 +11,7 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
@@ -20,7 +21,8 @@ import com.projectx.spa.R;
 import com.projectx.spa.helpers.Constants;
 import com.projectx.spa.helpers.UserSession;
 import com.projectx.spa.models.ParkingSlot;
-import com.projectx.spa.models.User;
+
+import es.dmoral.toasty.Toasty;
 
 public class AdminHomeActivity extends AppCompatActivity {
 
