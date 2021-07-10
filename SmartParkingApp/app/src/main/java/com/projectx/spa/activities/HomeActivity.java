@@ -20,6 +20,8 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
     /*private FirebaseAuth fAuth;
     private FirebaseFirestore firestore;*/
 
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -35,6 +37,9 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         UserSession userSession = new UserSession(this);
         if (userSession.isUserLoggedIn()) {
             login.setText("vehicle entry");
+        }
+        else{
+            login.setText("Login");
         }
 
         /*fAuth = FirebaseAuth.getInstance();
@@ -91,6 +96,18 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         }*/
     }
 
+
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        UserSession userSession = new UserSession(this);
+        if (userSession.isUserLoggedIn()) {
+            login.setText("Vehicle Entry");
+        } else {
+            login.setText("Login Page");
+        }
+    }
     @SuppressLint("NonConstantResourceId")
     @Override
     public void onClick(View view) {
