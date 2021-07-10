@@ -47,12 +47,6 @@ public class AdminHomeActivity extends AppCompatActivity {
         trackSingleDocumentTest(documentReference);
     }
 
-    public void detailsPage(View view) throws Throwable {
-        Intent it = new Intent(this, DetailsActivity.class);
-        it.putExtra("id", id);
-        startActivity(it);
-    }
-
     private void trackSingleDocumentTest(DocumentReference documentReference) {
         documentReference.addSnapshotListener(new EventListener<DocumentSnapshot>() {
             @Override
@@ -91,6 +85,7 @@ public class AdminHomeActivity extends AppCompatActivity {
     public void viewParkedVehicles(View view) {
         Log.d(TAG, "ADMIN vehicles");
         Intent intent = new Intent(this, ParkedVehiclesActivity.class);
+        intent.putExtra("id", id);
         startActivity(intent);
     }
 }

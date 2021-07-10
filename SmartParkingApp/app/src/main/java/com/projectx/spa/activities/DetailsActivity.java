@@ -79,7 +79,7 @@ public class DetailsActivity extends AppCompatActivity {
             if (!s.equals("AA-00-BB-1111")) {
                 System.out.println(s);
                 e1.setText("");
-                Intent it = new Intent(this, AdminHomeActivity.class);
+//                Intent it = new Intent(this, AdminHomeActivity.class);
                 if (s.matches("^[A-Z]{2}[-][0-9]{2}[-][A-Z]{2}[-][0-9]{4}$")) {
                     Log.d(TAG, s);
                     new AlertDialog.Builder(this)
@@ -94,7 +94,7 @@ public class DetailsActivity extends AppCompatActivity {
                                         Toast.makeText(DetailsActivity.this, "added successfully", Toast.LENGTH_LONG).show();
                                         int val = Integer.parseInt(avail) - 1;
                                         db.collection(Constants.PARKING_SLOTS).document(id).update("availableSpace", val);
-                                        startActivity(it);
+//                                        startActivity(it);
                                         finish();
                                     }
 
