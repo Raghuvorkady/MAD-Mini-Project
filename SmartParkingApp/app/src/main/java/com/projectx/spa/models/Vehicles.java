@@ -58,6 +58,10 @@ public class Vehicles implements Parcelable, Settable {
         return exitTime;
     }
 
+    public void setExitTime(Timestamp exitTime) {
+        this.exitTime = exitTime;
+    }
+
     public static final Creator<Vehicles> CREATOR = new Creator<Vehicles>() {
         @Override
         public Vehicles createFromParcel(Parcel in) {
