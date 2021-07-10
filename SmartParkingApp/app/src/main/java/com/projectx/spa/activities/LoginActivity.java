@@ -41,7 +41,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private ProgressBar progressBar;
     private FirebaseAuth fAuth;
     private UserSession userSession;
-    private User user;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -102,10 +101,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     }
 
     private void userLogInMethod() {
-        progressBar.setVisibility(View.VISIBLE);
-        logIn.setVisibility(View.INVISIBLE);
-        forgot.setVisibility(View.INVISIBLE);
-        register.setVisibility(View.INVISIBLE);
+        unHideProgressBar();
 
         String email = emailEditText.getText().toString().trim();
         String password = passwordEditText.getText().toString().trim();
@@ -113,36 +109,24 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         if (TextUtils.isEmpty(email)) {
             emailEditText.setError("Email is required.");
 
-            progressBar.setVisibility(View.INVISIBLE);
-            logIn.setVisibility(View.VISIBLE);
-            forgot.setVisibility(View.VISIBLE);
-            register.setVisibility(View.VISIBLE);
+            hideProgressBar();
             return;
         }
         if (TextUtils.isEmpty(password)) {
             passwordEditText.setError("password is required");
 
-            progressBar.setVisibility(View.INVISIBLE);
-            logIn.setVisibility(View.VISIBLE);
-            forgot.setVisibility(View.VISIBLE);
-            register.setVisibility(View.VISIBLE);
+            hideProgressBar();
             return;
         }
         if (email.isEmpty() || !(Patterns.EMAIL_ADDRESS.matcher(email).matches())) {
             emailEditText.setError("email is not proper");
-            progressBar.setVisibility(View.INVISIBLE);
-            logIn.setVisibility(View.VISIBLE);
-            forgot.setVisibility(View.VISIBLE);
-            register.setVisibility(View.VISIBLE);
+            hideProgressBar();
             return;
         }
         if (password.length() < 6) {
             passwordEditText.setError("password must be at least 6 characters");
 
-            progressBar.setVisibility(View.INVISIBLE);
-            logIn.setVisibility(View.VISIBLE);
-            forgot.setVisibility(View.VISIBLE);
-            register.setVisibility(View.VISIBLE);
+            hideProgressBar();
             return;
         }
 
@@ -193,10 +177,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                                 });
                             }
                         } else {
-                            progressBar.setVisibility(View.INVISIBLE);
-                            logIn.setVisibility(View.VISIBLE);
-                            forgot.setVisibility(View.VISIBLE);
-                            register.setVisibility(View.VISIBLE);
+                            hideProgressBar();
                             makeToast("Error !!" + task.getException().getMessage());
                         }
                     }
@@ -240,6 +221,20 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             }
         });
         passwordResetDialog.create().show();
+    }
+
+    private void hideProgressBar() {
+        progressBar.setVisibility(View.INVISIBLE);
+        logIn.setVisibility(View.VISIBLE);
+        forgot.setVisibility(View.VISIBLE);
+        register.setVisibility(View.VISIBLE);
+    }
+
+    private void unHideProgressBar() {
+        progressBar.setVisibility(View.VISIBLE);
+        logIn.setVisibility(View.INVISIBLE);
+        forgot.setVisibility(View.INVISIBLE);
+        register.setVisibility(View.INVISIBLE);
     }
 
     private void makeToast(String toastMessage) {

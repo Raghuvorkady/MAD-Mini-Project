@@ -21,7 +21,6 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
     private FirebaseFirestore firestore;*/
 
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -33,14 +32,6 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
 
         login.setOnClickListener(this);
         availability.setOnClickListener(this);
-
-        UserSession userSession = new UserSession(this);
-        if (userSession.isUserLoggedIn()) {
-            login.setText("vehicle entry");
-        }
-        else{
-            login.setText("Login");
-        }
 
         /*fAuth = FirebaseAuth.getInstance();
         firestore = FirebaseFirestore.getInstance();
@@ -96,8 +87,6 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         }*/
     }
 
-
-
     @Override
     protected void onResume() {
         super.onResume();
@@ -108,13 +97,15 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
             login.setText("Login Page");
         }
     }
+
     @SuppressLint("NonConstantResourceId")
     @Override
     public void onClick(View view) {
-        Intent intent = new Intent();
         login.setVisibility(View.INVISIBLE);
         availability.setVisibility(View.INVISIBLE);
         progressBar.setVisibility(View.VISIBLE);
+
+        Intent intent = new Intent();
         switch (view.getId()) {
             case R.id.login:
                 intent.setClass(this, LoginActivity.class);
@@ -125,6 +116,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
                 startActivity(intent);
                 break;
         }
+
         login.setVisibility(View.VISIBLE);
         availability.setVisibility(View.VISIBLE);
         progressBar.setVisibility(View.INVISIBLE);
