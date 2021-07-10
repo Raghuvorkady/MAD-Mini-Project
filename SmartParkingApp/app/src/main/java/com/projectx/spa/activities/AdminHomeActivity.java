@@ -18,7 +18,6 @@ import com.projectx.spa.helpers.Constants;
 import com.projectx.spa.helpers.FbHelper;
 import com.projectx.spa.helpers.UserSession;
 import com.projectx.spa.models.ParkingSlot;
-import com.projectx.spa.models.User;
 
 public class AdminHomeActivity extends AppCompatActivity {
 
@@ -85,5 +84,7 @@ public class AdminHomeActivity extends AppCompatActivity {
     }
 
     public void historyPage(View view) {
+        Intent intent = new Intent(this, ParkedHistoryActivity.class);
+        startActivity(intent);
     }
 }
