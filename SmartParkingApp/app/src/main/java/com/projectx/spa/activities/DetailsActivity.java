@@ -5,11 +5,13 @@ import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.cardview.widget.CardView;
 
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.Timestamp;
@@ -24,9 +26,11 @@ import com.projectx.spa.interfaces.OnGetDataListener;
 import com.projectx.spa.models.ParkedVehicle;
 import com.santalu.maskara.widget.MaskEditText;
 
-public class DetailsActivity extends AppCompatActivity {
+public class DetailsActivity extends AppCompatActivity implements View.OnClickListener {
     private final String TAG = getClass().getSimpleName();
 
+    CardView in;
+    ProgressBar wait;
     MaskEditText maskEditText;
     String vehicleNumber;
     String availableSpace, id;
@@ -36,6 +40,10 @@ public class DetailsActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_details);
+
+        wait=findViewById(R.id.waiting);
+        in=findViewById(R.id.in_card);
+        in.setOnClickListener(this);
         Intent intent = getIntent();
         id = new UserSession(this).getUserDetails().get(Constants.PREF_ID);
         Log.d(TAG, id);
@@ -56,48 +64,53 @@ public class DetailsActivity extends AppCompatActivity {
     }
 
     @RequiresApi(api = Build.VERSION_CODES.Q)
-    public void inPage(View view) {
-        if (Integer.parseInt(availableSpace) > 0) {
-            vehicleNumber = maskEditText.getText().toString();
-            if (!vehicleNumber.equals("AA-00-BB-1111")) {
-                System.out.println(vehicleNumber);
-                // Intent it = new Intent(this, AdminHomeActivity.class);
-                if ((vehicleNumber.matches("^[A-Z]{2}[-][0-9]{2}[-][A-Z]{2}[-][0-9]{4}$"))) {
-                    maskEditText.setText("");
-                    Log.d(TAG, vehicleNumber);
-                    new AlertDialog.Builder(this)
-                            .setTitle("Insert entry")
-                            .setMessage("Are you sure you want to insert " + vehicleNumber + "?")
-                            .setPositiveButton(android.R.string.yes, (dialog, which) -> {
-                                ParkedVehicle parkedVehicle = new ParkedVehicle(null, vehicleNumber, Timestamp.now());
+    @Override
+    public void onClick(View view) {
+        if (view.equals(in)){
+            if (Integer.parseInt(availableSpace) > 0) {
+                vehicleNumber = maskEditText.getText().toString();
+                if (!vehicleNumber.equals("AA-00-BB-1111")) {
+                    System.out.println(vehicleNumber);
+                    // Intent it = new Intent(this, AdminHomeActivity.class);
+                    if ((vehicleNumber.matches("^[A-Z]{2}[-][0-9]{2}[-][A-Z]{2}[-][0-9]{4}$"))) {
+                        maskEditText.setText("");
+                        Log.d(TAG, vehicleNumber);
+                        new AlertDialog.Builder(this)
+                                .setTitle("Insert entry")
+                                .setMessage("Are you sure you want to insert " + vehicleNumber + "?")
+                                .setPositiveButton(android.R.string.yes, (dialog, which) -> {
+
+                                    in.setVisibility(View.INVISIBLE);
+                                    wait.setVisibility(View.VISIBLE);
+                                    ParkedVehicle parkedVehicle = new ParkedVehicle(null, vehicleNumber, Timestamp.now());
                                 FbHelper fbHelper = new FbHelper(getApplicationContext());
                                 String collectionReference = Constants.PARKING_SLOTS + "/" + id + "/" + Constants.PARKED_VEHICLES;
                                 fbHelper.addDataToFirestore(parkedVehicle, collectionReference, null, new OnGetDataListener() {
-                                    @Override
-                                    public void onSuccess(DocumentReference dataSnapshotValue) {
-                                        Toast.makeText(DetailsActivity.this, "added successfully", Toast.LENGTH_LONG).show();
-                                        int updatedAvailableSpace = Integer.parseInt(availableSpace) - 1;
-                                        firebaseFirestore.collection(Constants.PARKING_SLOTS).document(id).update("availableSpace", updatedAvailableSpace);
-                                        // startActivity(it);
-                                        finish();
-                                    }
+                                        @Override
+                                        public void onSuccess(DocumentReference dataSnapshotValue) {
+                                            Toast.makeText(DetailsActivity.this, "added successfully", Toast.LENGTH_LONG).show();
+                                            int updatedAvailableSpace = Integer.parseInt(availableSpace) - 1;
+                                            firebaseFirestore.collection(Constants.PARKING_SLOTS).document(id).update("availableSpace", updatedAvailableSpace);
+                                            // startActivity(it);
+                                            finish();
+                                        }
 
-                                    @Override
-                                    public void onFailure(String str) {
-                                        Log.w(TAG, "Error adding document " + str);
-                                    }
-                                });
-                            })
-                            .setNegativeButton(android.R.string.no, null)
-                            .setIcon(android.R.drawable.ic_dialog_alert)
-                            .show();
-                } else {
-                    Log.d(TAG, "wrong");
-                    show("wrong format");
+                                        @Override
+                                        public void onFailure(String str) {
+                                            Log.w(TAG, "Error adding document " + str);
+                                        }
+                                    });
+                                })
+                                .setNegativeButton(android.R.string.no, null)
+                                .show();
+                    } else {
+                        Log.d(TAG, "wrong");
+                        show("wrong format");
+                    }
                 }
+            } else {
+                Log.d(TAG, "no space available");
             }
-        } else {
-            Log.d(TAG, "no space available");
         }
     }
 

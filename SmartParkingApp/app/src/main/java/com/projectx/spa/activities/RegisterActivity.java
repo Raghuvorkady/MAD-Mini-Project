@@ -116,8 +116,18 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
             hideProgressBar();
             return;
         }
+        if (TextUtils.isEmpty(phone)) {
+            this.phoneEditText.setError("phone number required");
+            hideProgressBar();
+            return;
+        }
+        if (phone.length() != 11) {
+            phoneEditText.setError("Invalid phone number");
+            hideProgressBar();
+            return;
+        }
         if (TextUtils.isEmpty(building)) {
-            buildingEditText.setError("phone building name is required");
+            buildingEditText.setError("building name is required");
             hideProgressBar();
             return;
         }
