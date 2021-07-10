@@ -124,7 +124,7 @@
 
         <androidx.cardview.widget.CardView
             android:id="@+id/contraint_layout3_info_card"
-            android:layout_width="200dp"
+            android:layout_width="wrap_content"
             android:layout_height="100dp"
             android:layout_marginTop="20dp"
             android:onClick="viewParkedVehicles"
@@ -159,9 +159,9 @@
 
         <androidx.cardview.widget.CardView
             android:id="@+id/out_card"
-            android:layout_width="200dp"
+            android:layout_width="240dp"
             android:layout_height="100dp"
-            android:layout_marginTop="40dp"
+            android:layout_marginTop="20dp"
             android:onClick="historyPage"
             app:cardBackgroundColor="#ccffff"
             app:layout_constraintEnd_toEndOf="parent"

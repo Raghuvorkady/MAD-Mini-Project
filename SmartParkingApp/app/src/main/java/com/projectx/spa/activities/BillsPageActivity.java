@@ -22,6 +22,7 @@ import com.google.firebase.firestore.QuerySnapshot;
 import com.projectx.spa.R;
 import com.projectx.spa.helpers.Constants;
 import com.projectx.spa.helpers.UserSession;
+import com.projectx.spa.models.History;
 import com.projectx.spa.models.Vehicles;
 
 import java.text.DateFormat;
@@ -114,7 +115,9 @@ public class BillsPageActivity extends AppCompatActivity {
                                                         int amt = (int) Math.ceil(minutes_difference * 10 / 20);
                                                         amountTextView.append("" + amt);
                                                         Log.d(TAG, String.valueOf(minutes_difference));
-                                                        moveFirestoreDocument(document.getReference(), firebaseFirestore.collection(Constants.PARKED_HISTORY).document());
+                                                        DocumentReference historyDocument = firebaseFirestore.collection(Constants.PARKED_HISTORY).document();
+                                                        History history=new History(historyDocument.getId(), vehicles, amt);
+                                                        moveFirestoreDocument(document.getReference(), historyDocument, history);
 
                                                     }
                                                 });
@@ -143,14 +146,14 @@ public class BillsPageActivity extends AppCompatActivity {
         Toast.makeText(this, toastMessage, Toast.LENGTH_LONG).show();
     }
 
-    public void moveFirestoreDocument(DocumentReference fromPath, final DocumentReference toPath) {
+    public void moveFirestoreDocument(DocumentReference fromPath, final DocumentReference toPath, History history) {
         fromPath.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                 if (task.isSuccessful()) {
                     DocumentSnapshot document = task.getResult();
                     if (document != null) {
-                        toPath.set(document.getData())
+                        toPath.set(history)
                                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                                     @Override
                                     public void onSuccess(Void aVoid) {
