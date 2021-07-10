@@ -13,6 +13,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.projectx.spa.R;
 import com.projectx.spa.models.Vehicles;
 
+import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
 import java.util.List;
 
 public class ParkedHistoryAdapter extends RecyclerView.Adapter<ParkedHistoryAdapter.MyOwnHolder> {
@@ -36,24 +38,21 @@ public class ParkedHistoryAdapter extends RecyclerView.Adapter<ParkedHistoryAdap
     public void onBindViewHolder(ParkedHistoryAdapter.MyOwnHolder holder, int position) {
         holder.vehicleNoTextView.setText(parkedHistoryList.get(position).getVehicleNumber());
 
-        holder.entryTimeTextView.setText(parkedHistoryList.get(position).getEntryTime().toDate().toString());
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy hh:mm:ss a");
 
-        holder.exitTimeTextView.setText(parkedHistoryList.get(position).getExitTime().toDate().toString());
+        String entryTimeStr = "Entry Time: " + dateFormat.format(parkedHistoryList.get(position).getEntryTime().toDate());
+        holder.entryTimeTextView.setText(entryTimeStr);
 
-//        String totalSpaceStr = "Entry Time: " + parkedHistoryList.get(position).getTotalSpace();
-//        holder.totalSpace.setText(totalSpaceStr);
+        String exitTimeStr = "Exit Time: " + dateFormat.format(parkedHistoryList.get(position).getExitTime().toDate());
+        holder.exitTimeTextView.setText(exitTimeStr);
 
-//        int availableSpace = parkedHistoryList.get(position).getAvailableSpace();
-//        String availableSpaceStr = "Exit Time: " + availableSpace;
-//        holder.availableSpace.setText(availableSpaceStr);
 
-        /*if (availableSpace <= 0) {
-            holder.cardLayout.setEnabled(false);
-            holder.cardLayout.setBackgroundColor(ContextCompat.getColor(context, R.color.red_100));
-        } else {
-            holder.cardLayout.setEnabled(true);
-            holder.cardLayout.setBackgroundColor(ContextCompat.getColor(context, R.color.green_100));
-        }*/
+        // TODO: 10-07-2021 remove hardcoded value
+        int amount = 500;
+        DecimalFormat decimalFormat = new DecimalFormat("#.00");
+        decimalFormat.setPositivePrefix("₹ ");
+        holder.amountPaidTextView.setText(decimalFormat.format(amount));
+//        holder.amountPaidTextView.append("\n" + "₨" + "500" );
 
         /*holder.cardLayout.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -71,7 +70,10 @@ public class ParkedHistoryAdapter extends RecyclerView.Adapter<ParkedHistoryAdap
     }
 
     public static class MyOwnHolder extends RecyclerView.ViewHolder {
-        TextView vehicleNoTextView, entryTimeTextView, exitTimeTextView;
+        TextView vehicleNoTextView;
+        TextView entryTimeTextView;
+        TextView exitTimeTextView;
+        TextView amountPaidTextView;
         LinearLayout cardLayout;
 
         public MyOwnHolder(View itemView) {
@@ -79,6 +81,7 @@ public class ParkedHistoryAdapter extends RecyclerView.Adapter<ParkedHistoryAdap
             vehicleNoTextView = itemView.findViewById(R.id.item_vehicle_number);
             entryTimeTextView = itemView.findViewById(R.id.item_entry_time);
             exitTimeTextView = itemView.findViewById(R.id.item_exit_time);
+            amountPaidTextView = itemView.findViewById(R.id.item_amount_paid);
             cardLayout = itemView.findViewById(R.id.parked_history_card_layout);
         }
     }
