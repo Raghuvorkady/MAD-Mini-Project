@@ -33,6 +33,7 @@
         <activity android:name=".activities.AdminHomeActivity" />
         <activity android:name=".activities.DetailsActivity" />
         <activity android:name=".activities.BillsPageActivity" />
+        <activity android:name=".activities.ParkedHistoryActivity" />
         <activity android:name=".activities.TestActivity" />
 
         <meta-data

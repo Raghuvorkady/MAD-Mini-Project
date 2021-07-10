@@ -15,23 +15,21 @@ public class Vehicles implements Parcelable, Settable {
     private Timestamp entryTime;
     private Timestamp exitTime;
 
+    public Vehicles() {
+    }
+
     /**
-     *  for parked vehicles
-     * */
+     * for parked vehicles
+     */
     public Vehicles(@Nullable String id, @NonNull String vehicleNumber, @NonNull Timestamp entryTime) {
         this.id = id;
         this.vehicleNumber = vehicleNumber;
         this.entryTime = entryTime;
     }
 
-    public Vehicles(String id, Timestamp exitTime) {
-        this.id = id;
-        this.exitTime = exitTime;
-    }
-
     /**
-     *  for parked history
-     * */
+     * for parked history
+     */
     public Vehicles(String id, String vehicleNumber, Timestamp entryTime, Timestamp exitTime) {
         this.id = id;
         this.vehicleNumber = vehicleNumber;
@@ -39,16 +37,17 @@ public class Vehicles implements Parcelable, Settable {
         this.exitTime = exitTime;
     }
 
-    public Vehicles()
-    {
+    public String getId() {
+        return id;
+    }
 
+    @Override
+    public void setId(String id) {
+        this.id = id;
     }
 
     public String getVehicleNumber() {
         return vehicleNumber;
-    }
-    public String getId() {
-        return id;
     }
 
     public Timestamp getEntryTime() {
@@ -57,16 +56,6 @@ public class Vehicles implements Parcelable, Settable {
 
     public Timestamp getExitTime() {
         return exitTime;
-    }
-
-
-
-
-    protected Vehicles(Parcel in) {
-        id = in.readString();
-        vehicleNumber = in.readString();
-        entryTime = in.readParcelable(Timestamp.class.getClassLoader());
-        exitTime = in.readParcelable(Timestamp.class.getClassLoader());
     }
 
     public static final Creator<Vehicles> CREATOR = new Creator<Vehicles>() {
@@ -81,7 +70,12 @@ public class Vehicles implements Parcelable, Settable {
         }
     };
 
-
+    protected Vehicles(Parcel in) {
+        id = in.readString();
+        vehicleNumber = in.readString();
+        entryTime = in.readParcelable(Timestamp.class.getClassLoader());
+        exitTime = in.readParcelable(Timestamp.class.getClassLoader());
+    }
 
     @Override
     public int describeContents() {
@@ -94,11 +88,5 @@ public class Vehicles implements Parcelable, Settable {
         dest.writeString(vehicleNumber);
         dest.writeParcelable(entryTime, flags);
         dest.writeParcelable(exitTime, flags);
-    }
-
-    @Override
-    public void setId(String id) {
-        this.id = id;
-
     }
 }
