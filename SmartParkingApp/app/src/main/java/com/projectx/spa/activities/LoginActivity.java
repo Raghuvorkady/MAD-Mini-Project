@@ -146,6 +146,19 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             return;
         }
 
+        /*FbHelper fbHelper = new FbHelper(this);
+        fbHelper.authenticateUser(email, password, new OnAuthListener() {
+            @Override
+            public void onSuccess(AuthResult authResult) {
+                Log.d(TAG, "SUCCESS");
+            }
+
+            @Override
+            public void onFailure(String errorString) {
+                Log.d(TAG, "FAILURE: " + errorString);
+            }
+        });*/
+
         //authenticating data in firebase
         fAuth.signInWithEmailAndPassword(email, password)
                 .addOnCompleteListener(new OnCompleteListener<AuthResult>() {

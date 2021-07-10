@@ -11,11 +11,14 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.projectx.spa.interfaces.OnAuthListener;
 import com.projectx.spa.interfaces.OnGetDataListener;
 import com.projectx.spa.interfaces.Settable;
 import com.projectx.spa.models.ParkingSlot;
@@ -27,13 +30,32 @@ import es.dmoral.toasty.Toasty;
 
 public class FbHelper {
     private final FirebaseFirestore firebaseFirestore;
-    // todo: add fAuth
-//    private final FirebaseAuth firebaseAuth;
+    private final FirebaseAuth firebaseAuth;
     private final Context context;
 
     public FbHelper(Context context) {
         this.firebaseFirestore = FirebaseFirestore.getInstance();
+        this.firebaseAuth = FirebaseAuth.getInstance();
         this.context = context;
+    }
+
+    /**
+     * FirebaseUser authentication using email and password
+     */
+    public void authenticateUser(String email, String password, OnAuthListener listener) {
+        firebaseAuth
+                .signInWithEmailAndPassword(email, password)
+                .addOnSuccessListener(new OnSuccessListener<AuthResult>() {
+                    @Override
+                    public void onSuccess(AuthResult authResult) {
+                        listener.onSuccess(authResult);
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                listener.onFailure(e.getMessage());
+            }
+        });
     }
 
     /**
