@@ -105,7 +105,6 @@ public class BillsPageActivity extends AppCompatActivity {
 
                                         DocumentReference doc = firebaseFirestore.collection(collectionReference).document(document.getId());
                                         doc.update("exitTime", exitTime)
-                                                // TODO: 09-07-2021 add on failure
                                                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                                                     @Override
                                                     public void onSuccess(Void aVoid) {
@@ -122,6 +121,12 @@ public class BillsPageActivity extends AppCompatActivity {
                                                         ParkedHistory parkedHistory = new ParkedHistory(historyDocument.getId(),
                                                                 parkedVehicle.getVehicleNumber(), parkedVehicle.getEntryTime(), exitTime, amt);
                                                         moveFirestoreDocument(document.getReference(), historyDocument, parkedHistory);
+                                                    }
+                                                })
+                                                .addOnFailureListener(new OnFailureListener() {
+                                                    @Override
+                                                    public void onFailure(@NonNull Exception e) {
+                                                        Log.d(TAG, "update failed");
                                                     }
                                                 });
                                         Log.d(TAG, exitTime.toDate().toString());
