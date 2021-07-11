@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".activities.BillsPageActivity">
+    tools:context=".activities.VehicleExitActivity">
 
     <TextView
         android:id="@+id/bill_activity_bill"

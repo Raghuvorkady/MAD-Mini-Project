@@ -17,7 +17,7 @@
             style="@style/ImageViewStyle"
             android:layout_marginBottom="0dp"
             android:contentDescription="@string/logo"
-            app:srcCompat="@drawable/icon" />
+            app:srcCompat="@drawable/ic_logo" />
 
         <TextView
             android:id="@+id/bill_activity_exit_time"

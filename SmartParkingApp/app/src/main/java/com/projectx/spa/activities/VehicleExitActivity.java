@@ -27,7 +27,7 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-public class BillsPageActivity extends AppCompatActivity {
+public class VehicleExitActivity extends AppCompatActivity {
     private final String TAG = getClass().getSimpleName();
 
     private TextView vehicleNumberTextView;
@@ -46,7 +46,7 @@ public class BillsPageActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_bills_page);
+        setContentView(R.layout.activity_vehicle_exit);
         getSupportActionBar().setTitle("Bill");
 
         vehicleNumberTextView = findViewById(R.id.bill_activity_vehicle_number);

@@ -40,10 +40,10 @@ public class ParkedHistoryAdapter extends RecyclerView.Adapter<ParkedHistoryAdap
 
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy hh:mm:ss a");
 
-        String entryTimeStr = "Entry Time: " + dateFormat.format(parkedHistories.get(position).getEntryTime().toDate());
+        String entryTimeStr = "Entry : " + dateFormat.format(parkedHistories.get(position).getEntryTime().toDate());
         holder.entryTimeTextView.setText(entryTimeStr);
 
-        String exitTimeStr = "Exit Time: " + dateFormat.format(parkedHistories.get(position).getExitTime().toDate());
+        String exitTimeStr = "Exit : " + dateFormat.format(parkedHistories.get(position).getExitTime().toDate());
         holder.exitTimeTextView.setText(exitTimeStr);
 
 

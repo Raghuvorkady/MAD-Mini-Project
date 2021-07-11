@@ -46,7 +46,7 @@ public class ParkedVehiclesActivity extends AppCompatActivity implements SwipeRe
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_parked_vehicles);
-        getSupportActionBar().setTitle("Parked vehicle");
+        getSupportActionBar().setTitle("Parked vehicles");
 
         String id = new UserSession(this).getUserDetails().get(Constants.PREF_ID);
         recyclerView = findViewById(R.id.recycler_view);
@@ -151,7 +151,7 @@ public class ParkedVehiclesActivity extends AppCompatActivity implements SwipeRe
     public void onClick(View view) {
         if (view.equals(addFAB)) {
             if (availableSpace > 0) {
-                Intent it = new Intent(this, DetailsActivity.class);
+                Intent it = new Intent(this, VehicleEntryActivity.class);
                 startActivity(it);
             } else {
                 Toast.makeText(ParkedVehiclesActivity.this, "no space to park", Toast.LENGTH_SHORT).show();

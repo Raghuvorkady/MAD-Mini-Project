@@ -28,7 +28,7 @@ import com.projectx.spa.interfaces.OnGetDataListener;
 import com.projectx.spa.models.ParkedVehicle;
 import com.santalu.maskara.widget.MaskEditText;
 
-public class DetailsActivity extends AppCompatActivity implements View.OnClickListener {
+public class VehicleEntryActivity extends AppCompatActivity implements View.OnClickListener {
     private final String TAG = getClass().getSimpleName();
 
     private CardView in;
@@ -44,7 +44,7 @@ public class DetailsActivity extends AppCompatActivity implements View.OnClickLi
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_details);
+        setContentView(R.layout.activity_vehicle_entry);
         getSupportActionBar().setTitle("Vehicle Entry");
 
         wait = findViewById(R.id.waiting);
@@ -106,7 +106,7 @@ public class DetailsActivity extends AppCompatActivity implements View.OnClickLi
                                             new OnGetDataListener() {
                                                 @Override
                                                 public void onSuccess(DocumentReference dataSnapshotValue) {
-                                                    Toast.makeText(DetailsActivity.this, "added successfully", Toast.LENGTH_LONG).show();
+                                                    Toast.makeText(VehicleEntryActivity.this, "added successfully", Toast.LENGTH_LONG).show();
                                                     int updatedAvailableSpace = availableSpace - 1;
 
                                                     firebaseFirestore.collection(Constants.PARKING_SLOTS)

@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".activities.DetailsActivity">
+    tools:context=".activities.VehicleEntryActivity">
 
     <com.santalu.maskara.widget.MaskEditText
         android:id="@+id/vehicle_edit_text"
@@ -13,9 +13,9 @@
         android:layout_marginLeft="20dp"
         android:layout_marginTop="144dp"
         android:layout_marginRight="20dp"
-        android:background="@drawable/custom_input"
-        android:drawableStart="@drawable/car_48px"
-        android:drawableLeft="@drawable/car_48px"
+        android:background="@drawable/bg_vehicle_input"
+        android:drawableStart="@drawable/ic_car"
+        android:drawableLeft="@drawable/ic_car"
         android:drawablePadding="12dp"
         android:ems="10"
         android:hint="AA-00-BB-1111"

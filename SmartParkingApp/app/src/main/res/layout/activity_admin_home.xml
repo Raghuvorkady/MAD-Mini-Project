@@ -11,7 +11,7 @@
         android:id="@+id/admin_home_constraint_layout1"
         android:layout_width="match_parent"
         android:layout_height="300dp"
-        android:background="@drawable/background_top"
+        android:background="@drawable/bg_top"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
@@ -73,7 +73,7 @@
         android:id="@+id/admin_home_contraint_layout2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="@drawable/background_white_top"
+        android:background="@drawable/bg_white_top"
         app:layout_constraintBottom_toBottomOf="@+id/admin_home_constraint_layout1"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -142,10 +142,10 @@
                 android:padding="8dp">
 
                 <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
                     android:contentDescription="@string/vehicle_image"
-                    android:src="@drawable/car_48px" />
+                    android:src="@drawable/ic_car" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -181,7 +181,7 @@
                     android:layout_marginStart="40dp"
                     android:layout_marginLeft="40dp"
                     android:contentDescription="@string/history_image"
-                    android:src="@drawable/activity_history_48px" />
+                    android:src="@drawable/ic_history" />
 
                 <TextView
                     android:layout_width="wrap_content"

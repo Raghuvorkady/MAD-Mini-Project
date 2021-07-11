@@ -13,7 +13,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.projectx.spa.R;
-import com.projectx.spa.activities.BillsPageActivity;
+import com.projectx.spa.activities.VehicleExitActivity;
 import com.projectx.spa.helpers.Constants;
 import com.projectx.spa.models.ParkedVehicle;
 
@@ -44,7 +44,7 @@ public class ParkedVehiclesAdapter extends RecyclerView.Adapter<ParkedVehiclesAd
 
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy hh:mm:ss a");
 
-        String entryTimeStr = "Entry Time: " + dateFormat.format(vehicle.getEntryTime().toDate());
+        String entryTimeStr = "Entry : " + dateFormat.format(vehicle.getEntryTime().toDate());
         holder.entryTimeTextView.setText(entryTimeStr);
 
         holder.cardLayout.setOnClickListener(new View.OnClickListener() {
@@ -58,7 +58,7 @@ public class ParkedVehiclesAdapter extends RecyclerView.Adapter<ParkedVehiclesAd
                         .setNegativeButton("No", (dialogInterface, i) -> {
                         })
                         .setPositiveButton("Yes", (dialogInterface, i) -> {
-                            Intent intent = new Intent(context, BillsPageActivity.class);
+                            Intent intent = new Intent(context, VehicleExitActivity.class);
                             intent.putExtra(Constants.VEHICLE_NUMBER, vehicle.getVehicleNumber());
                             intent.putExtra(Constants.VEHICLE_ID, vehicle.getId());
                             context.startActivity(intent);
