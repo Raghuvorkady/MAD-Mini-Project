@@ -4,6 +4,8 @@ public class Constants {
     // Keys
     public static final String SAMPLE_KEY = "key";
     public static final String CALLING_ACTIVITY = "callingActivity";
+    public static final String VEHICLE_NUMBER = "vehicleNumber";
+    public static final String VEHICLE_ID = "vehicleId";
 
     // Collections
     public static final String USERS = "users";

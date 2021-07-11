@@ -12,9 +12,9 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.projectx.spa.R;
 import com.projectx.spa.activities.BillsPageActivity;
+import com.projectx.spa.helpers.Constants;
 import com.projectx.spa.models.ParkedVehicle;
 
 import java.text.SimpleDateFormat;
@@ -51,17 +51,17 @@ public class ParkedVehiclesAdapter extends RecyclerView.Adapter<ParkedVehiclesAd
             @Override
             public void onClick(View view) {
                 AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(context)
-                        .setTitle("Are you sure")
+                        .setTitle("Vehicle Exit?")
                         .setMessage("Mark as vehicle (" + vehicle.getVehicleNumber() + ") out")
                         .setNeutralButton("Cancel", (dialogInterface, i) -> {
                         })
                         .setNegativeButton("No", (dialogInterface, i) -> {
                         })
                         .setPositiveButton("Yes", (dialogInterface, i) -> {
-                            Intent it1 = new Intent(context, BillsPageActivity.class);
-                            it1.putExtra("number", vehicle.getVehicleNumber());
-                            it1.putExtra("id", vehicle.getId());
-                            context.startActivity(it1);
+                            Intent intent = new Intent(context, BillsPageActivity.class);
+                            intent.putExtra(Constants.VEHICLE_NUMBER, vehicle.getVehicleNumber());
+                            intent.putExtra(Constants.VEHICLE_ID, vehicle.getId());
+                            context.startActivity(intent);
                         });
 
                 alertDialogBuilder.show();

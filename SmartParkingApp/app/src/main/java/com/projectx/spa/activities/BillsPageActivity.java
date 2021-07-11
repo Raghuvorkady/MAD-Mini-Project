@@ -8,22 +8,20 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
-import com.google.firebase.firestore.QuerySnapshot;
 import com.orhanobut.logger.Logger;
 import com.projectx.spa.R;
 import com.projectx.spa.helpers.Constants;
+import com.projectx.spa.helpers.FbHelper;
 import com.projectx.spa.helpers.UserSession;
+import com.projectx.spa.interfaces.OnSnapshotListener;
 import com.projectx.spa.models.ParkedHistory;
 import com.projectx.spa.models.ParkedVehicle;
+import com.projectx.spa.models.ParkingSlot;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -40,12 +38,10 @@ public class BillsPageActivity extends AppCompatActivity {
     private int availableSpace;
     private int totalSpace;
     private String vehicleNumber;
-    private String id;
-    private boolean flag = false;
+    private String userId;
 
-    FirebaseFirestore firebaseFirestore = FirebaseFirestore.getInstance();
-
-//    private Timestamp exitTime;
+    private FbHelper fbHelper;
+    private ParkingSlot parkingSlot;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,102 +55,80 @@ public class BillsPageActivity extends AppCompatActivity {
         amountTextView = findViewById(R.id.amount);
 
         Intent intent = getIntent();
-        vehicleNumber = intent.getStringExtra("number");
-        id = new UserSession(this).getUserDetails().get(Constants.PREF_ID);
+        vehicleNumber = intent.getStringExtra(Constants.VEHICLE_NUMBER);
 
-        DocumentReference docRef = firebaseFirestore.collection(Constants.PARKING_SLOTS).document(id);
-        docRef.get()
-                .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
-                    @Override
-                    public void onSuccess(DocumentSnapshot documentSnapshot) {
-                        availableSpace = Integer.parseInt(documentSnapshot.get("availableSpace").toString());
-                        totalSpace = Integer.parseInt(documentSnapshot.get("totalSpace").toString());
-                        Logger.d("avail=" + availableSpace);
-                        Logger.d("total=" + totalSpace);
+        vehicleNumberTextView.setText(vehicleNumber);
 
-                        database();
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Logger.d("avail failed");
-                    }
-                });
+        String vehicleId = intent.getStringExtra(Constants.VEHICLE_ID);
+        userId = new UserSession(this).getUserDetails().get(Constants.PREF_ID);
+
+
+        fbHelper = new FbHelper(this);
+
+        String parkingSlotDocumentPath = Constants.PARKING_SLOTS + "/" + userId;
+        String vehicleDocumentPath = Constants.PARKING_SLOTS + "/" + userId + "/" + Constants.PARKED_VEHICLES + "/" + vehicleId;
+
+        fbHelper.readDocumentFromFirestore(ParkingSlot.class, parkingSlotDocumentPath, new OnSnapshotListener() {
+            @Override
+            public <T> void onSuccess(T object) {
+                parkingSlot = (ParkingSlot) object;
+                availableSpace = parkingSlot.getAvailableSpace();
+                totalSpace = parkingSlot.getTotalSpace();
+                Logger.d("avail=" + availableSpace);
+                Logger.d("total=" + totalSpace);
+
+                updateFireStore(vehicleDocumentPath);
+            }
+
+            @Override
+            public void onFailure(String errorMessage) {
+                Logger.d(errorMessage);
+            }
+        });
     }
 
-    private void database() {
+    private void updateFireStore(String vehicleDocumentPath) {
         if (availableSpace <= totalSpace) {
-            String collectionReference = Constants.PARKING_SLOTS + "/" + id + "/" + Constants.PARKED_VEHICLES;
-            firebaseFirestore.collection(collectionReference)
-                    .get()
-                    .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                        @Override
-                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                            if (task.isSuccessful()) {
-                                for (QueryDocumentSnapshot document : task.getResult()) {
-                                    Logger.d(document.getId() + " => " + document.getData());
-                                    ParkedVehicle parkedVehicle = document.toObject(ParkedVehicle.class);
 
-                                    if (parkedVehicle.getVehicleNumber().equals(vehicleNumber)) {
-                                        flag = true;
-                                        int val = availableSpace + 1;
+            int val = availableSpace + 1;
 
-                                        DateFormat timeFormat = new SimpleDateFormat("HH:mm:ss");
-                                        Timestamp exitTime = Timestamp.now();
+            DateFormat timeFormat = new SimpleDateFormat("HH:mm:ss");
+            SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy hh:mm:ss a");
 
-                                        vehicleNumberTextView.setText(vehicleNumber);
-                                        Date entryDate = parkedVehicle.getEntryTime().toDate();
-                                        entryTimeTextView.setText(timeFormat.format(entryDate));
-                                        exitTimeTextView.setText(timeFormat.format(exitTime.toDate()));
+            Timestamp exitTime = Timestamp.now();
 
-                                        firebaseFirestore.collection(Constants.PARKING_SLOTS).document(id).update("availableSpace", val);
-                                        Logger.d("updated successfully");
+            fbHelper.readDocumentFromFirestore(ParkedVehicle.class, vehicleDocumentPath, new OnSnapshotListener() {
+                @Override
+                public <T> void onSuccess(T object) {
+                    ParkedVehicle parkedVehicle = (ParkedVehicle) object;
 
-                                        long time_difference = exitTime.toDate().getTime() - entryDate.getTime();
-                                        long minutes_difference = (time_difference / 1000) / 60;
-                                        int amountPaid = (int) Math.ceil(minutes_difference * 10 / 20);
-                                        amountTextView.append(String.valueOf(amountPaid));
-                                        Logger.d(minutes_difference);
+                    Date entryDate = parkedVehicle.getEntryTime().toDate();
+                    entryTimeTextView.append(" " + dateFormat.format(entryDate));
+                    exitTimeTextView.append(" " + dateFormat.format(exitTime.toDate()));
 
-                                        String collectionReference = Constants.PARKING_SLOTS + "/" + id + "/" + Constants.PARKED_HISTORY;
-                                        DocumentReference historyDocument = firebaseFirestore.collection(collectionReference).document();
+                    FirebaseFirestore.getInstance().collection(Constants.PARKING_SLOTS).document(userId).update("availableSpace", val);
+                    Logger.d("updated successfully");
 
-                                        ParkedHistory parkedHistory = new ParkedHistory(historyDocument.getId(),
-                                                parkedVehicle.getVehicleNumber(), parkedVehicle.getEntryTime(), exitTime, amountPaid);
-                                        moveFirestoreDocument(document.getReference(), historyDocument, parkedHistory);
+                    long time_difference = exitTime.toDate().getTime() - entryDate.getTime();
+                    long minutes_difference = (time_difference / 1000) / 60;
+                    int amountPaid = (int) Math.ceil(minutes_difference * 10 / 20);
+                    amountTextView.append(String.valueOf(amountPaid));
+                    Logger.d(minutes_difference);
 
-                                        /*
-                                        DocumentReference doc = firebaseFirestore
-                                                .collection(collectionReference).document(document.getId());
-                                        doc.update("exitTime", exitTime)
-                                                .addOnSuccessListener(new OnSuccessListener<Void>() {
-                                                    @Override
-                                                    public void onSuccess(Void aVoid) {
-                                                    }
-                                                })
-                                                .addOnFailureListener(new OnFailureListener() {
-                                                    @Override
-                                                    public void onFailure(@NonNull Exception e) {
-                                                        Logger.d(TAG, "update failed");
-                                                    }
-                                                });
-                                        Logger.d(TAG, exitTime.toDate().toString());*/
+                    String collectionReference = Constants.PARKING_SLOTS + "/" + userId + "/" + Constants.PARKED_HISTORY;
+                    DocumentReference historyDocument = FirebaseFirestore.getInstance().collection(collectionReference).document();
 
+                    ParkedHistory parkedHistory = new ParkedHistory(historyDocument.getId(),
+                            parkedVehicle.getVehicleNumber(), parkedVehicle.getEntryTime(), exitTime, amountPaid);
+                    moveFirestoreDocument(fbHelper.toDocumentReference(vehicleDocumentPath), historyDocument, parkedHistory);
 
-                                    }
+                }
 
-                                }
-                                if (!flag) {
-                                    show("data not found");
-                                }
-                            } else {
-                                show("Error getting documents." + task.getException());
-                            }
-                        }
-                    });
-        } else {
-            Logger.d("error");
+                @Override
+                public void onFailure(String errorMessage) {
+                    Logger.d(errorMessage);
+                }
+            });
         }
     }
 
@@ -165,62 +139,32 @@ public class BillsPageActivity extends AppCompatActivity {
     }
 
     public void moveFirestoreDocument(DocumentReference fromPath, DocumentReference toPath, ParkedHistory parkedHistory) {
-        fromPath
-                .get()
-                .addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+        toPath.set(parkedHistory)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
-                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                        if (task.isSuccessful()) {
-                            DocumentSnapshot document = task.getResult();
-                            if (document != null) {
+                    public void onSuccess(Void aVoid) {
+                        Logger.d("DocumentSnapshot successfully written!");
 
-                                toPath.set(parkedHistory)
-                                        .addOnSuccessListener(new OnSuccessListener<Void>() {
-                                            @Override
-                                            public void onSuccess(Void aVoid) {
-                                                Logger.d("DocumentSnapshot successfully written!");
-
-                                                fromPath.delete()
-                                                        .addOnSuccessListener(new OnSuccessListener<Void>() {
-                                                            @Override
-                                                            public void onSuccess(Void aVoid) {
-                                                                Logger.d("DocumentSnapshot successfully deleted!");
-                                                            }
-                                                        })
-                                                        .addOnFailureListener(new OnFailureListener() {
-                                                            @Override
-                                                            public void onFailure(@NonNull Exception e) {
-                                                                Logger.w("Error deleting document" + e);
-                                                            }
-                                                        });
-                                            }
-                                        })
-                                        .addOnFailureListener(new OnFailureListener() {
-                                            @Override
-                                            public void onFailure(@NonNull Exception e) {
-                                                Logger.w("Error writing document" + e);
-                                            }
-                                        });
-                            } else {
-                                Logger.d("No such document");
-                            }
-                        } else {
-                            Logger.d("get failed with " + task.getException());
-                        }
+                        fromPath.delete()
+                                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                                    @Override
+                                    public void onSuccess(Void aVoid) {
+                                        Logger.d("DocumentSnapshot successfully deleted!");
+                                    }
+                                })
+                                .addOnFailureListener(new OnFailureListener() {
+                                    @Override
+                                    public void onFailure(@NonNull Exception e) {
+                                        Logger.w("Error deleting document" + e);
+                                    }
+                                });
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
-                    public void onFailure(Exception e) {
-                        Logger.d("move error" + e);
+                    public void onFailure(@NonNull Exception e) {
+                        Logger.w("Error writing document" + e);
                     }
                 });
     }
-
-    /*@Override
-    public void onBackPressed() {
-        Intent setIntent = new Intent(BillsPageActivity.this, AdminHomeActivity.class);
-        startActivity(setIntent);
-        finish();
-    }*/
 }

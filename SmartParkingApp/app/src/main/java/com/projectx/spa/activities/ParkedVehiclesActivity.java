@@ -39,7 +39,6 @@ public class ParkedVehiclesActivity extends AppCompatActivity implements SwipeRe
 
     private FbHelper fbHelper;
 
-    private String id;
     private int availableSpace;
     private List<ParkedVehicle> parkedVehicles;
 
@@ -49,7 +48,7 @@ public class ParkedVehiclesActivity extends AppCompatActivity implements SwipeRe
         setContentView(R.layout.activity_parked_vehicles);
         getSupportActionBar().setTitle("Parked vehicle");
 
-        id = new UserSession(this).getUserDetails().get(Constants.PREF_ID);
+        String id = new UserSession(this).getUserDetails().get(Constants.PREF_ID);
         recyclerView = findViewById(R.id.recycler_view);
         swipeRefreshLayout = findViewById(R.id.parked_vehicles_swipe_refresh_layout);
         addFAB = findViewById(R.id.fab_vehicle_in);
