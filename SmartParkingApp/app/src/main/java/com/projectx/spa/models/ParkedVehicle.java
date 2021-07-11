@@ -45,4 +45,14 @@ public class ParkedVehicle extends Vehicle implements Parcelable {
     public void writeToParcel(Parcel parcel, int i) {
         parcel.writeParcelable(entryTime, i);
     }
+
+    @Override
+    public boolean equals(Object o) {
+        return super.equals(o);
+    }
+
+    @Override
+    public int hashCode() {
+        return super.hashCode();
+    }
 }
