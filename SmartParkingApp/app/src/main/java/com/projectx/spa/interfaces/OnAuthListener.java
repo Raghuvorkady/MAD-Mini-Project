@@ -1,9 +1,11 @@
 package com.projectx.spa.interfaces;
 
-import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseUser;
 
 public interface OnAuthListener {
-    void onSuccess(AuthResult authResult);
 
-    void onFailure(String errorString);
+    void onSuccess(FirebaseUser firebaseUser);
+
+    void onFailure(String errorMessage);
+
 }

@@ -17,19 +17,17 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.DocumentSnapshot;
+import com.orhanobut.logger.Logger;
 import com.projectx.spa.R;
 import com.projectx.spa.helpers.Constants;
 import com.projectx.spa.helpers.FbHelper;
 import com.projectx.spa.helpers.UserSession;
+import com.projectx.spa.interfaces.OnAuthListener;
+import com.projectx.spa.interfaces.OnSnapshotListener;
 import com.projectx.spa.models.User;
 
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
@@ -41,6 +39,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private ProgressBar progressBar;
     private FirebaseAuth fAuth;
     private UserSession userSession;
+    private FbHelper fbHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,6 +80,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         register = findViewById(R.id.reg);
         forgot = findViewById(R.id.forgot);
 
+        fbHelper = new FbHelper(this);
+
         logIn.setOnClickListener(this);
         register.setOnClickListener(this);
         forgot.setOnClickListener(this);
@@ -108,13 +109,11 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
         if (TextUtils.isEmpty(email)) {
             emailEditText.setError("Email is required.");
-
             hideProgressBar();
             return;
         }
         if (TextUtils.isEmpty(password)) {
             passwordEditText.setError("password is required");
-
             hideProgressBar();
             return;
         }
@@ -125,63 +124,49 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         }
         if (password.length() < 6) {
             passwordEditText.setError("password must be at least 6 characters");
-
             hideProgressBar();
             return;
         }
 
-        /*FbHelper fbHelper = new FbHelper(this);
+        // authenticating data in firebase
         fbHelper.authenticateUser(email, password, new OnAuthListener() {
             @Override
-            public void onSuccess(AuthResult authResult) {
+            public void onSuccess(FirebaseUser firebaseUser) {
                 Log.d(TAG, "SUCCESS");
+
+                String id = firebaseUser.getUid();
+
+                String documentReference = Constants.USERS + "/" + id;
+                fbHelper.readDocumentFromFirestore(User.class, documentReference, new OnSnapshotListener() {
+                    @Override
+                    public <T> void onSuccess(T object) {
+                        User user = (User) object;
+
+                        Logger.d(user.toString());
+
+                        userSession.createUserLoginSession(id, user.getName(), user.getEmail());
+                        makeToast("Sign in successful");
+
+                        Intent intent = new Intent(getApplicationContext(), AdminHomeActivity.class);
+
+                        startActivity(intent);
+                        finish();
+                    }
+
+                    @Override
+                    public void onFailure(String errorMessage) {
+                        Logger.d(TAG, errorMessage);
+                    }
+                });
             }
 
             @Override
-            public void onFailure(String errorString) {
-                Log.d(TAG, "FAILURE: " + errorString);
+            public void onFailure(String errorMessage) {
+                hideProgressBar();
+                makeToast("Error !!" + errorMessage);
+                Logger.d(TAG, "FAILURE: " + errorMessage);
             }
-        });*/
-
-        //authenticating data in firebase
-        fAuth.signInWithEmailAndPassword(email, password)
-                .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if (task.isSuccessful()) {
-
-                            FirebaseUser currentUser = fAuth.getCurrentUser();
-                            if (currentUser != null) {
-                                String id = currentUser.getUid();
-
-                                FbHelper fbHelper = new FbHelper(getApplicationContext());
-                                DocumentReference doc = fbHelper.toDocumentReference(Constants.USERS + "/" + id);
-
-                                doc.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
-                                    @Override
-                                    public void onSuccess(DocumentSnapshot snapshot) {
-                                        User user = snapshot.toObject(User.class);
-
-                                        Log.d("NAME", user.getName() + " ");
-
-                                        userSession.createUserLoginSession(id, user.getName(), user.getEmail());
-
-                                        makeToast("Sign in successful");
-
-                                        Intent intent = new Intent(getApplicationContext(), AdminHomeActivity.class);
-
-                                        startActivity(intent);//add .class file of vehicle number entry
-
-                                        finish();
-                                    }
-                                });
-                            }
-                        } else {
-                            hideProgressBar();
-                            makeToast("Error !!" + task.getException().getMessage());
-                        }
-                    }
-                });
+        });
     }
 
     private void showForgotPasswordDialog(View v) {
