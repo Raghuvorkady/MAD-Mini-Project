@@ -1,37 +1,26 @@
 package com.projectx.spa.activities;
 
-import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Toast;
 
-import androidx.annotation.Nullable;
-import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.google.android.material.snackbar.Snackbar;
-import com.google.firebase.firestore.DocumentChange;
-import com.google.firebase.firestore.EventListener;
-import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.FirebaseFirestoreException;
-import com.google.firebase.firestore.ListenerRegistration;
-import com.google.firebase.firestore.Query;
-import com.google.firebase.firestore.QuerySnapshot;
-import com.orhanobut.logger.Logger;
 import com.projectx.spa.R;
 import com.projectx.spa.adapters.AvailableSlotsAdapter;
 import com.projectx.spa.helpers.Constants;
 import com.projectx.spa.helpers.FbHelper;
+import com.projectx.spa.interfaces.OnMultiDocumentListener;
 import com.projectx.spa.models.ParkingSlot;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class AvailableSlotsActivity extends AppCompatActivity implements SwipeRefreshLayout.OnRefreshListener {
-    private final String TAG = getClass().getSimpleName();
 
     private List<ParkingSlot> parkingSlots;
     private FbHelper fbHelper;
@@ -56,7 +45,7 @@ public class AvailableSlotsActivity extends AppCompatActivity implements SwipeRe
 
         swipeRefreshLayout.setOnRefreshListener(this);
 
-        trackMultipleDocuments();
+        trackDocumentChanges();
     }
 
     @Override
@@ -66,78 +55,44 @@ public class AvailableSlotsActivity extends AppCompatActivity implements SwipeRe
         swipeRefreshLayout.setRefreshing(false);
     }
 
+    private void trackDocumentChanges() {
+        fbHelper.trackMultipleDocuments(ParkingSlot.class, Constants.PARKING_SLOTS, new OnMultiDocumentListener() {
+            @Override
+            public <T> void onAdded(T object) {
+                parkingSlots.add((ParkingSlot) object);
+                availableSlotsAdapter.notifyItemInserted(parkingSlots.size() - 1);
+            }
+
+            @Override
+            public <T> void onModified(T object) {
+                try {
+                    ParkingSlot parkingSlot = (ParkingSlot) object;
+                    int index = parkingSlots.indexOf(parkingSlot);
+                    parkingSlots.set(index, parkingSlot);
+                    availableSlotsAdapter.notifyDataSetChanged();
+                } catch (IndexOutOfBoundsException indexException) {
+                    indexException.printStackTrace();
+                }
+            }
+
+            @Override
+            public <T> void onRemoved(T object) {
+                try {
+                    ParkingSlot parkingSlot = (ParkingSlot) object;
+                    int index = parkingSlots.indexOf(parkingSlot);
+                    parkingSlots.remove(parkingSlot);
+                    availableSlotsAdapter.notifyItemRemoved(index);
+                } catch (IndexOutOfBoundsException indexException) {
+                    indexException.printStackTrace();
+                }
+            }
+        });
+    }
+
     public void updateRecyclerView() {
         availableSlotsAdapter = new AvailableSlotsAdapter(this, parkingSlots);
         recyclerView.setAdapter(availableSlotsAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-    }
-
-    private void trackMultipleDocuments() {
-        Query query = FirebaseFirestore.getInstance()
-                .collection(Constants.PARKING_SLOTS);
-
-        ListenerRegistration registration = query.addSnapshotListener(new EventListener<QuerySnapshot>() {
-            @RequiresApi(api = Build.VERSION_CODES.N)
-            @Override
-            public void onEvent(@Nullable QuerySnapshot value,
-                                @Nullable FirebaseFirestoreException e) {
-                if (e != null) {
-                    Logger.w("Listen failed: " + e);
-                    return;
-                }
-
-                if (value != null) {
-                    for (DocumentChange dc : value.getDocumentChanges()) {
-                        ParkingSlot parkingSlot = dc.getDocument().toObject(ParkingSlot.class);
-                        String str = parkingSlot.toString();
-
-                        switch (dc.getType()) {
-                            case ADDED:
-                                parkingSlots.add(parkingSlot);
-                                availableSlotsAdapter.notifyItemInserted(parkingSlots.size() - 1);
-                                Logger.d("ADDED: " + str);
-//                                makeToast("ADDED\n" + str);
-                                break;
-                            case MODIFIED:
-                                try {
-                                    int index = parkingSlots.indexOf(parkingSlot);
-                                    parkingSlots.set(index, parkingSlot);
-                                    availableSlotsAdapter.notifyDataSetChanged();
-                                } catch (IndexOutOfBoundsException indexException) {
-                                    indexException.printStackTrace();
-                                }
-                                Logger.d("MODIFIED: " + str);
-//                                makeToast("MODIFIED\n" + str);
-                                break;
-                            case REMOVED:
-                                try {
-                                    int index = parkingSlots.indexOf(parkingSlot);
-                                    parkingSlots.remove(parkingSlot);
-                                    availableSlotsAdapter.notifyItemRemoved(index);
-                                } catch (IndexOutOfBoundsException indexException) {
-                                    indexException.printStackTrace();
-                                }
-                                Logger.d("REMOVED: " + str);
-//                                makeToast("REMOVED\n" + str);
-                                break;
-                        }
-                    }
-                }
-
-                // it will read all the documents present in the Collection on detecting any change
-                /*for (QueryDocumentSnapshot doc : value) {
-                    if (doc.exists()) {
-                        Map<String, Object> data = doc.getData();
-                        String str = "name: " + data.get("name") + "\nemail: " + data.get("email") + "\nrandomInt: " + data.get("randomInt");
-                        Logger.d("TAG1", str);
-                        makeToast(str);
-                    }
-                }*/
-            }
-        });
-
-        // Stop listening to changes
-//        registration.remove();
     }
 
     private void makeToast(String toastMessage) {

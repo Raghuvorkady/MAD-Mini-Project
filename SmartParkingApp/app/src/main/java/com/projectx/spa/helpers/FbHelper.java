@@ -1,10 +1,12 @@
 package com.projectx.spa.helpers;
 
 import android.content.Context;
+import android.os.Build;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -14,14 +16,20 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentChange;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.ListenerRegistration;
+import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.orhanobut.logger.Logger;
 import com.projectx.spa.interfaces.OnAuthListener;
 import com.projectx.spa.interfaces.OnGetDataListener;
+import com.projectx.spa.interfaces.OnMultiDocumentListener;
 import com.projectx.spa.interfaces.OnSnapshotListener;
 import com.projectx.spa.interfaces.Settable;
 
@@ -227,6 +235,66 @@ public class FbHelper {
                 });
     }
 
+    /**
+     * To track all the documents in a Collection for any changes
+     *
+     * @param className      is the Class name(Model) of the object which
+     *                       will be returned back
+     * @param collectionPath is the Collection path
+     * @param listener       is the event listener
+     * @implNote Inorder to access the object which is returned in onAdded(), onModified(), onFailure()
+     * you need to cast it to it's respective Class
+     */
+    public <T> void trackMultipleDocuments(Class<T> className, String collectionPath, OnMultiDocumentListener listener) {
+        Query query = FirebaseFirestore.getInstance().collection(collectionPath);
+
+        ListenerRegistration registration = query.addSnapshotListener(new EventListener<QuerySnapshot>() {
+            @RequiresApi(api = Build.VERSION_CODES.N)
+            @Override
+            public void onEvent(@Nullable QuerySnapshot value,
+                                @Nullable FirebaseFirestoreException e) {
+                if (e != null) {
+                    Logger.w("Listen failed." + e);
+                    return;
+                }
+
+                if (value != null) {
+                    for (DocumentChange dc : value.getDocumentChanges()) {
+                        T object = dc.getDocument().toObject(className);
+                        String str = object.toString();
+
+                        switch (dc.getType()) {
+                            case ADDED:
+                                listener.onAdded(object);
+                                Logger.d("ADDED" + str);
+                                break;
+                            case MODIFIED:
+                                listener.onModified(object);
+                                Logger.d("MODIFIED" + str);
+                                break;
+                            case REMOVED:
+                                listener.onRemoved(object);
+                                Logger.d("REMOVED" + str);
+                                break;
+                        }
+                    }
+                }
+
+                /*// it will read all the documents present in the Collection on detecting any change
+                for (QueryDocumentSnapshot doc : value) {
+                    if (doc.exists()) {
+                        Map<String, Object> data = doc.getData();
+                        String str = "name: " + data.get("name") + "\nemail: " + data.get("email") + "\nrandomInt: " + data.get("randomInt");
+                        Logger.d("TAG1", str);
+                        makeToast(str);
+                    }
+                }*/
+            }
+        });
+
+        // Stop listening to changes
+//        registration.remove();
+    }
 
     private void makeToast(String toastMessage) {
         Toast.makeText(context, toastMessage, Toast.LENGTH_SHORT).show();
@@ -241,73 +309,5 @@ public class FbHelper {
         Logger.e(toastMessage);
         Toasty.error(context, toastMessage, Toast.LENGTH_SHORT, true).show();
     }
-
-    // TODO: 10-07-2021 trackMultipleDocuments
-    /*private <T> void trackMultipleDocuments(String collectionReference, List<T> objectList, ) {
-        Query query = FirebaseFirestore.getInstance().collection(collectionReference);
-
-        ListenerRegistration registration = query.addSnapshotListener(new EventListener<QuerySnapshot>() {
-            @RequiresApi(api = Build.VERSION_CODES.N)
-            @Override
-            public void onEvent(@Nullable QuerySnapshot value,
-                                @Nullable FirebaseFirestoreException e) {
-                if (e != null) {
-                    Logger.w("TAG2", "Listen failed.", e);
-                    return;
-                }
-
-                if (value != null) {
-                    for (DocumentChange dc : value.getDocumentChanges()) {
-                        ParkedVehicle parkedVehicle = dc.getDocument().toObject();
-                        String str = parkedVehicle.toString();
-
-                        switch (dc.getType()) {
-                            case ADDED:
-                                objectList.add(parkedVehicle);
-                                parkedVehiclesAdapter.notifyItemInserted(objectList.size() - 1);
-                                Logger.d("ADDED", "New : " + str);
-//                                makeToast("ADDED\n" + str);
-                                break;
-                            case MODIFIED:
-                                try {
-                                    int index = objectList.indexOf(parkedVehicle);
-                                    objectList.set(index, parkedVehicle);
-                                    parkedVehiclesAdapter.notifyDataSetChanged();
-                                } catch (IndexOutOfBoundsException indexException) {
-                                    indexException.printStackTrace();
-                                }
-                                Logger.d("MODIFIED", "Modified : " + str);
-//                                makeToast("MODIFIED\n" + str);
-                                break;
-                            case REMOVED:
-                                try {
-                                    int index = objectList.indexOf(parkedVehicle);
-                                    objectList.remove(parkedVehicle);
-                                    parkedVehiclesAdapter.notifyItemRemoved(index);
-                                } catch (IndexOutOfBoundsException indexException) {
-                                    indexException.printStackTrace();
-                                }
-                                Logger.d("REMOVED", "Removed : " + str);
-//                                makeToast("REMOVED\n" + str);
-                                break;
-                        }
-                    }
-                }
-
-                // it will read all the documents present in the Collection on detecting any change
-                *//*for (QueryDocumentSnapshot doc : value) {
-                    if (doc.exists()) {
-                        Map<String, Object> data = doc.getData();
-                        String str = "name: " + data.get("name") + "\nemail: " + data.get("email") + "\nrandomInt: " + data.get("randomInt");
-                        Logger.d("TAG1", str);
-                        makeToast(str);
-                    }
-                }*//*
-            }
-        });
-
-        // Stop listening to changes
-//        registration.remove();
-    }*/
 
 }
