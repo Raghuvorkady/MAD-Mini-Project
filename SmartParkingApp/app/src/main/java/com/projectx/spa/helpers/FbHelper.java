@@ -1,7 +1,6 @@
 package com.projectx.spa.helpers;
 
 import android.content.Context;
-import android.util.Log;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -13,13 +12,17 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.orhanobut.logger.Logger;
 import com.projectx.spa.interfaces.OnAuthListener;
 import com.projectx.spa.interfaces.OnGetDataListener;
+import com.projectx.spa.interfaces.OnSnapshotListener;
 import com.projectx.spa.interfaces.Settable;
 import com.projectx.spa.models.ParkingSlot;
 
@@ -48,14 +51,45 @@ public class FbHelper {
                 .addOnSuccessListener(new OnSuccessListener<AuthResult>() {
                     @Override
                     public void onSuccess(AuthResult authResult) {
-                        listener.onSuccess(authResult);
+                        FirebaseUser user = authResult.getUser();
+                        if (user != null) {
+                            listener.onSuccess(user);
+                        } else {
+                            listener.onFailure("FirebaseUser is null");
+                        }
                     }
-                }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                listener.onFailure(e.getMessage());
-            }
-        });
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        listener.onFailure(e.getMessage());
+                    }
+                });
+    }
+
+    /**
+     * FirebaseUser registration method
+     */
+    public void registerUser(String email, String password, OnAuthListener listener) {
+        firebaseAuth
+                .createUserWithEmailAndPassword(email, password)
+                .addOnSuccessListener(new OnSuccessListener<AuthResult>() {
+                    @Override
+                    public void onSuccess(AuthResult authResult) {
+                        FirebaseUser user = authResult.getUser();
+                        if (user != null) {
+                            listener.onSuccess(user);
+                        } else {
+                            listener.onFailure("FirebaseUser is null");
+                        }
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        listener.onFailure(e.getMessage());
+                    }
+                });
     }
 
     /**
@@ -73,29 +107,6 @@ public class FbHelper {
     public DocumentReference toDocumentReference(String documentReference) {
         return firebaseFirestore.document(documentReference);
     }
-
-    /**
-     * Adds Parking slot object to Firestore
-     */
-    /*public void addDataToFirestore(ParkingSlot parkingSlot) {
-        DocumentReference documentReference = firebaseFirestore.collection(Constants.PARKING_SLOTS).document();
-        // db.collection(COLLECTIONS).document("area1").set(slot);
-        parkingSlot.setId(documentReference.getId());
-        documentReference
-                .set(parkingSlot)
-                .addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void unused) {
-                        makeSuccessToast("Data added successfully");
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        makeFailureToast("Data could not be added successfully");
-                    }
-                });
-    }*/
 
     /**
      * Adds an object to the Firebase Cloud Firestore based on collectionPath and documentPath.
@@ -140,7 +151,42 @@ public class FbHelper {
                 });
     }
 
-    public List<ParkingSlot> readDataFromFirestore() {
+    /**
+     * To read a particular document from the firestore
+     *
+     * @param className    is the Class name(Model) of the object which
+     *                     will be returned back
+     * @param documentPath is the document path
+     * @param listener     is the event listener
+     * @implNote Inorder to access the object which is returned in onSuccess(),
+     * you need to cast it to it's respective Class
+     */
+    public <T> void readDocumentFromFirestore(Class<T> className, String documentPath, OnSnapshotListener listener) {
+        DocumentReference documentReference = toDocumentReference(documentPath);
+
+        documentReference
+                .get()
+                .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                    @Override
+                    public void onSuccess(DocumentSnapshot snapshot) {
+                        T snapshotObject = snapshot.toObject(className);
+
+                        if (snapshotObject != null) {
+                            listener.onSuccess(snapshotObject);
+                        } else {
+                            listener.onFailure("The document does not exist!");
+                        }
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        listener.onFailure(e.getMessage());
+                    }
+                });
+    }
+
+    public <T> void readCollectionFromFirestore() {
         List<ParkingSlot> parkingSlots = new ArrayList<>();
         firebaseFirestore.collection(Constants.PARKING_SLOTS)
                 .get()
@@ -169,7 +215,6 @@ public class FbHelper {
                         makeFailureToast("Data could not be added successfully");
                     }
                 });
-        return parkingSlots;
     }
 
 
@@ -178,12 +223,12 @@ public class FbHelper {
     }
 
     private void makeSuccessToast(String toastMessage) {
-        Log.i("TAG", toastMessage);
+        Logger.i(toastMessage);
         Toasty.success(context, toastMessage, Toast.LENGTH_SHORT, true).show();
     }
 
     private void makeFailureToast(String toastMessage) {
-        Log.e("TAG", toastMessage);
+        Logger.e(toastMessage);
         Toasty.error(context, toastMessage, Toast.LENGTH_SHORT, true).show();
     }
 
@@ -197,7 +242,7 @@ public class FbHelper {
             public void onEvent(@Nullable QuerySnapshot value,
                                 @Nullable FirebaseFirestoreException e) {
                 if (e != null) {
-                    Log.w("TAG2", "Listen failed.", e);
+                    Logger.w("TAG2", "Listen failed.", e);
                     return;
                 }
 
@@ -210,7 +255,7 @@ public class FbHelper {
                             case ADDED:
                                 objectList.add(parkedVehicle);
                                 parkedVehiclesAdapter.notifyItemInserted(objectList.size() - 1);
-                                Log.d("ADDED", "New : " + str);
+                                Logger.d("ADDED", "New : " + str);
 //                                makeToast("ADDED\n" + str);
                                 break;
                             case MODIFIED:
@@ -221,7 +266,7 @@ public class FbHelper {
                                 } catch (IndexOutOfBoundsException indexException) {
                                     indexException.printStackTrace();
                                 }
-                                Log.d("MODIFIED", "Modified : " + str);
+                                Logger.d("MODIFIED", "Modified : " + str);
 //                                makeToast("MODIFIED\n" + str);
                                 break;
                             case REMOVED:
@@ -232,7 +277,7 @@ public class FbHelper {
                                 } catch (IndexOutOfBoundsException indexException) {
                                     indexException.printStackTrace();
                                 }
-                                Log.d("REMOVED", "Removed : " + str);
+                                Logger.d("REMOVED", "Removed : " + str);
 //                                makeToast("REMOVED\n" + str);
                                 break;
                         }
@@ -244,7 +289,7 @@ public class FbHelper {
                     if (doc.exists()) {
                         Map<String, Object> data = doc.getData();
                         String str = "name: " + data.get("name") + "\nemail: " + data.get("email") + "\nrandomInt: " + data.get("randomInt");
-                        Log.d("TAG1", str);
+                        Logger.d("TAG1", str);
                         makeToast(str);
                     }
                 }*//*

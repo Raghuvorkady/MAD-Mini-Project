@@ -2,7 +2,6 @@ package com.projectx.spa.activities;
 
 import android.os.Build;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.Toast;
@@ -19,6 +18,7 @@ import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.orhanobut.logger.Logger;
 import com.projectx.spa.R;
 import com.projectx.spa.helpers.Constants;
 import com.projectx.spa.helpers.FbHelper;
@@ -55,7 +55,7 @@ public class DetailsActivity extends AppCompatActivity implements View.OnClickLi
         firebaseFirestore = FirebaseFirestore.getInstance();
 
         id = new UserSession(this).getUserDetails().get(Constants.PREF_ID);
-        Log.d(TAG, id);
+        Logger.d(id);
 
         DocumentReference docRef = firebaseFirestore.collection(Constants.PARKING_SLOTS).document(id);
         docRef
@@ -64,13 +64,13 @@ public class DetailsActivity extends AppCompatActivity implements View.OnClickLi
                     @Override
                     public void onSuccess(DocumentSnapshot documentSnapshot) {
                         availableSpace = Integer.parseInt(documentSnapshot.get("availableSpace").toString());
-                        Log.d(TAG, "avail=" + availableSpace);
+                        Logger.d("avail=" + availableSpace);
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
-                        Log.d(TAG, "failed " + e.getMessage());
+                        Logger.d("failed " + e.getMessage());
                     }
                 });
 
@@ -84,11 +84,11 @@ public class DetailsActivity extends AppCompatActivity implements View.OnClickLi
             if (availableSpace > 0) {
                 vehicleNumber = maskEditText.getText().toString();
                 if (!vehicleNumber.equals("AA-00-BB-1111")) {
-                    Log.d(TAG, vehicleNumber);
+                    Logger.d(vehicleNumber);
                     // Intent it = new Intent(this, AdminHomeActivity.class);
                     if ((vehicleNumber.matches("^[A-Z]{2}[-][0-9]{2}[-][A-Z]{2}[-][0-9]{4}$"))) {
                         maskEditText.setText("");
-                        Log.d(TAG, vehicleNumber);
+                        Logger.d(vehicleNumber);
                         new AlertDialog.Builder(this)
                                 .setTitle("Insert entry")
                                 .setMessage("Are you sure you want to insert " + vehicleNumber + "?")
@@ -114,12 +114,12 @@ public class DetailsActivity extends AppCompatActivity implements View.OnClickLi
                                                             .addOnSuccessListener(new OnSuccessListener<Void>() {
                                                                 @Override
                                                                 public void onSuccess(Void unused) {
-                                                                    Log.d(TAG, "success");
+                                                                    Logger.d("success");
                                                                 }
                                                             }).addOnFailureListener(new OnFailureListener() {
                                                         @Override
                                                         public void onFailure(@NonNull Exception e) {
-                                                            Log.d(TAG, "failed " + e.getMessage());
+                                                            Logger.d("failed " + e.getMessage());
                                                         }
                                                     });
                                                     // startActivity(it);
@@ -127,20 +127,20 @@ public class DetailsActivity extends AppCompatActivity implements View.OnClickLi
                                                 }
 
                                                 @Override
-                                                public void onFailure(String str) {
-                                                    Log.w(TAG, "Error adding document " + str);
+                                                public void onFailure(String errorMessage) {
+                                                    Logger.w("Error adding document " + errorMessage);
                                                 }
                                             });
                                 })
                                 .setNegativeButton(android.R.string.no, null)
                                 .show();
                     } else {
-                        Log.d(TAG, "wrong");
+                        Logger.d("wrong");
                         makeToast("wrong format");
                     }
                 }
             } else {
-                Log.d(TAG, "no space available");
+                Logger.d("no space available");
             }
         }
     }

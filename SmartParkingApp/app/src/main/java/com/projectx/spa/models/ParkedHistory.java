@@ -53,4 +53,14 @@ public class ParkedHistory extends ParkedVehicle implements Parcelable {
         parcel.writeParcelable(exitTime, i);
         parcel.writeDouble(amountPaid);
     }
+
+    @Override
+    public boolean equals(Object o) {
+        return super.equals(o);
+    }
+
+    @Override
+    public int hashCode() {
+        return super.hashCode();
+    }
 }

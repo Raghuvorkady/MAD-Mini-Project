@@ -2,7 +2,6 @@ package com.projectx.spa.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -20,6 +19,7 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.orhanobut.logger.Logger;
 import com.projectx.spa.R;
 import com.projectx.spa.helpers.Constants;
 import com.projectx.spa.helpers.UserSession;
@@ -65,7 +65,7 @@ public class AdminHomeActivity extends AppCompatActivity implements View.OnClick
             documentReference = FirebaseFirestore.getInstance().collection(Constants.PARKING_SLOTS).document(id);
             trackSingleDocumentTest(documentReference);
         } else {
-            Log.d(TAG, "id is null");
+            Logger.d("id is null");
         }
     }
 
@@ -95,12 +95,12 @@ public class AdminHomeActivity extends AppCompatActivity implements View.OnClick
             @Override
             public void onEvent(DocumentSnapshot snapshot, FirebaseFirestoreException e) {
                 if (e != null) {
-                    Log.w("TAG1", "Listen failed.", e);
+                    Logger.w("Listen failed: " + e);
                     return;
                 }
 
                 if (snapshot != null && snapshot.exists()) {
-                    Log.d("TAG1", "Current data: " + snapshot);
+                    Logger.d(snapshot);
                     ParkingSlot parkingSlot = snapshot.toObject(ParkingSlot.class);
                     if (parkingSlot != null) {
                         String name = userSession.getUserDetails().get(Constants.PREF_NAME);
@@ -114,7 +114,7 @@ public class AdminHomeActivity extends AppCompatActivity implements View.OnClick
                         availableTextView.setText(String.valueOf(availableSpace));
                     }
                 } else {
-                    Log.d("TAG1", "Current data: null");
+                    Logger.d("Current data: null");
 
                 }
             }
@@ -151,6 +151,21 @@ public class AdminHomeActivity extends AppCompatActivity implements View.OnClick
     }
 
     //private void profilePage() {
-    //    Log.d(TAG, "yet to implement");
+    //    Logger.d(TAG, "yet to implement");
     // }
+
+    @Override
+    public void onBackPressed() {
+        Intent i = getIntent();
+
+        if (LoginActivity.class.getSimpleName().equals(i.getStringExtra("callingActivity"))) {
+            Logger.d("onBackPressed");
+            super.onBackPressed();
+        } else {
+            Logger.d("onBackPressed");
+            Intent intent = new Intent(this, HomeActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            startActivity(intent);
+        }
+    }
 }

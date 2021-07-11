@@ -3,7 +3,6 @@ package com.projectx.spa.activities;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.util.Log;
 import android.util.Patterns;
 import android.view.View;
 import android.widget.Button;
@@ -12,27 +11,23 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.Timestamp;
-import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
+import com.orhanobut.logger.Logger;
 import com.projectx.spa.R;
 import com.projectx.spa.helpers.Constants;
 import com.projectx.spa.helpers.FbHelper;
 import com.projectx.spa.helpers.UserSession;
+import com.projectx.spa.interfaces.OnAuthListener;
 import com.projectx.spa.interfaces.OnGetDataListener;
 import com.projectx.spa.models.ParkingSlot;
 import com.projectx.spa.models.User;
 
 public class RegisterActivity extends AppCompatActivity implements View.OnClickListener {
-    private final String TAG = getClass().getSimpleName();
-
     private Button registerBtn;
     private EditText nameEditText;
     private EditText emailEditText;
@@ -42,10 +37,11 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
     private EditText areaEditText;
     private EditText totalSpaceEditText;
     private TextView loginBtn;
-    private FirebaseAuth firebaseAuth;
     private ProgressBar progressBar;
     private String userId;
     private UserSession userSession;
+    private FbHelper fbHelper;
+    private boolean isRegistered = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,10 +60,12 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
         totalSpaceEditText = findViewById(R.id.slots);
         progressBar = findViewById(R.id.progressIndicator);
 
+        fbHelper = new FbHelper(this);
+
         registerBtn.setOnClickListener(this);
         loginBtn.setOnClickListener(this);
 
-        firebaseAuth = FirebaseAuth.getInstance();
+        FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
 
         if (firebaseAuth.getCurrentUser() != null) {
             startActivity(new Intent(this, HomeActivity.class));
@@ -144,63 +142,62 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
         }
 
         // register in firebase
-        firebaseAuth.createUserWithEmailAndPassword(email, password)
-                .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if (task.isSuccessful()) {
-                            makeToast("User created");
-                            userId = firebaseAuth.getCurrentUser().getUid();
-
-                            FbHelper fbHelper = new FbHelper(getApplicationContext());
-
-                            User user = new User(null, name, email, phone, Timestamp.now());
-
-                            fbHelper.addDataToFirestore(user, Constants.USERS, userId, new OnGetDataListener() {
-                                @Override
-                                public void onSuccess(DocumentReference userDocument) {
-                                    Log.d("REG", userDocument.toString());
-
-                                    ParkingSlot parkingSlot = new ParkingSlot(null,
-                                            building, address, totalSpace, totalSpace, Timestamp.now(), userDocument);
-
-                                    fbHelper.addDataToFirestore(parkingSlot, Constants.PARKING_SLOTS, userId, new OnGetDataListener() {
-                                        @Override
-                                        public void onSuccess(DocumentReference dataSnapshotValue) {
-                                            Log.d("BOOL2", "Data added successfully");
-
-                                            hideProgressBar();
-                                            Log.d("TAG", "onSuccess: user profile is created for " + userId);
-
-                                            userSession.createUserLoginSession(userId, name, email);
-
-                                            Intent intent = new Intent(getApplicationContext(), AdminHomeActivity.class);
-                                            startActivity(intent);//add .class file of vehicle number entry
-                                        }
-
-                                        @Override
-                                        public void onFailure(String str) {
-                                            hideProgressBar();
-                                            Log.d("TAG", "onFailure: " + str.toString());
-                                        }
-                                    });
-                                }
-
-                                @Override
-                                public void onFailure(String str) {
-                                    hideProgressBar();
-                                    makeToast("Error !! " + task.getException().getMessage());
-                                }
-                            });
-                        } else {
-                            hideProgressBar();
-                            makeToast("Error !! " + task.getException().getMessage());
-                        }
-                    }
-                }).addOnFailureListener(new OnFailureListener() {
+        fbHelper.registerUser(email, password, new OnAuthListener() {
             @Override
-            public void onFailure(Exception e) {
-                Log.d("REg", "failed");
+            public void onSuccess(FirebaseUser firebaseUser) {
+                makeToast("User created");
+
+                userId = firebaseUser.getUid();
+
+                User user = new User(null, name, email, phone, Timestamp.now());
+
+                // add User data
+                fbHelper.addDataToFirestore(user, Constants.USERS, userId, new OnGetDataListener() {
+                    @Override
+                    public void onSuccess(DocumentReference userDocument) {
+                        Logger.d(userDocument.toString());
+
+                        ParkingSlot parkingSlot = new ParkingSlot(null,
+                                building, address, totalSpace, totalSpace, Timestamp.now(), userDocument);
+
+                        // add Parking slot data
+                        fbHelper.addDataToFirestore(parkingSlot, Constants.PARKING_SLOTS, userId, new OnGetDataListener() {
+                            @Override
+                            public void onSuccess(DocumentReference dataSnapshotValue) {
+                                Logger.d("Data added successfully");
+
+                                isRegistered = true;
+
+                                hideProgressBar();
+                                Logger.d("onSuccess: user profile is created for " + userId);
+
+                                userSession.createUserLoginSession(userId, name, email);
+
+                                Intent intent = new Intent(getApplicationContext(), AdminHomeActivity.class);
+                                intent.putExtra(Constants.CALLING_ACTIVITY, getClass().getSimpleName());
+                                startActivity(intent);
+                            }
+
+                            @Override
+                            public void onFailure(String errorMessage) {
+                                hideProgressBar();
+                                Logger.d("onFailure: " + errorMessage);
+                            }
+                        });
+                    }
+
+                    @Override
+                    public void onFailure(String errorMessage) {
+                        hideProgressBar();
+                        makeToast("Error !! " + errorMessage);
+                    }
+                });
+            }
+
+            @Override
+            public void onFailure(String errorMessage) {
+                hideProgressBar();
+                makeToast("Error !! " + errorMessage);
             }
         });
     }

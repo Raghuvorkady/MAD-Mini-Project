@@ -3,6 +3,7 @@ package com.projectx.spa.helpers;
 public class Constants {
     // Keys
     public static final String SAMPLE_KEY = "key";
+    public static final String CALLING_ACTIVITY = "callingActivity";
 
     // Collections
     public static final String USERS = "users";

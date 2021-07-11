@@ -9,6 +9,8 @@ import android.widget.ProgressBar;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.orhanobut.logger.AndroidLogAdapter;
+import com.orhanobut.logger.Logger;
 import com.projectx.spa.R;
 import com.projectx.spa.helpers.UserSession;
 
@@ -25,6 +27,9 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
+
+        // Initialize Logger
+        Logger.addLogAdapter(new AndroidLogAdapter());
 
         login = findViewById(R.id.login);
         availability = findViewById(R.id.check);
@@ -46,19 +51,19 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         // testing: https://firebase.google.com/docs/firestore/manage-data/add-data?authuser=0#increment_a_numeric_value
         for increment: FieldValue.increment(1)
         for decrement: FieldValue.increment(-1)
-        doc.update("phoneNo", FieldValue.increment(-1)).addOnSuccessListener(s -> Log.d("tag", "success"));
+        doc.update("phoneNo", FieldValue.increment(-1)).addOnSuccessListener(s -> Logger.d("tag", "success"));
 
         String docId = "testId";*/
 
         /*fbHelper.addDataToFirestore(user, "test", "12345", new OnGetDataListener() {
             @Override
             public void onSuccess(DocumentReference dataSnapshotValue) {
-                Log.d("BOOL1", dataSnapshotValue.toString());
+                Logger.d("BOOL1", dataSnapshotValue.toString());
             }
 
             @Override
             public void onFailure(String str) {
-                Log.d("BOOL2", str);
+                Logger.d("BOOL2", str);
             }
         });*/
 

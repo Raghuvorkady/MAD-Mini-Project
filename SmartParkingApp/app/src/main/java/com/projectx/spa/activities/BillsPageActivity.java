@@ -2,7 +2,6 @@ package com.projectx.spa.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -19,6 +18,7 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.orhanobut.logger.Logger;
 import com.projectx.spa.R;
 import com.projectx.spa.helpers.Constants;
 import com.projectx.spa.helpers.UserSession;
@@ -69,8 +69,8 @@ public class BillsPageActivity extends AppCompatActivity {
                     public void onSuccess(DocumentSnapshot documentSnapshot) {
                         availableSpace = Integer.parseInt(documentSnapshot.get("availableSpace").toString());
                         totalSpace = Integer.parseInt(documentSnapshot.get("totalSpace").toString());
-                        Log.d(TAG, "avail=" + availableSpace);
-                        Log.d(TAG, "total=" + totalSpace);
+                        Logger.d("avail=" + availableSpace);
+                        Logger.d("total=" + totalSpace);
 
                         database();
                     }
@@ -78,7 +78,7 @@ public class BillsPageActivity extends AppCompatActivity {
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
-                        Log.d(TAG, "avail failed");
+                        Logger.d("avail failed");
                     }
                 });
     }
@@ -93,7 +93,7 @@ public class BillsPageActivity extends AppCompatActivity {
                         public void onComplete(@NonNull Task<QuerySnapshot> task) {
                             if (task.isSuccessful()) {
                                 for (QueryDocumentSnapshot document : task.getResult()) {
-                                    Log.d(TAG, document.getId() + " => " + document.getData());
+                                    Logger.d(document.getId() + " => " + document.getData());
                                     ParkedVehicle parkedVehicle = document.toObject(ParkedVehicle.class);
 
                                     if (parkedVehicle.getVehicleNumber().equals(vehicleNumber)) {
@@ -109,13 +109,13 @@ public class BillsPageActivity extends AppCompatActivity {
                                         exitTimeTextView.setText(timeFormat.format(exitTime.toDate()));
 
                                         firebaseFirestore.collection(Constants.PARKING_SLOTS).document(id).update("availableSpace", val);
-                                        Log.d(TAG, "updated successfully");
+                                        Logger.d("updated successfully");
 
                                         long time_difference = exitTime.toDate().getTime() - entryDate.getTime();
                                         long minutes_difference = (time_difference / 1000) / 60;
                                         int amountPaid = (int) Math.ceil(minutes_difference * 10 / 20);
                                         amountTextView.append(String.valueOf(amountPaid));
-                                        Log.d(TAG, String.valueOf(minutes_difference));
+                                        Logger.d(minutes_difference);
 
                                         String collectionReference = Constants.PARKING_SLOTS + "/" + id + "/" + Constants.PARKED_HISTORY;
                                         DocumentReference historyDocument = firebaseFirestore.collection(collectionReference).document();
@@ -136,10 +136,10 @@ public class BillsPageActivity extends AppCompatActivity {
                                                 .addOnFailureListener(new OnFailureListener() {
                                                     @Override
                                                     public void onFailure(@NonNull Exception e) {
-                                                        Log.d(TAG, "update failed");
+                                                        Logger.d(TAG, "update failed");
                                                     }
                                                 });
-                                        Log.d(TAG, exitTime.toDate().toString());*/
+                                        Logger.d(TAG, exitTime.toDate().toString());*/
 
 
                                     }
@@ -154,13 +154,13 @@ public class BillsPageActivity extends AppCompatActivity {
                         }
                     });
         } else {
-            Log.d(TAG, "error");
+            Logger.d("error");
         }
     }
 
 
     private void show(String toastMessage) {
-        Log.d(TAG, toastMessage);
+        Logger.d(toastMessage);
         Toast.makeText(this, toastMessage, Toast.LENGTH_LONG).show();
     }
 
@@ -178,19 +178,19 @@ public class BillsPageActivity extends AppCompatActivity {
                                         .addOnSuccessListener(new OnSuccessListener<Void>() {
                                             @Override
                                             public void onSuccess(Void aVoid) {
-                                                Log.d(TAG, "DocumentSnapshot successfully written!");
+                                                Logger.d("DocumentSnapshot successfully written!");
 
                                                 fromPath.delete()
                                                         .addOnSuccessListener(new OnSuccessListener<Void>() {
                                                             @Override
                                                             public void onSuccess(Void aVoid) {
-                                                                Log.d(TAG, "DocumentSnapshot successfully deleted!");
+                                                                Logger.d("DocumentSnapshot successfully deleted!");
                                                             }
                                                         })
                                                         .addOnFailureListener(new OnFailureListener() {
                                                             @Override
                                                             public void onFailure(@NonNull Exception e) {
-                                                                Log.w(TAG, "Error deleting document", e);
+                                                                Logger.w("Error deleting document" + e);
                                                             }
                                                         });
                                             }
@@ -198,21 +198,21 @@ public class BillsPageActivity extends AppCompatActivity {
                                         .addOnFailureListener(new OnFailureListener() {
                                             @Override
                                             public void onFailure(@NonNull Exception e) {
-                                                Log.w(TAG, "Error writing document", e);
+                                                Logger.w("Error writing document" + e);
                                             }
                                         });
                             } else {
-                                Log.d(TAG, "No such document");
+                                Logger.d("No such document");
                             }
                         } else {
-                            Log.d(TAG, "get failed with ", task.getException());
+                            Logger.d("get failed with " + task.getException());
                         }
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(Exception e) {
-                        Log.d(TAG, "move error" + e);
+                        Logger.d("move error" + e);
                     }
                 });
     }

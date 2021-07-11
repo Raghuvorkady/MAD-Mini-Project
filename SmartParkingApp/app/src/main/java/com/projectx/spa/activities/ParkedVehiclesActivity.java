@@ -4,7 +4,6 @@ import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
@@ -29,6 +28,7 @@ import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.ListenerRegistration;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.orhanobut.logger.Logger;
 import com.projectx.spa.R;
 import com.projectx.spa.adapters.ParkedVehiclesAdapter;
 import com.projectx.spa.helpers.Constants;
@@ -116,7 +116,7 @@ public class ParkedVehiclesActivity extends AppCompatActivity implements SwipeRe
             public void onEvent(@Nullable QuerySnapshot value,
                                 @Nullable FirebaseFirestoreException e) {
                 if (e != null) {
-                    Log.w("TAG2", "Listen failed.", e);
+                    Logger.w("Listen failed." + e);
                     return;
                 }
 
@@ -129,7 +129,7 @@ public class ParkedVehiclesActivity extends AppCompatActivity implements SwipeRe
                             case ADDED:
                                 parkedVehicles.add(parkedVehicle);
                                 parkedVehiclesAdapter.notifyItemInserted(parkedVehicles.size() - 1);
-                                Log.d("ADDED", "New : " + str);
+                                Logger.d("ADDED" + str);
 //                                makeToast("ADDED\n" + str);
                                 break;
                             case MODIFIED:
@@ -140,7 +140,7 @@ public class ParkedVehiclesActivity extends AppCompatActivity implements SwipeRe
                                 } catch (IndexOutOfBoundsException indexException) {
                                     indexException.printStackTrace();
                                 }
-                                Log.d("MODIFIED", "Modified : " + str);
+                                Logger.d("MODIFIED" + str);
 //                                makeToast("MODIFIED\n" + str);
                                 break;
                             case REMOVED:
@@ -151,7 +151,7 @@ public class ParkedVehiclesActivity extends AppCompatActivity implements SwipeRe
                                 } catch (IndexOutOfBoundsException indexException) {
                                     indexException.printStackTrace();
                                 }
-                                Log.d("REMOVED", "Removed : " + str);
+                                Logger.d("REMOVED" + str);
 //                                makeToast("REMOVED\n" + str);
                                 break;
                         }
@@ -163,7 +163,7 @@ public class ParkedVehiclesActivity extends AppCompatActivity implements SwipeRe
                     if (doc.exists()) {
                         Map<String, Object> data = doc.getData();
                         String str = "name: " + data.get("name") + "\nemail: " + data.get("email") + "\nrandomInt: " + data.get("randomInt");
-                        Log.d("TAG1", str);
+                        Logger.d("TAG1", str);
                         makeToast(str);
                     }
                 }*/
