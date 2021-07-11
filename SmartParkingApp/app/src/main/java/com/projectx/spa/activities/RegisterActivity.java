@@ -158,7 +158,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
                             fbHelper.addDataToFirestore(user, Constants.USERS, userId, new OnGetDataListener() {
                                 @Override
                                 public void onSuccess(DocumentReference userDocument) {
-                                    Logger.d("REG", userDocument.toString());
+                                    Logger.d(userDocument.toString());
 
                                     ParkingSlot parkingSlot = new ParkingSlot(null,
                                             building, address, totalSpace, totalSpace, Timestamp.now(), userDocument);
@@ -166,10 +166,10 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
                                     fbHelper.addDataToFirestore(parkingSlot, Constants.PARKING_SLOTS, userId, new OnGetDataListener() {
                                         @Override
                                         public void onSuccess(DocumentReference dataSnapshotValue) {
-                                            Logger.d("BOOL2", "Data added successfully");
+                                            Logger.d("Data added successfully");
 
                                             hideProgressBar();
-                                            Logger.d("TAG", "onSuccess: user profile is created for " + userId);
+                                            Logger.d("onSuccess: user profile is created for " + userId);
 
                                             userSession.createUserLoginSession(userId, name, email);
 
@@ -180,7 +180,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
                                         @Override
                                         public void onFailure(String str) {
                                             hideProgressBar();
-                                            Logger.d("TAG", "onFailure: " + str.toString());
+                                            Logger.d("onFailure: " + str);
                                         }
                                     });
                                 }
@@ -199,7 +199,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
                 }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(Exception e) {
-                Logger.d("REg", "failed");
+                Logger.d("failed" + e.getMessage());
             }
         });
     }

@@ -83,7 +83,7 @@ public class ParkedVehiclesActivity extends AppCompatActivity implements SwipeRe
             public void onEvent(@Nullable QuerySnapshot value,
                                 @Nullable FirebaseFirestoreException e) {
                 if (e != null) {
-                    Logger.w("TAG2", "Listen failed.", e);
+                    Logger.w("Listen failed." + e);
                     return;
                 }
 
@@ -96,7 +96,7 @@ public class ParkedVehiclesActivity extends AppCompatActivity implements SwipeRe
                             case ADDED:
                                 parkedVehicles.add(parkedVehicle);
                                 parkedVehiclesAdapter.notifyItemInserted(parkedVehicles.size() - 1);
-                                Logger.d("ADDED", "New : " + str);
+                                Logger.d("ADDED" + str);
 //                                makeToast("ADDED\n" + str);
                                 break;
                             case MODIFIED:
@@ -107,7 +107,7 @@ public class ParkedVehiclesActivity extends AppCompatActivity implements SwipeRe
                                 } catch (IndexOutOfBoundsException indexException) {
                                     indexException.printStackTrace();
                                 }
-                                Logger.d("MODIFIED", "Modified : " + str);
+                                Logger.d("MODIFIED" + str);
 //                                makeToast("MODIFIED\n" + str);
                                 break;
                             case REMOVED:
@@ -118,7 +118,7 @@ public class ParkedVehiclesActivity extends AppCompatActivity implements SwipeRe
                                 } catch (IndexOutOfBoundsException indexException) {
                                     indexException.printStackTrace();
                                 }
-                                Logger.d("REMOVED", "Removed : " + str);
+                                Logger.d("REMOVED" + str);
 //                                makeToast("REMOVED\n" + str);
                                 break;
                         }

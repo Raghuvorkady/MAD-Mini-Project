@@ -131,7 +131,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         fbHelper.authenticateUser(email, password, new OnAuthListener() {
             @Override
             public void onSuccess(FirebaseUser firebaseUser) {
-                Logger.d(TAG, "SUCCESS");
+                Logger.d("SUCCESS");
 
                 String id = firebaseUser.getUid();
 
@@ -154,7 +154,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
                     @Override
                     public void onFailure(String errorMessage) {
-                        Logger.d(TAG, errorMessage);
+                        Logger.d(errorMessage);
                     }
                 });
             }
@@ -163,7 +163,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             public void onFailure(String errorMessage) {
                 hideProgressBar();
                 makeToast("Error !!" + errorMessage);
-                Logger.d(TAG, "FAILURE: " + errorMessage);
+                Logger.d("FAILURE: " + errorMessage);
             }
         });
     }

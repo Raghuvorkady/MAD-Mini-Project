@@ -198,12 +198,12 @@ public class FbHelper {
     }
 
     private void makeSuccessToast(String toastMessage) {
-        Logger.i("TAG", toastMessage);
+        Logger.i(toastMessage);
         Toasty.success(context, toastMessage, Toast.LENGTH_SHORT, true).show();
     }
 
     private void makeFailureToast(String toastMessage) {
-        Logger.e("TAG", toastMessage);
+        Logger.e(toastMessage);
         Toasty.error(context, toastMessage, Toast.LENGTH_SHORT, true).show();
     }
 

@@ -54,7 +54,7 @@ public class DetailsActivity extends AppCompatActivity implements View.OnClickLi
         firebaseFirestore = FirebaseFirestore.getInstance();
 
         id = new UserSession(this).getUserDetails().get(Constants.PREF_ID);
-        Logger.d(TAG, id);
+        Logger.d(id);
 
         DocumentReference docRef = firebaseFirestore.collection(Constants.PARKING_SLOTS).document(id);
         docRef
@@ -63,13 +63,13 @@ public class DetailsActivity extends AppCompatActivity implements View.OnClickLi
                     @Override
                     public void onSuccess(DocumentSnapshot documentSnapshot) {
                         availableSpace = Integer.parseInt(documentSnapshot.get("availableSpace").toString());
-                        Logger.d(TAG, "avail=" + availableSpace);
+                        Logger.d("avail=" + availableSpace);
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
-                        Logger.d(TAG, "failed " + e.getMessage());
+                        Logger.d("failed " + e.getMessage());
                     }
                 });
 
@@ -83,11 +83,11 @@ public class DetailsActivity extends AppCompatActivity implements View.OnClickLi
             if (availableSpace > 0) {
                 vehicleNumber = maskEditText.getText().toString();
                 if (!vehicleNumber.equals("AA-00-BB-1111")) {
-                    Logger.d(TAG, vehicleNumber);
+                    Logger.d(vehicleNumber);
                     // Intent it = new Intent(this, AdminHomeActivity.class);
                     if ((vehicleNumber.matches("^[A-Z]{2}[-][0-9]{2}[-][A-Z]{2}[-][0-9]{4}$"))) {
                         maskEditText.setText("");
-                        Logger.d(TAG, vehicleNumber);
+                        Logger.d(vehicleNumber);
                         new AlertDialog.Builder(this)
                                 .setTitle("Insert entry")
                                 .setMessage("Are you sure you want to insert " + vehicleNumber + "?")
@@ -113,12 +113,12 @@ public class DetailsActivity extends AppCompatActivity implements View.OnClickLi
                                                             .addOnSuccessListener(new OnSuccessListener<Void>() {
                                                                 @Override
                                                                 public void onSuccess(Void unused) {
-                                                                    Logger.d(TAG, "success");
+                                                                    Logger.d("success");
                                                                 }
                                                             }).addOnFailureListener(new OnFailureListener() {
                                                         @Override
                                                         public void onFailure(@NonNull Exception e) {
-                                                            Logger.d(TAG, "failed " + e.getMessage());
+                                                            Logger.d("failed " + e.getMessage());
                                                         }
                                                     });
                                                     // startActivity(it);
@@ -127,19 +127,19 @@ public class DetailsActivity extends AppCompatActivity implements View.OnClickLi
 
                                                 @Override
                                                 public void onFailure(String str) {
-                                                    Logger.w(TAG, "Error adding document " + str);
+                                                    Logger.w("Error adding document " + str);
                                                 }
                                             });
                                 })
                                 .setNegativeButton(android.R.string.no, null)
                                 .show();
                     } else {
-                        Logger.d(TAG, "wrong");
+                        Logger.d("wrong");
                         makeToast("wrong format");
                     }
                 }
             } else {
-                Logger.d(TAG, "no space available");
+                Logger.d("no space available");
             }
         }
     }

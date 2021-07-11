@@ -61,7 +61,7 @@ public class AdminHomeActivity extends AppCompatActivity implements View.OnClick
             documentReference = FirebaseFirestore.getInstance().collection(Constants.PARKING_SLOTS).document(id);
             trackSingleDocumentTest(documentReference);
         } else {
-            Logger.d(TAG, "id is null");
+            Logger.d("id is null");
         }
     }
 
@@ -91,7 +91,7 @@ public class AdminHomeActivity extends AppCompatActivity implements View.OnClick
             @Override
             public void onEvent(DocumentSnapshot snapshot, FirebaseFirestoreException e) {
                 if (e != null) {
-                    Logger.w("TAG1", "Listen failed.", e);
+                    Logger.w("Listen failed: " + e);
                     return;
                 }
 
@@ -110,7 +110,7 @@ public class AdminHomeActivity extends AppCompatActivity implements View.OnClick
                         availableTextView.setText(String.valueOf(availableSpace));
                     }
                 } else {
-                    Logger.d("TAG1", "Current data: null");
+                    Logger.d("Current data: null");
 
                 }
             }

@@ -68,8 +68,8 @@ public class BillsPageActivity extends AppCompatActivity {
                     public void onSuccess(DocumentSnapshot documentSnapshot) {
                         availableSpace = Integer.parseInt(documentSnapshot.get("availableSpace").toString());
                         totalSpace = Integer.parseInt(documentSnapshot.get("totalSpace").toString());
-                        Logger.d(TAG, "avail=" + availableSpace);
-                        Logger.d(TAG, "total=" + totalSpace);
+                        Logger.d("avail=" + availableSpace);
+                        Logger.d("total=" + totalSpace);
 
                         database();
                     }
@@ -77,7 +77,7 @@ public class BillsPageActivity extends AppCompatActivity {
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
-                        Logger.d(TAG, "avail failed");
+                        Logger.d("avail failed");
                     }
                 });
     }
@@ -92,7 +92,7 @@ public class BillsPageActivity extends AppCompatActivity {
                         public void onComplete(@NonNull Task<QuerySnapshot> task) {
                             if (task.isSuccessful()) {
                                 for (QueryDocumentSnapshot document : task.getResult()) {
-                                    Logger.d(TAG, document.getId() + " => " + document.getData());
+                                    Logger.d(document.getId() + " => " + document.getData());
                                     ParkedVehicle parkedVehicle = document.toObject(ParkedVehicle.class);
 
                                     if (parkedVehicle.getVehicleNumber().equals(vehicleNumber)) {
@@ -108,13 +108,13 @@ public class BillsPageActivity extends AppCompatActivity {
                                         exitTimeTextView.setText(timeFormat.format(exitTime.toDate()));
 
                                         firebaseFirestore.collection(Constants.PARKING_SLOTS).document(id).update("availableSpace", val);
-                                        Logger.d(TAG, "updated successfully");
+                                        Logger.d("updated successfully");
 
                                         long time_difference = exitTime.toDate().getTime() - entryDate.getTime();
                                         long minutes_difference = (time_difference / 1000) / 60;
                                         int amountPaid = (int) Math.ceil(minutes_difference * 10 / 20);
                                         amountTextView.append(String.valueOf(amountPaid));
-                                        Logger.d(TAG, String.valueOf(minutes_difference));
+                                        Logger.d(minutes_difference);
 
                                         String collectionReference = Constants.PARKING_SLOTS + "/" + id + "/" + Constants.PARKED_HISTORY;
                                         DocumentReference historyDocument = firebaseFirestore.collection(collectionReference).document();
@@ -153,13 +153,13 @@ public class BillsPageActivity extends AppCompatActivity {
                         }
                     });
         } else {
-            Logger.d(TAG, "error");
+            Logger.d("error");
         }
     }
 
 
     private void show(String toastMessage) {
-        Logger.d(TAG, toastMessage);
+        Logger.d(toastMessage);
         Toast.makeText(this, toastMessage, Toast.LENGTH_LONG).show();
     }
 
@@ -177,19 +177,19 @@ public class BillsPageActivity extends AppCompatActivity {
                                         .addOnSuccessListener(new OnSuccessListener<Void>() {
                                             @Override
                                             public void onSuccess(Void aVoid) {
-                                                Logger.d(TAG, "DocumentSnapshot successfully written!");
+                                                Logger.d("DocumentSnapshot successfully written!");
 
                                                 fromPath.delete()
                                                         .addOnSuccessListener(new OnSuccessListener<Void>() {
                                                             @Override
                                                             public void onSuccess(Void aVoid) {
-                                                                Logger.d(TAG, "DocumentSnapshot successfully deleted!");
+                                                                Logger.d("DocumentSnapshot successfully deleted!");
                                                             }
                                                         })
                                                         .addOnFailureListener(new OnFailureListener() {
                                                             @Override
                                                             public void onFailure(@NonNull Exception e) {
-                                                                Logger.w(TAG, "Error deleting document", e);
+                                                                Logger.w("Error deleting document" + e);
                                                             }
                                                         });
                                             }
@@ -197,21 +197,21 @@ public class BillsPageActivity extends AppCompatActivity {
                                         .addOnFailureListener(new OnFailureListener() {
                                             @Override
                                             public void onFailure(@NonNull Exception e) {
-                                                Logger.w(TAG, "Error writing document", e);
+                                                Logger.w("Error writing document" + e);
                                             }
                                         });
                             } else {
-                                Logger.d(TAG, "No such document");
+                                Logger.d("No such document");
                             }
                         } else {
-                            Logger.d(TAG, "get failed with ", task.getException());
+                            Logger.d("get failed with " + task.getException());
                         }
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(Exception e) {
-                        Logger.d(TAG, "move error" + e);
+                        Logger.d("move error" + e);
                     }
                 });
     }
