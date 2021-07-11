@@ -68,6 +68,31 @@ public class FbHelper {
     }
 
     /**
+     * FirebaseUser registration method
+     */
+    public void registerUser(String email, String password, OnAuthListener listener) {
+        firebaseAuth
+                .createUserWithEmailAndPassword(email, password)
+                .addOnSuccessListener(new OnSuccessListener<AuthResult>() {
+                    @Override
+                    public void onSuccess(AuthResult authResult) {
+                        FirebaseUser user = authResult.getUser();
+                        if (user != null) {
+                            listener.onSuccess(user);
+                        } else {
+                            listener.onFailure("FirebaseUser is null");
+                        }
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        listener.onFailure(e.getMessage());
+                    }
+                });
+    }
+
+    /**
      * Returns the FirebaseFirestore instance
      */
     public FirebaseFirestore getFirebaseFirestore() {

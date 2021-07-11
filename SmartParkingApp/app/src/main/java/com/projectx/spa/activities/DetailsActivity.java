@@ -126,8 +126,8 @@ public class DetailsActivity extends AppCompatActivity implements View.OnClickLi
                                                 }
 
                                                 @Override
-                                                public void onFailure(String str) {
-                                                    Logger.w("Error adding document " + str);
+                                                public void onFailure(String errorMessage) {
+                                                    Logger.w("Error adding document " + errorMessage);
                                                 }
                                             });
                                 })

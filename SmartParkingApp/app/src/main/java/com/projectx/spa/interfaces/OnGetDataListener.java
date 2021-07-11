@@ -7,6 +7,6 @@ public interface OnGetDataListener {
     void onSuccess(DocumentReference dataSnapshotValue);
 
     // if data does not get added
-    void onFailure(String str);
+    void onFailure(String errorMessage);
 
 }
