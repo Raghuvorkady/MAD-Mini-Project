@@ -1,5 +1,6 @@
 package com.projectx.spa.activities;
 
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
@@ -7,6 +8,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
@@ -14,9 +16,13 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.firestore.DocumentChange;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
@@ -42,6 +48,8 @@ public class ParkedVehiclesActivity extends AppCompatActivity implements SwipeRe
     private RecyclerView recyclerView;
     private SwipeRefreshLayout swipeRefreshLayout;
     private ParkedVehiclesAdapter parkedVehiclesAdapter;
+    private int availableSpace;
+    private FirebaseFirestore firebaseFirestore;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,7 +60,7 @@ public class ParkedVehiclesActivity extends AppCompatActivity implements SwipeRe
         id = new UserSession(this).getUserDetails().get(Constants.PREF_ID);
         recyclerView = findViewById(R.id.recycler_view);
         swipeRefreshLayout = findViewById(R.id.parked_vehicles_swipe_refresh_layout);
-        add=findViewById(R.id.fab_vehicle_in);
+        add = findViewById(R.id.fab_vehicle_in);
         add.setOnClickListener(this);
 
         fbHelper = new FbHelper(this);
@@ -61,6 +69,26 @@ public class ParkedVehiclesActivity extends AppCompatActivity implements SwipeRe
         updateRecyclerView();
 
         swipeRefreshLayout.setOnRefreshListener(this);
+
+        firebaseFirestore = FirebaseFirestore.getInstance();
+
+        DocumentReference docRef = firebaseFirestore.collection(Constants.PARKING_SLOTS).document(id);
+        docRef
+                .get()
+                .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                    @Override
+                    public void onSuccess(DocumentSnapshot documentSnapshot) {
+                        availableSpace = Integer.parseInt(documentSnapshot.get("availableSpace").toString());
+                        Log.d(TAG, "avail=" + availableSpace);
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.d(TAG, "failed " + e.getMessage());
+                    }
+                });
+
 
         trackMultipleDocuments();
     }
@@ -79,7 +107,7 @@ public class ParkedVehiclesActivity extends AppCompatActivity implements SwipeRe
     }
 
     private void trackMultipleDocuments() {
-        String collectionReference=Constants.PARKING_SLOTS+"/"+id+"/"+Constants.PARKED_VEHICLES;
+        String collectionReference = Constants.PARKING_SLOTS + "/" + id + "/" + Constants.PARKED_VEHICLES;
         Query query = FirebaseFirestore.getInstance().collection(collectionReference);
 
         ListenerRegistration registration = query.addSnapshotListener(new EventListener<QuerySnapshot>() {
@@ -164,10 +192,17 @@ public class ParkedVehiclesActivity extends AppCompatActivity implements SwipeRe
 
     @Override
     public void onClick(View view) {
-        if (view.equals(add)){
-            Intent it = new Intent(this, DetailsActivity.class);
-            startActivity(it);
-        }
+        if (view.equals(add)) {
+            if (availableSpace > 0) {
+                Intent it = new Intent(this, DetailsActivity.class);
+                startActivity(it);
+            }
+            else{
+                Toast.makeText(ParkedVehiclesActivity.this, "no space to park", Toast.LENGTH_SHORT).show();
 
+                return;
+            }
+
+        }
     }
 }
