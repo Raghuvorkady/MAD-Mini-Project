@@ -149,4 +149,19 @@ public class AdminHomeActivity extends AppCompatActivity implements View.OnClick
     //private void profilePage() {
     //    Logger.d(TAG, "yet to implement");
     // }
+
+    @Override
+    public void onBackPressed() {
+        Intent i = getIntent();
+
+        if (LoginActivity.class.getSimpleName().equals(i.getStringExtra("callingActivity"))) {
+            Logger.d("onBackPressed");
+            super.onBackPressed();
+        } else {
+            Logger.d("onBackPressed");
+            Intent intent = new Intent(this, HomeActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            startActivity(intent);
+        }
+    }
 }

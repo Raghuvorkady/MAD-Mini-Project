@@ -41,6 +41,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
     private String userId;
     private UserSession userSession;
     private FbHelper fbHelper;
+    private boolean isRegistered = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -164,13 +165,16 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
                             public void onSuccess(DocumentReference dataSnapshotValue) {
                                 Logger.d("Data added successfully");
 
+                                isRegistered = true;
+
                                 hideProgressBar();
                                 Logger.d("onSuccess: user profile is created for " + userId);
 
                                 userSession.createUserLoginSession(userId, name, email);
 
                                 Intent intent = new Intent(getApplicationContext(), AdminHomeActivity.class);
-                                startActivity(intent);//add .class file of vehicle number entry
+                                intent.putExtra(Constants.CALLING_ACTIVITY, getClass().getSimpleName());
+                                startActivity(intent);
                             }
 
                             @Override

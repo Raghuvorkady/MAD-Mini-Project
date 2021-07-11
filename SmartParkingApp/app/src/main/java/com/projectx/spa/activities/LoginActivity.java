@@ -50,6 +50,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         Intent intent = new Intent();
         if (userSession.isUserLoggedIn()) {
             intent.setClass(this, AdminHomeActivity.class);
+            intent.putExtra(Constants.CALLING_ACTIVITY, getClass().getSimpleName());
 
             // Closing all the Activities from stack
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
