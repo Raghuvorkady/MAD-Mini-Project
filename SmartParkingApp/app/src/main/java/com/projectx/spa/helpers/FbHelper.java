@@ -24,7 +24,6 @@ import com.projectx.spa.interfaces.OnAuthListener;
 import com.projectx.spa.interfaces.OnGetDataListener;
 import com.projectx.spa.interfaces.OnSnapshotListener;
 import com.projectx.spa.interfaces.Settable;
-import com.projectx.spa.models.ParkingSlot;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -186,9 +185,19 @@ public class FbHelper {
                 });
     }
 
-    public <T> void readCollectionFromFirestore() {
-        List<ParkingSlot> parkingSlots = new ArrayList<>();
-        firebaseFirestore.collection(Constants.PARKING_SLOTS)
+    /**
+     * To read all the documents in a Collection from the firestore
+     *
+     * @param className      is the Class name(Model) of the object which
+     *                       will be returned back
+     * @param collectionPath is the Collection path
+     * @param listener       is the event listener
+     * @implNote Inorder to access the object which is returned in onSuccess(),
+     * you need to cast it to it's respective Class
+     */
+    public <T> void readCollectionFromFirestore(Class<T> className, String collectionPath, OnSnapshotListener listener) {
+        List<T> objects = new ArrayList<>();
+        firebaseFirestore.collection(collectionPath)
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
@@ -196,23 +205,24 @@ public class FbHelper {
                         if (task.isSuccessful()) {
                             for (QueryDocumentSnapshot document : task.getResult()) {
                                 if (document.exists()) {
-                                    // creating ParkingSlot object
-                                    ParkingSlot parkingSlot = document.toObject(ParkingSlot.class);
-                                    parkingSlots.add(parkingSlot);
-                                    makeSuccessToast("Data read successfully");
+                                    T object = document.toObject(className);
+                                    objects.add(object);
+//                                    makeSuccessToast("Data read successfully");
                                 } else {
-                                    makeFailureToast("doc does not exist");
+//                                    makeFailureToast("doc does not exist");
+                                    listener.onFailure("doc does not exist");
                                 }
+                                listener.onSuccess(objects);
                             }
                         } else {
-                            makeFailureToast("Error getting documents." + task.getException());
+                            listener.onFailure("Error getting documents." + task.getException());
                         }
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
-                        makeFailureToast("Data could not be added successfully");
+                        listener.onFailure("Data could not be added successfully " + e.getMessage());
                     }
                 });
     }
