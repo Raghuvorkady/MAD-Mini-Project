@@ -1,6 +1,5 @@
 package com.projectx.spa.activities;
 
-import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
@@ -39,17 +38,18 @@ import com.projectx.spa.models.ParkedVehicle;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ParkedVehiclesActivity extends AppCompatActivity implements SwipeRefreshLayout.OnRefreshListener,View.OnClickListener {
-    private final String TAG = getClass().getSimpleName();
-    private List<ParkedVehicle> parkedVehicles;
-    private FbHelper fbHelper;
-    String id;
-    FloatingActionButton add;
+public class ParkedVehiclesActivity extends AppCompatActivity implements SwipeRefreshLayout.OnRefreshListener, View.OnClickListener {
+
+    private FloatingActionButton addFAB;
     private RecyclerView recyclerView;
     private SwipeRefreshLayout swipeRefreshLayout;
     private ParkedVehiclesAdapter parkedVehiclesAdapter;
+
+    private FbHelper fbHelper;
+
+    private String id;
     private int availableSpace;
-    private FirebaseFirestore firebaseFirestore;
+    private List<ParkedVehicle> parkedVehicles;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,17 +60,17 @@ public class ParkedVehiclesActivity extends AppCompatActivity implements SwipeRe
         id = new UserSession(this).getUserDetails().get(Constants.PREF_ID);
         recyclerView = findViewById(R.id.recycler_view);
         swipeRefreshLayout = findViewById(R.id.parked_vehicles_swipe_refresh_layout);
-        add = findViewById(R.id.fab_vehicle_in);
-        add.setOnClickListener(this);
+        addFAB = findViewById(R.id.fab_vehicle_in);
+        addFAB.setOnClickListener(this);
 
-        fbHelper = new FbHelper(this);
+        FbHelper fbHelper = new FbHelper(this);
 
         parkedVehicles = new ArrayList<>();
         updateRecyclerView();
 
         swipeRefreshLayout.setOnRefreshListener(this);
 
-        firebaseFirestore = FirebaseFirestore.getInstance();
+        FirebaseFirestore firebaseFirestore = FirebaseFirestore.getInstance();
 
         DocumentReference docRef = firebaseFirestore.collection(Constants.PARKING_SLOTS).document(id);
         docRef
@@ -79,16 +79,15 @@ public class ParkedVehiclesActivity extends AppCompatActivity implements SwipeRe
                     @Override
                     public void onSuccess(DocumentSnapshot documentSnapshot) {
                         availableSpace = Integer.parseInt(documentSnapshot.get("availableSpace").toString());
-                        Log.d(TAG, "avail=" + availableSpace);
+                        Logger.d("avail=" + availableSpace);
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
-                        Log.d(TAG, "failed " + e.getMessage());
+                        Logger.d("failed " + e.getMessage());
                     }
                 });
-
 
         trackMultipleDocuments();
     }
@@ -192,17 +191,13 @@ public class ParkedVehiclesActivity extends AppCompatActivity implements SwipeRe
 
     @Override
     public void onClick(View view) {
-        if (view.equals(add)) {
+        if (view.equals(addFAB)) {
             if (availableSpace > 0) {
                 Intent it = new Intent(this, DetailsActivity.class);
                 startActivity(it);
-            }
-            else{
+            } else {
                 Toast.makeText(ParkedVehiclesActivity.this, "no space to park", Toast.LENGTH_SHORT).show();
-
-                return;
             }
-
         }
     }
 }
