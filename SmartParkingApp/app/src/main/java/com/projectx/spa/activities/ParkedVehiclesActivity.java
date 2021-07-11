@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.firestore.DocumentChange;
 import com.google.firebase.firestore.EventListener;
@@ -32,12 +33,12 @@ import com.projectx.spa.models.ParkedVehicle;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ParkedVehiclesActivity extends AppCompatActivity implements SwipeRefreshLayout.OnRefreshListener {
+public class ParkedVehiclesActivity extends AppCompatActivity implements SwipeRefreshLayout.OnRefreshListener,View.OnClickListener {
     private final String TAG = getClass().getSimpleName();
     private List<ParkedVehicle> parkedVehicles;
     private FbHelper fbHelper;
     String id;
-
+    FloatingActionButton add;
     private RecyclerView recyclerView;
     private SwipeRefreshLayout swipeRefreshLayout;
     private ParkedVehiclesAdapter parkedVehiclesAdapter;
@@ -46,9 +47,13 @@ public class ParkedVehiclesActivity extends AppCompatActivity implements SwipeRe
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_parked_vehicles);
+        getSupportActionBar().setTitle("Parked vehicle");
+
         id = new UserSession(this).getUserDetails().get(Constants.PREF_ID);
         recyclerView = findViewById(R.id.recycler_view);
         swipeRefreshLayout = findViewById(R.id.parked_vehicles_swipe_refresh_layout);
+        add=findViewById(R.id.fab_vehicle_in);
+        add.setOnClickListener(this);
 
         fbHelper = new FbHelper(this);
 
@@ -156,8 +161,13 @@ public class ParkedVehiclesActivity extends AppCompatActivity implements SwipeRe
         snackbar.show();
     }
 
-    public void detailsPage(View view) {
-        Intent it = new Intent(this, DetailsActivity.class);
-        startActivity(it);
+
+    @Override
+    public void onClick(View view) {
+        if (view.equals(add)){
+            Intent it = new Intent(this, DetailsActivity.class);
+            startActivity(it);
+        }
+
     }
 }

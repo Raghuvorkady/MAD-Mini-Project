@@ -44,6 +44,7 @@ public class DetailsActivity extends AppCompatActivity implements View.OnClickLi
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_details);
+        getSupportActionBar().setTitle("Vehicle Entry");
 
         wait = findViewById(R.id.waiting);
         in = findViewById(R.id.in_card);

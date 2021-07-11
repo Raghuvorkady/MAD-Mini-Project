@@ -1,5 +1,6 @@
 package com.projectx.spa.adapters;
 
+import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.view.LayoutInflater;
@@ -49,7 +50,7 @@ public class ParkedVehiclesAdapter extends RecyclerView.Adapter<ParkedVehiclesAd
         holder.cardLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                MaterialAlertDialogBuilder alertDialogBuilder = new MaterialAlertDialogBuilder(context)
+                AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(context)
                         .setTitle("Are you sure")
                         .setMessage("Mark as vehicle (" + vehicle.getVehicleNumber() + ") out")
                         .setNeutralButton("Cancel", (dialogInterface, i) -> {

@@ -42,6 +42,7 @@ public class AvailableSlotsActivity extends AppCompatActivity implements SwipeRe
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getSupportActionBar().setTitle("Available slot");
         setContentView(R.layout.activity_available_slots);
 
         recyclerView = findViewById(R.id.recycler_view);
