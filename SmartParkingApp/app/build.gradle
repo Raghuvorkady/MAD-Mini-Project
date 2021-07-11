@@ -52,10 +52,10 @@ dependencies {
 
     // other dependencies
     implementation 'com.github.GrenderG:Toasty:1.5.0'
-    implementation 'com.github.GrenderG:Toasty:1.5.0'
     implementation 'ru.egslava:MaskedEditText:1.0.5'
     implementation 'com.github.santalu:maskara:1.0.0'
     implementation 'androidx.multidex:multidex:2.0.1'
+    implementation 'com.orhanobut:logger:2.2.0'
 
     // Firebase dependencies
     implementation platform('com.google.firebase:firebase-bom:28.2.0')

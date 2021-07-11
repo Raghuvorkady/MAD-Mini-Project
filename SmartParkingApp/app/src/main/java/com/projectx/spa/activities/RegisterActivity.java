@@ -3,7 +3,6 @@ package com.projectx.spa.activities;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.util.Log;
 import android.util.Patterns;
 import android.view.View;
 import android.widget.Button;
@@ -22,6 +21,7 @@ import com.google.firebase.Timestamp;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
+import com.orhanobut.logger.Logger;
 import com.projectx.spa.R;
 import com.projectx.spa.helpers.Constants;
 import com.projectx.spa.helpers.FbHelper;
@@ -158,7 +158,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
                             fbHelper.addDataToFirestore(user, Constants.USERS, userId, new OnGetDataListener() {
                                 @Override
                                 public void onSuccess(DocumentReference userDocument) {
-                                    Log.d("REG", userDocument.toString());
+                                    Logger.d("REG", userDocument.toString());
 
                                     ParkingSlot parkingSlot = new ParkingSlot(null,
                                             building, address, totalSpace, totalSpace, Timestamp.now(), userDocument);
@@ -166,10 +166,10 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
                                     fbHelper.addDataToFirestore(parkingSlot, Constants.PARKING_SLOTS, userId, new OnGetDataListener() {
                                         @Override
                                         public void onSuccess(DocumentReference dataSnapshotValue) {
-                                            Log.d("BOOL2", "Data added successfully");
+                                            Logger.d("BOOL2", "Data added successfully");
 
                                             hideProgressBar();
-                                            Log.d("TAG", "onSuccess: user profile is created for " + userId);
+                                            Logger.d("TAG", "onSuccess: user profile is created for " + userId);
 
                                             userSession.createUserLoginSession(userId, name, email);
 
@@ -180,7 +180,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
                                         @Override
                                         public void onFailure(String str) {
                                             hideProgressBar();
-                                            Log.d("TAG", "onFailure: " + str.toString());
+                                            Logger.d("TAG", "onFailure: " + str.toString());
                                         }
                                     });
                                 }
@@ -199,7 +199,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
                 }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(Exception e) {
-                Log.d("REg", "failed");
+                Logger.d("REg", "failed");
             }
         });
     }

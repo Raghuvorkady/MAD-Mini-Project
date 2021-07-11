@@ -1,7 +1,6 @@
 package com.projectx.spa.helpers;
 
 import android.content.Context;
-import android.util.Log;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -20,6 +19,7 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.orhanobut.logger.Logger;
 import com.projectx.spa.interfaces.OnAuthListener;
 import com.projectx.spa.interfaces.OnGetDataListener;
 import com.projectx.spa.interfaces.OnSnapshotListener;
@@ -198,12 +198,12 @@ public class FbHelper {
     }
 
     private void makeSuccessToast(String toastMessage) {
-        Log.i("TAG", toastMessage);
+        Logger.i("TAG", toastMessage);
         Toasty.success(context, toastMessage, Toast.LENGTH_SHORT, true).show();
     }
 
     private void makeFailureToast(String toastMessage) {
-        Log.e("TAG", toastMessage);
+        Logger.e("TAG", toastMessage);
         Toasty.error(context, toastMessage, Toast.LENGTH_SHORT, true).show();
     }
 
@@ -217,7 +217,7 @@ public class FbHelper {
             public void onEvent(@Nullable QuerySnapshot value,
                                 @Nullable FirebaseFirestoreException e) {
                 if (e != null) {
-                    Log.w("TAG2", "Listen failed.", e);
+                    Logger.w("TAG2", "Listen failed.", e);
                     return;
                 }
 
@@ -230,7 +230,7 @@ public class FbHelper {
                             case ADDED:
                                 objectList.add(parkedVehicle);
                                 parkedVehiclesAdapter.notifyItemInserted(objectList.size() - 1);
-                                Log.d("ADDED", "New : " + str);
+                                Logger.d("ADDED", "New : " + str);
 //                                makeToast("ADDED\n" + str);
                                 break;
                             case MODIFIED:
@@ -241,7 +241,7 @@ public class FbHelper {
                                 } catch (IndexOutOfBoundsException indexException) {
                                     indexException.printStackTrace();
                                 }
-                                Log.d("MODIFIED", "Modified : " + str);
+                                Logger.d("MODIFIED", "Modified : " + str);
 //                                makeToast("MODIFIED\n" + str);
                                 break;
                             case REMOVED:
@@ -252,7 +252,7 @@ public class FbHelper {
                                 } catch (IndexOutOfBoundsException indexException) {
                                     indexException.printStackTrace();
                                 }
-                                Log.d("REMOVED", "Removed : " + str);
+                                Logger.d("REMOVED", "Removed : " + str);
 //                                makeToast("REMOVED\n" + str);
                                 break;
                         }
@@ -264,7 +264,7 @@ public class FbHelper {
                     if (doc.exists()) {
                         Map<String, Object> data = doc.getData();
                         String str = "name: " + data.get("name") + "\nemail: " + data.get("email") + "\nrandomInt: " + data.get("randomInt");
-                        Log.d("TAG1", str);
+                        Logger.d("TAG1", str);
                         makeToast(str);
                     }
                 }*//*

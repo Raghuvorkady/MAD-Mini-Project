@@ -4,7 +4,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.util.Log;
 import android.util.Patterns;
 import android.view.View;
 import android.widget.Button;
@@ -132,7 +131,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         fbHelper.authenticateUser(email, password, new OnAuthListener() {
             @Override
             public void onSuccess(FirebaseUser firebaseUser) {
-                Log.d(TAG, "SUCCESS");
+                Logger.d(TAG, "SUCCESS");
 
                 String id = firebaseUser.getUid();
 
