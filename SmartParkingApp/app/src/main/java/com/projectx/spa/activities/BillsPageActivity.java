@@ -51,6 +51,7 @@ public class BillsPageActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_bills_page);
+        getSupportActionBar().setTitle("Bill");
 
         vehicleNumberTextView = findViewById(R.id.bill_activity_vehicle_number);
         entryTimeTextView = findViewById(R.id.bill_activity_entry_time);

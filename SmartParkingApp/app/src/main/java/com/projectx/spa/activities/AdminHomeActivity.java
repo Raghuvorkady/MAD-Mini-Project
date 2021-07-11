@@ -10,6 +10,7 @@ import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 
@@ -42,6 +43,9 @@ public class AdminHomeActivity extends AppCompatActivity implements View.OnClick
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_admin_home);
+        getSupportActionBar().setTitle("Admin");
+//        getActionBar().setTitle("Admin");
+//actionbar
 
         nameTextView = findViewById(R.id.name_text_view);
         buildingTextView = findViewById(R.id.building_text_view);
