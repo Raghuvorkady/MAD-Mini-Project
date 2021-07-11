@@ -1,31 +1,21 @@
 package com.projectx.spa.activities;
 
-import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Toast;
 
-import androidx.annotation.Nullable;
-import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.google.android.material.snackbar.Snackbar;
-import com.google.firebase.firestore.DocumentChange;
-import com.google.firebase.firestore.EventListener;
-import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.FirebaseFirestoreException;
-import com.google.firebase.firestore.ListenerRegistration;
-import com.google.firebase.firestore.Query;
-import com.google.firebase.firestore.QuerySnapshot;
-import com.orhanobut.logger.Logger;
 import com.projectx.spa.R;
 import com.projectx.spa.adapters.ParkedHistoryAdapter;
 import com.projectx.spa.helpers.Constants;
 import com.projectx.spa.helpers.FbHelper;
 import com.projectx.spa.helpers.UserSession;
+import com.projectx.spa.interfaces.OnMultiDocumentListener;
 import com.projectx.spa.models.ParkedHistory;
 
 import java.util.ArrayList;
@@ -57,7 +47,8 @@ public class ParkedHistoryActivity extends AppCompatActivity implements SwipeRef
 
         swipeRefreshLayout.setOnRefreshListener(this);
 
-        trackMultipleDocuments();
+        String collectionPath = Constants.PARKING_SLOTS + "/" + id + "/" + Constants.PARKED_HISTORY;
+        trackDocumentChanges(collectionPath);
     }
 
     @Override
@@ -73,72 +64,38 @@ public class ParkedHistoryActivity extends AppCompatActivity implements SwipeRef
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
     }
 
-    private void trackMultipleDocuments() {
-        String collectionReference = Constants.PARKING_SLOTS + "/" + id + "/" + Constants.PARKED_HISTORY;
-        Query query = FirebaseFirestore.getInstance().collection(collectionReference);
-
-        ListenerRegistration registration = query.addSnapshotListener(new EventListener<QuerySnapshot>() {
-            @RequiresApi(api = Build.VERSION_CODES.N)
+    private void trackDocumentChanges(String collectionPath) {
+        fbHelper.trackMultipleDocuments(ParkedHistory.class, collectionPath, new OnMultiDocumentListener() {
             @Override
-            public void onEvent(@Nullable QuerySnapshot value,
-                                @Nullable FirebaseFirestoreException e) {
-                if (e != null) {
-                    Logger.w("Listen failed." + e);
-                    return;
+            public <T> void onAdded(T object) {
+                parkedHistories.add((ParkedHistory) object);
+                parkedHistoryAdapter.notifyItemInserted(parkedHistories.size() - 1);
+            }
+
+            @Override
+            public <T> void onModified(T object) {
+                try {
+                    ParkedHistory parkedHistory = (ParkedHistory) object;
+                    int index = parkedHistories.indexOf(parkedHistory);
+                    parkedHistories.set(index, parkedHistory);
+                    parkedHistoryAdapter.notifyDataSetChanged();
+                } catch (IndexOutOfBoundsException indexException) {
+                    indexException.printStackTrace();
                 }
+            }
 
-                if (value != null) {
-                    for (DocumentChange dc : value.getDocumentChanges()) {
-                        ParkedHistory parkedHistory = dc.getDocument().toObject(ParkedHistory.class);
-                        String str = parkedHistory.toString();
-
-                        switch (dc.getType()) {
-                            case ADDED:
-                                parkedHistories.add(parkedHistory);
-                                parkedHistoryAdapter.notifyItemInserted(parkedHistories.size() - 1);
-                                Logger.d("ADDED" + str);
-//                                makeToast("ADDED\n" + str);
-                                break;
-                            case MODIFIED:
-                                try {
-                                    int index = parkedHistories.indexOf(parkedHistory);
-                                    parkedHistories.set(index, parkedHistory);
-                                    parkedHistoryAdapter.notifyDataSetChanged();
-                                } catch (IndexOutOfBoundsException indexException) {
-                                    indexException.printStackTrace();
-                                }
-                                Logger.d("MODIFIED" + str);
-//                                makeToast("MODIFIED\n" + str);
-                                break;
-                            case REMOVED:
-                                try {
-                                    int index = parkedHistories.indexOf(parkedHistory);
-                                    parkedHistories.remove(parkedHistory);
-                                    parkedHistoryAdapter.notifyItemRemoved(index);
-                                } catch (IndexOutOfBoundsException indexException) {
-                                    indexException.printStackTrace();
-                                }
-                                Logger.d("REMOVED" + str);
-//                                makeToast("REMOVED\n" + str);
-                                break;
-                        }
-                    }
+            @Override
+            public <T> void onRemoved(T object) {
+                try {
+                    ParkedHistory parkingSlot = (ParkedHistory) object;
+                    int index = parkedHistories.indexOf(parkingSlot);
+                    parkedHistories.remove(parkingSlot);
+                    parkedHistoryAdapter.notifyItemRemoved(index);
+                } catch (IndexOutOfBoundsException indexException) {
+                    indexException.printStackTrace();
                 }
-
-                // it will read all the documents present in the Collection on detecting any change
-                /*for (QueryDocumentSnapshot doc : value) {
-                    if (doc.exists()) {
-                        Map<String, Object> data = doc.getData();
-                        String str = "name: " + data.get("name") + "\nemail: " + data.get("email") + "\nrandomInt: " + data.get("randomInt");
-                        Logger.d("TAG1", str);
-                        makeToast(str);
-                    }
-                }*/
             }
         });
-
-        // Stop listening to changes
-//        registration.remove();
     }
 
     private void makeToast(String toastMessage) {

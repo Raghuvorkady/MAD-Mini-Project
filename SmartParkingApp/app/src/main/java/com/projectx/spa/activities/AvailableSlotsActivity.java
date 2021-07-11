@@ -45,7 +45,8 @@ public class AvailableSlotsActivity extends AppCompatActivity implements SwipeRe
 
         swipeRefreshLayout.setOnRefreshListener(this);
 
-        trackDocumentChanges();
+        String collectionPath = Constants.PARKING_SLOTS;
+        trackDocumentChanges(collectionPath);
     }
 
     @Override
@@ -55,8 +56,8 @@ public class AvailableSlotsActivity extends AppCompatActivity implements SwipeRe
         swipeRefreshLayout.setRefreshing(false);
     }
 
-    private void trackDocumentChanges() {
-        fbHelper.trackMultipleDocuments(ParkingSlot.class, Constants.PARKING_SLOTS, new OnMultiDocumentListener() {
+    private void trackDocumentChanges(String collectionPath) {
+        fbHelper.trackMultipleDocuments(ParkingSlot.class, collectionPath, new OnMultiDocumentListener() {
             @Override
             public <T> void onAdded(T object) {
                 parkingSlots.add((ParkingSlot) object);
