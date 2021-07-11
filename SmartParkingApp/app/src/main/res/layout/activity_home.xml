@@ -9,40 +9,45 @@
     <ImageView
         android:id="@+id/imageView"
         style="@style/ImageViewStyle"
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        android:layout_marginTop="50dp"
         android:contentDescription="@string/logo"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/icon" />
 
-    <TextView
-        android:id="@+id/bill_activity_bill"
-        style="@style/TextViewStyle"
-        android:layout_marginTop="40dp"
-        android:layout_marginBottom="40dp"
-        android:fontFamily="@font/aladin"
-        android:text="@string/e_park"
-        android:textColor="#E6BDBD"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView" />
-
     <Button
         android:id="@+id/login"
         style="@style/ButtonStyle"
         android:layout_width="wrap_content"
-        android:layout_marginBottom="20dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="40dp"
         android:text="@string/login_page"
+        android:textSize="25sp"
         app:layout_constraintBottom_toTopOf="@id/check"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent" />
+
+    <TextView
+        android:id="@+id/epark"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/e_park"
+        android:textSize="40sp"
+        android:textColor="@color/black"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/imageView"/>
 
     <Button
         android:id="@+id/check"
         style="@style/ButtonStyle"
         android:layout_width="wrap_content"
-        android:layout_marginBottom="40dp"
-        android:text="@string/check_available_space"
+        android:textSize="25dp"
+        android:layout_marginBottom="100dp"
+        android:text="@string/view_parking_space"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent" />
@@ -54,9 +59,9 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="180dp"
         android:layout_marginLeft="180dp"
-        android:layout_marginTop="420dp"
+        android:layout_marginTop="8dp"
         android:visibility="invisible"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/bill_activity_bill" />
+        app:layout_constraintTop_toBottomOf="@+id/login" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

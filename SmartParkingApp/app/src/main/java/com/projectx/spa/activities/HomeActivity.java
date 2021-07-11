@@ -27,6 +27,8 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
+        getSupportActionBar().hide();
+
 
         // Initialize Logger
         Logger.addLogAdapter(new AndroidLogAdapter());
@@ -99,7 +101,7 @@ public class HomeActivity extends AppCompatActivity implements View.OnClickListe
         if (userSession.isUserLoggedIn()) {
             login.setText("Vehicle Entry");
         } else {
-            login.setText("Login Page");
+            login.setText("Login");
         }
     }
 

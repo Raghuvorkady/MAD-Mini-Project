@@ -15,21 +15,16 @@
         <ImageView
             android:id="@+id/imageView"
             style="@style/ImageViewStyle"
+            android:layout_marginBottom="0dp"
             android:contentDescription="@string/logo"
             app:srcCompat="@drawable/icon" />
 
         <TextView
-            android:id="@+id/bill_activity_bill"
-            style="@style/TextViewStyle"
-            android:fontFamily="@font/aladin"
-            android:text="@string/e_park"
-            android:textColor="#E6BDBD"
-            tools:text="title" />
-
-        <TextView
             android:id="@+id/bill_activity_exit_time"
             style="@style/TextViewStyle"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="0dp"
+            android:textSize="25sp"
+            android:textColor="@color/black"
             android:layout_marginBottom="20dp"
             android:text="@string/create_new_account" />
 
@@ -98,6 +93,7 @@
         <Button
             android:id="@+id/register"
             style="@style/ButtonStyle"
+            android:textSize="25sp"
             android:layout_marginTop="20dp"
             android:layout_marginBottom="20dp"
             android:text="@string/register" />

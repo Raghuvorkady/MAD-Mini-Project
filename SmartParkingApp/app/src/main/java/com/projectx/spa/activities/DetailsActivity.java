@@ -2,6 +2,7 @@ package com.projectx.spa.activities;
 
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.Toast;
@@ -84,11 +85,11 @@ public class DetailsActivity extends AppCompatActivity implements View.OnClickLi
             if (availableSpace > 0) {
                 vehicleNumber = maskEditText.getText().toString();
                 if (!vehicleNumber.equals("AA-00-BB-1111")) {
-                    Logger.d(vehicleNumber);
+                    Log.d(TAG, vehicleNumber);
                     // Intent it = new Intent(this, AdminHomeActivity.class);
                     if ((vehicleNumber.matches("^[A-Z]{2}[-][0-9]{2}[-][A-Z]{2}[-][0-9]{4}$"))) {
                         maskEditText.setText("");
-                        Logger.d(vehicleNumber);
+                        Log.d(TAG, vehicleNumber);
                         new AlertDialog.Builder(this)
                                 .setTitle("Insert entry")
                                 .setMessage("Are you sure you want to insert " + vehicleNumber + "?")
@@ -114,12 +115,12 @@ public class DetailsActivity extends AppCompatActivity implements View.OnClickLi
                                                             .addOnSuccessListener(new OnSuccessListener<Void>() {
                                                                 @Override
                                                                 public void onSuccess(Void unused) {
-                                                                    Logger.d("success");
+                                                                    Log.d(TAG, "success");
                                                                 }
                                                             }).addOnFailureListener(new OnFailureListener() {
                                                         @Override
                                                         public void onFailure(@NonNull Exception e) {
-                                                            Logger.d("failed " + e.getMessage());
+                                                            Log.d(TAG, "failed " + e.getMessage());
                                                         }
                                                     });
                                                     // startActivity(it);
@@ -127,15 +128,15 @@ public class DetailsActivity extends AppCompatActivity implements View.OnClickLi
                                                 }
 
                                                 @Override
-                                                public void onFailure(String errorMessage) {
-                                                    Logger.w("Error adding document " + errorMessage);
+                                                public void onFailure(String str) {
+                                                    Log.w(TAG, "Error adding document " + str);
                                                 }
                                             });
                                 })
                                 .setNegativeButton(android.R.string.no, null)
                                 .show();
                     } else {
-                        Logger.d("wrong");
+                        Log.d(TAG, "wrong");
                         makeToast("wrong format");
                     }
                 }
