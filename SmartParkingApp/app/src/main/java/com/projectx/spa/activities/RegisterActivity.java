@@ -14,7 +14,6 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.firebase.Timestamp;
-import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
 import com.orhanobut.logger.Logger;
@@ -49,6 +48,13 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
         setContentView(R.layout.activity_register);
         getSupportActionBar().setTitle("Register");
 
+        userSession = new UserSession(this);
+
+        if (userSession.isUserLoggedIn()) {
+            startActivity(new Intent(this, HomeActivity.class));
+            finish();
+        }
+
         registerBtn = findViewById(R.id.register);
         nameEditText = findViewById(R.id.name);
         emailEditText = findViewById(R.id.email);
@@ -64,15 +70,6 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
 
         registerBtn.setOnClickListener(this);
         loginBtn.setOnClickListener(this);
-
-        FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
-
-        if (firebaseAuth.getCurrentUser() != null) {
-            startActivity(new Intent(this, HomeActivity.class));
-            finish();
-        }
-
-        userSession = new UserSession(this);
     }
 
     public void onClick(View v) {

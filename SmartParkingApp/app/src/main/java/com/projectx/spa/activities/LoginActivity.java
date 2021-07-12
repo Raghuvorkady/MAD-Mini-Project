@@ -12,13 +12,9 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.orhanobut.logger.Logger;
 import com.projectx.spa.R;
@@ -30,13 +26,11 @@ import com.projectx.spa.interfaces.OnSnapshotListener;
 import com.projectx.spa.models.User;
 
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
-    private final String TAG = getClass().getSimpleName();
 
     private Button logIn;
     private EditText emailEditText, passwordEditText;
     private TextView register, forgot;
     private ProgressBar progressBar;
-    private FirebaseAuth fAuth;
     private UserSession userSession;
     private FbHelper fbHelper;
 
@@ -87,8 +81,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         forgot.setOnClickListener(this);
 
         progressBar = findViewById(R.id.progressBar);
-
-        fAuth = FirebaseAuth.getInstance();
     }
 
     public void onClick(View v) {
@@ -184,19 +176,18 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             public void onClick(DialogInterface dialogInterface, int i) {
                 //extract email
                 String mail = resetMail.getText().toString();
-                fAuth.sendPasswordResetEmail(mail).addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void unused) {
-                        makeToast("Reset link sent to your email");
-                    }
-                }).addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        makeToast("Error ! Reset Link is not sent" + e.getMessage());
 
+                fbHelper.resetPassword(mail, new OnSnapshotListener() {
+                    @Override
+                    public <T> void onSuccess(T object) {
+                        makeToast(object.toString());
+                    }
+
+                    @Override
+                    public void onFailure(String errorMessage) {
+                        makeToast(errorMessage);
                     }
                 });
-
             }
         });
         passwordResetDialog.setNegativeButton("NO", new DialogInterface.OnClickListener() {
