@@ -99,6 +99,11 @@ public class FbHelper {
                 });
     }
 
+    public void logoutUser(){
+        firebaseAuth.signOut();
+    }
+
+
     /**
      * Returns the FirebaseFirestore instance
      */
@@ -245,8 +250,8 @@ public class FbHelper {
      * @implNote Inorder to access the object which is returned in onAdded(), onModified(), onFailure()
      * you need to cast it to it's respective Class
      */
-    public <T> void trackMultipleDocuments(Class<T> className, String collectionPath, OnMultiDocumentListener listener) {
-        Query query = FirebaseFirestore.getInstance().collection(collectionPath);
+    public <T> void trackDocuments(Class<T> className, String collectionPath, OnMultiDocumentListener listener) {
+        Query query = firebaseFirestore.collection(collectionPath);
 
         ListenerRegistration registration = query.addSnapshotListener(new EventListener<QuerySnapshot>() {
             @RequiresApi(api = Build.VERSION_CODES.N)
@@ -294,6 +299,41 @@ public class FbHelper {
 
         // Stop listening to changes
 //        registration.remove();
+    }
+
+    /**
+     * To track a single document in a Collection for any changes
+     *
+     * @param className    is the Class name(Model) of the object which
+     *                     will be returned back
+     * @param documentPath is the Collection path
+     * @param listener     is the event listener
+     * @implNote Inorder to access the object which is returned in onAdded(), onModified(), onFailure()
+     * you need to cast it to it's respective Class
+     */
+    public <T> void trackDocument(Class<T> className, String documentPath, OnSnapshotListener listener) {
+        DocumentReference documentReference = toDocumentReference(documentPath);
+        documentReference
+                .addSnapshotListener(new EventListener<DocumentSnapshot>() {
+                    @Override
+                    public void onEvent(DocumentSnapshot snapshot, FirebaseFirestoreException e) {
+                        if (e != null) {
+                            Logger.w("Listen failed: " + e);
+                            return;
+                        }
+
+                        if (snapshot != null && snapshot.exists()) {
+                            Logger.d(snapshot);
+                            T object = snapshot.toObject(className);
+                            if (object != null) {
+                                listener.onSuccess(object);
+                            }
+                        } else {
+                            Logger.d("Current data: null");
+                            listener.onFailure("Current data: null");
+                        }
+                    }
+                });
     }
 
     private void makeToast(String toastMessage) {

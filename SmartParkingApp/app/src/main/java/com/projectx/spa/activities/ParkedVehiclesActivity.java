@@ -98,7 +98,7 @@ public class ParkedVehiclesActivity extends AppCompatActivity implements SwipeRe
     }
 
     private void trackDocumentChanges(String collectionPath) {
-        fbHelper.trackMultipleDocuments(ParkedVehicle.class, collectionPath, new OnMultiDocumentListener() {
+        fbHelper.trackDocuments(ParkedVehicle.class, collectionPath, new OnMultiDocumentListener() {
             @Override
             public <T> void onAdded(T object) {
                 parkedVehicles.add((ParkedVehicle) object);

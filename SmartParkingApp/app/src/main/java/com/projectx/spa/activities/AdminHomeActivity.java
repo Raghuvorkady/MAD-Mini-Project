@@ -9,20 +9,17 @@ import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.EventListener;
-import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.orhanobut.logger.Logger;
 import com.projectx.spa.R;
 import com.projectx.spa.helpers.Constants;
+import com.projectx.spa.helpers.FbHelper;
 import com.projectx.spa.helpers.UserSession;
+import com.projectx.spa.interfaces.OnSnapshotListener;
 import com.projectx.spa.models.ParkingSlot;
 
 import es.dmoral.toasty.Toasty;
@@ -38,6 +35,8 @@ public class AdminHomeActivity extends AppCompatActivity implements View.OnClick
     private int availableSpace;
     private UserSession userSession;
     private ProgressBar progress;
+
+    private FbHelper fbHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,12 +57,14 @@ public class AdminHomeActivity extends AppCompatActivity implements View.OnClick
         parkedVehicleCardView.setOnClickListener(this);
         historyCardView.setOnClickListener(this);
 
+        fbHelper = new FbHelper(this);
+
         userSession = new UserSession(this);
         String id = userSession.getUserDetails().get(Constants.PREF_ID);
         DocumentReference documentReference;
         if (id != null) {
-            documentReference = FirebaseFirestore.getInstance().collection(Constants.PARKING_SLOTS).document(id);
-            trackSingleDocumentTest(documentReference);
+            String documentPath = Constants.PARKING_SLOTS + "/" + id;
+            trackDocumentChanges(documentPath);
         } else {
             Logger.d("id is null");
         }
@@ -90,33 +91,26 @@ public class AdminHomeActivity extends AppCompatActivity implements View.OnClick
         progress.setVisibility(View.INVISIBLE);
     }
 
-    private void trackSingleDocumentTest(DocumentReference documentReference) {
-        documentReference.addSnapshotListener(new EventListener<DocumentSnapshot>() {
+    private void trackDocumentChanges(String documentPath) {
+        fbHelper.trackDocument(ParkingSlot.class, documentPath, new OnSnapshotListener() {
             @Override
-            public void onEvent(DocumentSnapshot snapshot, FirebaseFirestoreException e) {
-                if (e != null) {
-                    Logger.w("Listen failed: " + e);
-                    return;
-                }
+            public <T> void onSuccess(T object) {
+                // TODO: 12-07-2021 Name is not being updated because of using cached name
+                String name = userSession.getUserDetails().get(Constants.PREF_NAME);
+                ParkingSlot parkingSlot = (ParkingSlot) object;
+                String building = parkingSlot.getBuilding();
+                String land = parkingSlot.getAddress();
+                availableSpace = parkingSlot.getAvailableSpace();
 
-                if (snapshot != null && snapshot.exists()) {
-                    Logger.d(snapshot);
-                    ParkingSlot parkingSlot = snapshot.toObject(ParkingSlot.class);
-                    if (parkingSlot != null) {
-                        String name = userSession.getUserDetails().get(Constants.PREF_NAME);
-                        String building = parkingSlot.getBuilding();
-                        String land = parkingSlot.getAddress();
-                        availableSpace = parkingSlot.getAvailableSpace();
+                nameTextView.setText(name);
+                buildingTextView.setText(building);
+                landTextView.setText(land);
+                availableTextView.setText(String.valueOf(availableSpace));
+            }
 
-                        nameTextView.setText(name);
-                        buildingTextView.setText(building);
-                        landTextView.setText(land);
-                        availableTextView.setText(String.valueOf(availableSpace));
-                    }
-                } else {
-                    Logger.d("Current data: null");
-
-                }
+            @Override
+            public void onFailure(String errorMessage) {
+                Logger.e(errorMessage);
             }
         });
     }
