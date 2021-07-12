@@ -347,6 +347,9 @@ public class FbHelper {
                 });
     }
 
+    /**
+     * Updates a particular field of a document
+     */
     public void updateField(String documentPath, Map<String, Object> map, OnSnapshotListener listener) {
         DocumentReference documentReference = toDocumentReference(documentPath);
         documentReference
@@ -361,6 +364,27 @@ public class FbHelper {
                     @Override
                     public void onFailure(@NonNull Exception e) {
                         listener.onSuccess("Update failed : " + e.getMessage());
+                    }
+                });
+    }
+
+    /**
+     * Deletes a particular a document in a Collection
+     */
+    public void deleteDocument(String documentPath, OnSnapshotListener listener) {
+        DocumentReference documentReference = toDocumentReference(documentPath);
+        documentReference
+                .delete()
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void unused) {
+                        listener.onSuccess("Delete successful");
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        listener.onSuccess("Delete failed : " + e.getMessage());
                     }
                 });
     }

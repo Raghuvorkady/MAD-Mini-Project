@@ -134,7 +134,7 @@ public class VehicleExitActivity extends AppCompatActivity {
 
                     ParkedHistory parkedHistory = new ParkedHistory(historyDocument.getId(),
                             parkedVehicle.getVehicleNumber(), parkedVehicle.getEntryTime(), exitTime, amountPaid);
-                    moveFirestoreDocument(fbHelper.toDocumentReference(vehicleDocumentPath), historyDocument, parkedHistory);
+                    moveFirestoreDocument(vehicleDocumentPath, historyDocument, parkedHistory);
                 }
 
                 @Override
@@ -151,26 +151,24 @@ public class VehicleExitActivity extends AppCompatActivity {
         Toast.makeText(this, toastMessage, Toast.LENGTH_LONG).show();
     }
 
-    public void moveFirestoreDocument(DocumentReference fromPath, DocumentReference toPath, ParkedHistory parkedHistory) {
+    public void moveFirestoreDocument(String fromPath, DocumentReference toPath, ParkedHistory parkedHistory) {
         toPath.set(parkedHistory)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
                         Logger.d("DocumentSnapshot successfully written!");
 
-                        fromPath.delete()
-                                .addOnSuccessListener(new OnSuccessListener<Void>() {
-                                    @Override
-                                    public void onSuccess(Void aVoid) {
-                                        Logger.d("DocumentSnapshot successfully deleted!");
-                                    }
-                                })
-                                .addOnFailureListener(new OnFailureListener() {
-                                    @Override
-                                    public void onFailure(@NonNull Exception e) {
-                                        Logger.w("Error deleting document" + e);
-                                    }
-                                });
+                        fbHelper.deleteDocument(fromPath, new OnSnapshotListener() {
+                            @Override
+                            public <T> void onSuccess(T object) {
+                                Logger.d(object.toString());
+                            }
+
+                            @Override
+                            public void onFailure(String errorMessage) {
+                                Logger.d(errorMessage);
+                            }
+                        });
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
