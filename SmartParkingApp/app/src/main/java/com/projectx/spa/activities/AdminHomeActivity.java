@@ -27,7 +27,7 @@ import com.projectx.spa.models.ParkingSlot;
 
 import es.dmoral.toasty.Toasty;
 
-public class AdminHomeActivity extends AppCompatActivity implements View.OnClickListener {
+public class AdminHomeActivity extends AppCompatActivity {
     private final String TAG = getClass().getSimpleName();
 
     private TextView nameTextView;
@@ -55,8 +55,8 @@ public class AdminHomeActivity extends AppCompatActivity implements View.OnClick
         historyCardView = findViewById(R.id.history_card);
         progress = findViewById(R.id.loading);
 
-        parkedVehicleCardView.setOnClickListener(this);
-        historyCardView.setOnClickListener(this);
+        /*parkedVehicleCardView.setOnClickListener(this);
+        historyCardView.setOnClickListener(this);*/
 
         userSession = new UserSession(this);
         String id = userSession.getUserDetails().get(Constants.PREF_ID);
@@ -69,27 +69,27 @@ public class AdminHomeActivity extends AppCompatActivity implements View.OnClick
         }
     }
 
-    @Override
-    public void onClick(View view) {
+    //@Override
+   /* public void onClick(View view) {
         parkedVehicleCardView.setVisibility(View.INVISIBLE);
         historyCardView.setVisibility(View.INVISIBLE);
         progress.setVisibility(View.VISIBLE);
 
         Intent intent = new Intent();
         if (view.equals(parkedVehicleCardView)) {
-            intent.setClass(this, ParkedVehiclesActivity.class);
-            startActivity(intent);
+            //intent.setClass(this, ParkedVehiclesActivity.class);
+            //startActivity(intent);
         }
         if (view.equals(historyCardView)) {
-            intent.setClass(this, ParkedHistoryActivity.class);
-            startActivity(intent);
+            //intent.setClass(this, ParkedHistoryActivity.class);
+            //startActivity(intent);
         }
 
         parkedVehicleCardView.setVisibility(View.VISIBLE);
         historyCardView.setVisibility(View.VISIBLE);
         progress.setVisibility(View.INVISIBLE);
     }
-
+*/
     private void trackSingleDocumentTest(DocumentReference documentReference) {
         documentReference.addSnapshotListener(new EventListener<DocumentSnapshot>() {
             @Override
