@@ -101,6 +101,25 @@ public class FbHelper {
     }
 
     /**
+     * Sends a mail to reset your password
+     */
+    public void resetPassword(String email, OnSnapshotListener listener) {
+        firebaseAuth.sendPasswordResetEmail(email)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void unused) {
+                        listener.onSuccess("Reset link sent to your email");
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        listener.onFailure("Error! Reset Link is not sent" + e.getMessage());
+                    }
+                });
+    }
+
+    /**
      * To sign out the current Firebase User
      *
      * @param listener to listen for onSuccess() and onFailure()
