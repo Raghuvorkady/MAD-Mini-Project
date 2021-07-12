@@ -18,15 +18,18 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.FirebaseFirestore;
 import com.orhanobut.logger.Logger;
 import com.projectx.spa.R;
 import com.projectx.spa.helpers.Constants;
 import com.projectx.spa.helpers.FbHelper;
 import com.projectx.spa.helpers.UserSession;
 import com.projectx.spa.interfaces.OnGetDataListener;
+import com.projectx.spa.interfaces.OnSnapshotListener;
 import com.projectx.spa.models.ParkedVehicle;
 import com.santalu.maskara.widget.MaskEditText;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class VehicleEntryActivity extends AppCompatActivity implements View.OnClickListener {
     private final String TAG = getClass().getSimpleName();
@@ -39,7 +42,8 @@ public class VehicleEntryActivity extends AppCompatActivity implements View.OnCl
     private int availableSpace;
     private String id;
 
-    private FirebaseFirestore firebaseFirestore;
+    private FbHelper fbHelper;
+    private String parkingSlotDocumentStr;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,13 +57,14 @@ public class VehicleEntryActivity extends AppCompatActivity implements View.OnCl
 
         in.setOnClickListener(this);
 
-        firebaseFirestore = FirebaseFirestore.getInstance();
+        fbHelper = new FbHelper(this);
 
         id = new UserSession(this).getUserDetails().get(Constants.PREF_ID);
         Logger.d(id);
 
-        DocumentReference docRef = firebaseFirestore.collection(Constants.PARKING_SLOTS).document(id);
-        docRef
+        parkingSlotDocumentStr = Constants.PARKING_SLOTS + "/" + id;
+        DocumentReference parkingSlotDocument = fbHelper.toDocumentReference(parkingSlotDocumentStr);
+        parkingSlotDocument
                 .get()
                 .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
                     @Override
@@ -99,7 +104,6 @@ public class VehicleEntryActivity extends AppCompatActivity implements View.OnCl
 
                                     ParkedVehicle parkedVehicle = new ParkedVehicle(null, vehicleNumber, Timestamp.now());
 
-                                    FbHelper fbHelper = new FbHelper(getApplicationContext());
                                     String collectionReference = Constants.PARKING_SLOTS + "/" + id + "/" + Constants.PARKED_VEHICLES;
 
                                     fbHelper.addDataToFirestore(parkedVehicle, collectionReference, null,
@@ -109,22 +113,20 @@ public class VehicleEntryActivity extends AppCompatActivity implements View.OnCl
                                                     Toast.makeText(VehicleEntryActivity.this, "added successfully", Toast.LENGTH_LONG).show();
                                                     int updatedAvailableSpace = availableSpace - 1;
 
-                                                    firebaseFirestore.collection(Constants.PARKING_SLOTS)
-                                                            .document(id)
-                                                            .update("availableSpace", updatedAvailableSpace)
-                                                            .addOnSuccessListener(new OnSuccessListener<Void>() {
-                                                                @Override
-                                                                public void onSuccess(Void unused) {
-                                                                    Log.d(TAG, "success");
-                                                                }
-                                                            }).addOnFailureListener(new OnFailureListener() {
+                                                    Map<String, Object> map = new HashMap<>();
+                                                    map.put("availableSpace", updatedAvailableSpace);
+                                                    fbHelper.updateField(parkingSlotDocumentStr, map, new OnSnapshotListener() {
                                                         @Override
-                                                        public void onFailure(@NonNull Exception e) {
-                                                            Log.d(TAG, "failed " + e.getMessage());
+                                                        public <T> void onSuccess(T object) {
+                                                            makeToast(object.toString());
+                                                            finish();
+                                                        }
+
+                                                        @Override
+                                                        public void onFailure(String errorMessage) {
+                                                            makeToast(errorMessage);
                                                         }
                                                     });
-                                                    // startActivity(it);
-                                                    finish();
                                                 }
 
                                                 @Override

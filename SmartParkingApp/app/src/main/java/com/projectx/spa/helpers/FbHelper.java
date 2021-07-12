@@ -35,6 +35,7 @@ import com.projectx.spa.interfaces.Settable;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import es.dmoral.toasty.Toasty;
 
@@ -342,6 +343,24 @@ public class FbHelper {
                             Logger.d("Current data: null");
                             listener.onFailure("Current data: null");
                         }
+                    }
+                });
+    }
+
+    public void updateField(String documentPath, Map<String, Object> map, OnSnapshotListener listener) {
+        DocumentReference documentReference = toDocumentReference(documentPath);
+        documentReference
+                .update(map)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void unused) {
+                        listener.onSuccess("Update successful");
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        listener.onSuccess("Update failed : " + e.getMessage());
                     }
                 });
     }
