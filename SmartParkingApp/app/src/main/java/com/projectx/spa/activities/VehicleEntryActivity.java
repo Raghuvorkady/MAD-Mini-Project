@@ -40,7 +40,7 @@ public class VehicleEntryActivity extends AppCompatActivity implements View.OnCl
 
     private String vehicleNumber;
     private int availableSpace;
-    private String id;
+    private String userId;
 
     private FbHelper fbHelper;
     private String parkingSlotDocumentStr;
@@ -59,10 +59,10 @@ public class VehicleEntryActivity extends AppCompatActivity implements View.OnCl
 
         fbHelper = new FbHelper(this);
 
-        id = new UserSession(this).getUserDetails().get(Constants.PREF_ID);
-        Logger.d(id);
+        userId = new UserSession(this).getUserDetails().get(Constants.PREF_ID);
+        Logger.d(userId);
 
-        parkingSlotDocumentStr = Constants.PARKING_SLOTS + "/" + id;
+        parkingSlotDocumentStr = Constants.PARKING_SLOTS + "/" + userId;
         DocumentReference parkingSlotDocument = fbHelper.toDocumentReference(parkingSlotDocumentStr);
         parkingSlotDocument
                 .get()
@@ -104,7 +104,7 @@ public class VehicleEntryActivity extends AppCompatActivity implements View.OnCl
 
                                     ParkedVehicle parkedVehicle = new ParkedVehicle(null, vehicleNumber, Timestamp.now());
 
-                                    String collectionReference = Constants.PARKING_SLOTS + "/" + id + "/" + Constants.PARKED_VEHICLES;
+                                    String collectionReference = Constants.PARKING_SLOTS + "/" + userId + "/" + Constants.PARKED_VEHICLES;
 
                                     fbHelper.addDataToFirestore(parkedVehicle, collectionReference, null,
                                             new OnGetDataListener() {

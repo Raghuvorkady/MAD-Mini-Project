@@ -26,6 +26,8 @@ import com.projectx.spa.models.ParkingSlot;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 public class VehicleExitActivity extends AppCompatActivity {
     private final String TAG = getClass().getSimpleName();
@@ -42,6 +44,7 @@ public class VehicleExitActivity extends AppCompatActivity {
 
     private FbHelper fbHelper;
     private ParkingSlot parkingSlot;
+    private String parkingSlotDocumentPath;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,7 +68,7 @@ public class VehicleExitActivity extends AppCompatActivity {
 
         fbHelper = new FbHelper(this);
 
-        String parkingSlotDocumentPath = Constants.PARKING_SLOTS + "/" + userId;
+        parkingSlotDocumentPath = Constants.PARKING_SLOTS + "/" + userId;
         String vehicleDocumentPath = Constants.PARKING_SLOTS + "/" + userId + "/" + Constants.PARKED_VEHICLES + "/" + vehicleId;
 
         fbHelper.readDocumentFromFirestore(ParkingSlot.class, parkingSlotDocumentPath, new OnSnapshotListener() {
@@ -106,8 +109,19 @@ public class VehicleExitActivity extends AppCompatActivity {
                     entryTimeTextView.append(" " + dateFormat.format(entryDate));
                     exitTimeTextView.append(" " + dateFormat.format(exitTime.toDate()));
 
-                    FirebaseFirestore.getInstance().collection(Constants.PARKING_SLOTS).document(userId).update("availableSpace", val);
-                    Logger.d("updated successfully");
+                    Map<String, Object> map = new HashMap<>();
+                    map.put("availableSpace", val);
+                    fbHelper.updateField(parkingSlotDocumentPath, map, new OnSnapshotListener() {
+                        @Override
+                        public <T> void onSuccess(T object) {
+                            Logger.d(object.toString());
+                        }
+
+                        @Override
+                        public void onFailure(String errorMessage) {
+                            Logger.e(errorMessage);
+                        }
+                    });
 
                     long time_difference = exitTime.toDate().getTime() - entryDate.getTime();
                     long minutes_difference = (time_difference / 1000) / 60;
@@ -121,7 +135,6 @@ public class VehicleExitActivity extends AppCompatActivity {
                     ParkedHistory parkedHistory = new ParkedHistory(historyDocument.getId(),
                             parkedVehicle.getVehicleNumber(), parkedVehicle.getEntryTime(), exitTime, amountPaid);
                     moveFirestoreDocument(fbHelper.toDocumentReference(vehicleDocumentPath), historyDocument, parkedHistory);
-
                 }
 
                 @Override
