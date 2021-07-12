@@ -99,8 +99,18 @@ public class FbHelper {
                 });
     }
 
-    public void logoutUser(){
+    /**
+     * To sign out the current Firebase User
+     *
+     * @param listener to listen for onSuccess() and onFailure()
+     */
+    public void logoutUser(OnSnapshotListener listener) {
         firebaseAuth.signOut();
+        if (firebaseAuth.getCurrentUser() == null) {
+            listener.onSuccess("Sign out successful");
+        } else {
+            listener.onFailure("Sign out failed");
+        }
     }
 
 

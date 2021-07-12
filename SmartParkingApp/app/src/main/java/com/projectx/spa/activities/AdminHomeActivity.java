@@ -1,5 +1,6 @@
 package com.projectx.spa.activities;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
@@ -12,8 +13,6 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.firestore.DocumentReference;
 import com.orhanobut.logger.Logger;
 import com.projectx.spa.R;
 import com.projectx.spa.helpers.Constants;
@@ -61,7 +60,6 @@ public class AdminHomeActivity extends AppCompatActivity implements View.OnClick
 
         userSession = new UserSession(this);
         String id = userSession.getUserDetails().get(Constants.PREF_ID);
-        DocumentReference documentReference;
         if (id != null) {
             String documentPath = Constants.PARKING_SLOTS + "/" + id;
             trackDocumentChanges(documentPath);
@@ -122,6 +120,7 @@ public class AdminHomeActivity extends AppCompatActivity implements View.OnClick
         return true;
     }
 
+    @SuppressLint("NonConstantResourceId")
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle item selection
@@ -138,10 +137,19 @@ public class AdminHomeActivity extends AppCompatActivity implements View.OnClick
     }
 
     private void logOut() {
-        Toasty.success(this, "Logout successful", Toasty.LENGTH_SHORT).show();
-        FirebaseAuth.getInstance().signOut();
-        userSession.clearUserData();
-        finish();
+        fbHelper.logoutUser(new OnSnapshotListener() {
+            @Override
+            public <T> void onSuccess(T object) {
+                Toasty.success(getApplicationContext(), (String) object, Toasty.LENGTH_SHORT).show();
+                userSession.clearUserData();
+                finish();
+            }
+
+            @Override
+            public void onFailure(String errorMessage) {
+                Toasty.error(getApplicationContext(), errorMessage, Toasty.LENGTH_SHORT).show();
+            }
+        });
     }
 
     //private void profilePage() {
