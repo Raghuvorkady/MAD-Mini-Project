@@ -27,6 +27,7 @@ import com.projectx.spa.models.ParkingSlot;
 import com.projectx.spa.models.User;
 
 public class RegisterActivity extends AppCompatActivity implements View.OnClickListener {
+
     private Button registerBtn;
     private EditText nameEditText;
     private EditText emailEditText;

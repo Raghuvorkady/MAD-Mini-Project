@@ -133,14 +133,6 @@ public class FbHelper {
         }
     }
 
-
-    /**
-     * Returns the FirebaseFirestore instance
-     */
-    public FirebaseFirestore getFirebaseFirestore() {
-        return firebaseFirestore;
-    }
-
     /**
      * Returns a DocumentReference representation of the string object (DocumentReference).
      *

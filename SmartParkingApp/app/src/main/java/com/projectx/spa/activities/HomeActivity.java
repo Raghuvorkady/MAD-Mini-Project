@@ -15,7 +15,6 @@ import com.projectx.spa.R;
 import com.projectx.spa.helpers.UserSession;
 
 public class HomeActivity extends AppCompatActivity implements View.OnClickListener {
-    private final String TAG = getClass().getSimpleName();
 
     private Button login, availability;
     private ProgressBar progressBar;

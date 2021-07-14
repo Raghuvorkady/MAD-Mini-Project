@@ -30,7 +30,6 @@ import java.util.Locale;
 import java.util.Map;
 
 public class VehicleExitActivity extends AppCompatActivity {
-    private final String TAG = getClass().getSimpleName();
 
     private TextView entryTimeTextView;
     private TextView exitTimeTextView;

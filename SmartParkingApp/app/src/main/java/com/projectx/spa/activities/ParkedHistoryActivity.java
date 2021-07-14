@@ -22,7 +22,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ParkedHistoryActivity extends AppCompatActivity implements SwipeRefreshLayout.OnRefreshListener {
-    private final String TAG = getClass().getSimpleName();
+
     private List<ParkedHistory> parkedHistories;
     private FbHelper fbHelper;
     String id;

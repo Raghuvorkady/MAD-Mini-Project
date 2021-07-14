@@ -24,7 +24,6 @@ import com.projectx.spa.models.ParkingSlot;
 import es.dmoral.toasty.Toasty;
 
 public class AdminHomeActivity extends AppCompatActivity implements View.OnClickListener {
-    private final String TAG = getClass().getSimpleName();
 
     private TextView nameTextView;
     private TextView buildingTextView;

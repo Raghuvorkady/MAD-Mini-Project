@@ -2,7 +2,6 @@ package com.projectx.spa.activities;
 
 import android.os.Build;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.Toast;
@@ -32,7 +31,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class VehicleEntryActivity extends AppCompatActivity implements View.OnClickListener {
-    private final String TAG = getClass().getSimpleName();
 
     private CardView in;
     private ProgressBar wait;
@@ -90,11 +88,11 @@ public class VehicleEntryActivity extends AppCompatActivity implements View.OnCl
             if (availableSpace > 0) {
                 vehicleNumber = maskEditText.getText().toString();
                 if (!vehicleNumber.equals("AA-00-BB-1111")) {
-                    Log.d(TAG, vehicleNumber);
+                    Logger.d(vehicleNumber);
                     // Intent it = new Intent(this, AdminHomeActivity.class);
                     if ((vehicleNumber.matches("^[A-Z]{2}[-][0-9]{2}[-][A-Z]{2}[-][0-9]{4}$"))) {
                         maskEditText.setText("");
-                        Log.d(TAG, vehicleNumber);
+                        Logger.d(vehicleNumber);
                         new AlertDialog.Builder(this)
                                 .setTitle("Insert entry")
                                 .setMessage("Are you sure you want to insert " + vehicleNumber + "?")
@@ -131,14 +129,14 @@ public class VehicleEntryActivity extends AppCompatActivity implements View.OnCl
 
                                                 @Override
                                                 public void onFailure(String str) {
-                                                    Log.w(TAG, "Error adding document " + str);
+                                                    Logger.e("Error adding document " + str);
                                                 }
                                             });
                                 })
                                 .setNegativeButton(android.R.string.no, null)
                                 .show();
                     } else {
-                        Log.d(TAG, "wrong");
+                        Logger.e("wrong");
                         makeToast("wrong format");
                     }
                 }
