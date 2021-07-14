@@ -23,23 +23,21 @@ import com.projectx.spa.models.ParkedHistory;
 import com.projectx.spa.models.ParkedVehicle;
 import com.projectx.spa.models.ParkingSlot;
 
-import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 
 public class VehicleExitActivity extends AppCompatActivity {
     private final String TAG = getClass().getSimpleName();
 
-    private TextView vehicleNumberTextView;
     private TextView entryTimeTextView;
     private TextView exitTimeTextView;
     private TextView amountTextView;
 
     private int availableSpace;
     private int totalSpace;
-    private String vehicleNumber;
     private String userId;
 
     private FbHelper fbHelper;
@@ -52,13 +50,13 @@ public class VehicleExitActivity extends AppCompatActivity {
         setContentView(R.layout.activity_vehicle_exit);
         getSupportActionBar().setTitle("Bill");
 
-        vehicleNumberTextView = findViewById(R.id.bill_activity_vehicle_number);
+        TextView vehicleNumberTextView = findViewById(R.id.bill_activity_vehicle_number);
         entryTimeTextView = findViewById(R.id.bill_activity_entry_time);
         exitTimeTextView = findViewById(R.id.bill_activity_exit_time);
         amountTextView = findViewById(R.id.amount);
 
         Intent intent = getIntent();
-        vehicleNumber = intent.getStringExtra(Constants.VEHICLE_NUMBER);
+        String vehicleNumber = intent.getStringExtra(Constants.VEHICLE_NUMBER);
 
         vehicleNumberTextView.setText(vehicleNumber);
 
@@ -95,8 +93,7 @@ public class VehicleExitActivity extends AppCompatActivity {
 
             int val = availableSpace + 1;
 
-            DateFormat timeFormat = new SimpleDateFormat("HH:mm:ss");
-            SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy hh:mm:ss a");
+            SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy hh:mm:ss a", Locale.US);
 
             Timestamp exitTime = Timestamp.now();
 

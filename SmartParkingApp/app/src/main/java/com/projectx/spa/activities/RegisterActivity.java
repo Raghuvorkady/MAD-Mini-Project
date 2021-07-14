@@ -133,7 +133,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
             return;
         }
         if (password.length() < 6) {
-            passwordEditText.setError("password must be atleast 6 characters");
+            passwordEditText.setError("password must be at least 6 characters");
             hideProgressBar();
             return;
         }

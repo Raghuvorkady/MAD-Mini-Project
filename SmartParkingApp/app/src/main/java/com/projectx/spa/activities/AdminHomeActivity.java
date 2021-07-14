@@ -49,7 +49,7 @@ public class AdminHomeActivity extends AppCompatActivity implements View.OnClick
         buildingTextView = findViewById(R.id.building_text_view);
         landTextView = findViewById(R.id.land_text_view);
         availableTextView = findViewById(R.id.linear_layout1_available_slots);
-        parkedVehicleCardView = findViewById(R.id.contraint_layout3_info_card);
+        parkedVehicleCardView = findViewById(R.id.constraint_layout3_info_card);
         historyCardView = findViewById(R.id.history_card);
         progress = findViewById(R.id.loading);
 

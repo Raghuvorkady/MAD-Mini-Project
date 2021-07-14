@@ -153,7 +153,7 @@ public class FbHelper {
     /**
      * Adds an object to the Firebase Cloud Firestore based on collectionPath and documentPath.
      *
-     * @param object         is the object that needs to be added to firestore
+     * @param object         is the object that needs to be added to Firestore
      * @param collectionPath is the path of a Collection
      * @param documentPath   is the path of a Document
      * @param listener       is the listener which is used to handle callbacks i.e, onSuccess and onFailure
@@ -194,7 +194,7 @@ public class FbHelper {
     }
 
     /**
-     * To read a particular document from the firestore
+     * To read a particular document from the Firestore
      *
      * @param className    is the Class name(Model) of the object which
      *                     will be returned back
@@ -229,7 +229,7 @@ public class FbHelper {
     }
 
     /**
-     * To read all the documents in a Collection from the firestore
+     * To read all the documents in a Collection from the Firestore
      *
      * @param className      is the Class name(Model) of the object which
      *                       will be returned back
@@ -245,7 +245,7 @@ public class FbHelper {
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if (task.isSuccessful()) {
+                        if (task.isSuccessful() && (task.getResult() != null)) {
                             for (QueryDocumentSnapshot document : task.getResult()) {
                                 if (document.exists()) {
                                     T object = document.toObject(className);
@@ -319,7 +319,7 @@ public class FbHelper {
                 for (QueryDocumentSnapshot doc : value) {
                     if (doc.exists()) {
                         Map<String, Object> data = doc.getData();
-                        String str = "name: " + data.get("name") + "\nemail: " + data.get("email") + "\nrandomInt: " + data.get("randomInt");
+                        String str = "name: " + data.get("name") + "\n email: " + data.get("email") + "\n randomInt: " + data.get("randomInt");
                         Logger.d("TAG1", str);
                         makeToast(str);
                     }

@@ -45,7 +45,7 @@
         android:id="@+id/check"
         style="@style/ButtonStyle"
         android:layout_width="wrap_content"
-        android:textSize="25dp"
+        android:textSize="25sp"
         android:layout_marginBottom="100dp"
         android:text="@string/view_parking_space"
         app:layout_constraintBottom_toBottomOf="parent"

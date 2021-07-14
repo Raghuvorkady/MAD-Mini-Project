@@ -69,7 +69,7 @@ public class ParkedVehiclesActivity extends AppCompatActivity implements SwipeRe
                 .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
                     @Override
                     public void onSuccess(DocumentSnapshot documentSnapshot) {
-                        availableSpace = Integer.parseInt(documentSnapshot.get("availableSpace").toString());
+                        availableSpace = Integer.parseInt(String.valueOf(documentSnapshot.get("availableSpace")));
                         Logger.d("avail=" + availableSpace);
                     }
                 })

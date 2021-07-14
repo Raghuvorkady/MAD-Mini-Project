@@ -4,7 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#ccffcc"
     tools:context=".activities.AdminHomeActivity">
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -48,7 +47,7 @@
             android:layout_marginStart="28dp"
             android:layout_marginLeft="28dp"
             android:layout_marginTop="10dp"
-            android:text=" "
+            android:text=""
             android:textColor="@color/black"
             android:textSize="30sp"
             app:layout_constraintStart_toStartOf="parent"
@@ -70,7 +69,7 @@
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/admin_home_contraint_layout2"
+        android:id="@+id/admin_home_constraint_layout2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="@drawable/bg_white_top"
@@ -121,11 +120,11 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/admin_home_contraint_layout2"
+        app:layout_constraintTop_toBottomOf="@id/admin_home_constraint_layout2"
         app:layout_constraintVertical_bias="0.482">
 
         <androidx.cardview.widget.CardView
-            android:id="@+id/contraint_layout3_info_card"
+            android:id="@+id/constraint_layout3_info_card"
             android:layout_width="wrap_content"
             android:layout_height="100dp"
             android:layout_marginTop="20dp"
@@ -150,7 +149,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Parked Vehicles"
+                    android:text="@string/parked_vehicles"
                     android:textColor="@color/teal_700"
                     android:textSize="30sp"
                     android:textStyle="bold" />
@@ -167,7 +166,7 @@
             app:cardBackgroundColor="#ccffff"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/contraint_layout3_info_card">
+            app:layout_constraintTop_toBottomOf="@id/constraint_layout3_info_card">
 
             <LinearLayout
                 android:layout_width="wrap_content"
@@ -201,9 +200,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:visibility="invisible"
+            tools:ignore="MissingConstraints"
             tools:layout_editor_absoluteX="104dp"
-            tools:layout_editor_absoluteY="111dp"
-            tools:ignore="MissingConstraints" />
+            tools:layout_editor_absoluteY="111dp" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
