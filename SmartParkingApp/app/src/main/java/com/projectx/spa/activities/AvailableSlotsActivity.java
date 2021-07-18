@@ -57,7 +57,7 @@ public class AvailableSlotsActivity extends AppCompatActivity implements SwipeRe
     }
 
     private void trackDocumentChanges(String collectionPath) {
-        fbHelper.trackMultipleDocuments(ParkingSlot.class, collectionPath, new OnMultiDocumentListener() {
+        fbHelper.trackDocuments(ParkingSlot.class, collectionPath, new OnMultiDocumentListener() {
             @Override
             public <T> void onAdded(T object) {
                 parkingSlots.add((ParkingSlot) object);

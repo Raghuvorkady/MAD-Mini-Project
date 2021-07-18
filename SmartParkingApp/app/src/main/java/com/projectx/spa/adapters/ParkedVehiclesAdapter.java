@@ -19,6 +19,7 @@ import com.projectx.spa.models.ParkedVehicle;
 
 import java.text.SimpleDateFormat;
 import java.util.List;
+import java.util.Locale;
 
 public class ParkedVehiclesAdapter extends RecyclerView.Adapter<ParkedVehiclesAdapter.MyOwnHolder> {
     Context context;
@@ -42,7 +43,7 @@ public class ParkedVehiclesAdapter extends RecyclerView.Adapter<ParkedVehiclesAd
         ParkedVehicle vehicle = parkedVehicles.get(position);
         holder.vehicleNoTextView.setText(vehicle.getVehicleNumber());
 
-        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy hh:mm:ss a");
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy hh:mm:ss a", Locale.US);
 
         String entryTimeStr = "Entry : " + dateFormat.format(vehicle.getEntryTime().toDate());
         holder.entryTimeTextView.setText(entryTimeStr);

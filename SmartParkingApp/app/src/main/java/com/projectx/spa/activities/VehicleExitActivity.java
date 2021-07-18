@@ -23,25 +23,25 @@ import com.projectx.spa.models.ParkedHistory;
 import com.projectx.spa.models.ParkedVehicle;
 import com.projectx.spa.models.ParkingSlot;
 
-import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Locale;
+import java.util.Map;
 
 public class VehicleExitActivity extends AppCompatActivity {
-    private final String TAG = getClass().getSimpleName();
 
-    private TextView vehicleNumberTextView;
     private TextView entryTimeTextView;
     private TextView exitTimeTextView;
     private TextView amountTextView;
 
     private int availableSpace;
     private int totalSpace;
-    private String vehicleNumber;
     private String userId;
 
     private FbHelper fbHelper;
     private ParkingSlot parkingSlot;
+    private String parkingSlotDocumentPath;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,13 +49,13 @@ public class VehicleExitActivity extends AppCompatActivity {
         setContentView(R.layout.activity_vehicle_exit);
         getSupportActionBar().setTitle("Bill");
 
-        vehicleNumberTextView = findViewById(R.id.bill_activity_vehicle_number);
+        TextView vehicleNumberTextView = findViewById(R.id.bill_activity_vehicle_number);
         entryTimeTextView = findViewById(R.id.bill_activity_entry_time);
         exitTimeTextView = findViewById(R.id.bill_activity_exit_time);
         amountTextView = findViewById(R.id.amount);
 
         Intent intent = getIntent();
-        vehicleNumber = intent.getStringExtra(Constants.VEHICLE_NUMBER);
+        String vehicleNumber = intent.getStringExtra(Constants.VEHICLE_NUMBER);
 
         vehicleNumberTextView.setText(vehicleNumber);
 
@@ -65,7 +65,7 @@ public class VehicleExitActivity extends AppCompatActivity {
 
         fbHelper = new FbHelper(this);
 
-        String parkingSlotDocumentPath = Constants.PARKING_SLOTS + "/" + userId;
+        parkingSlotDocumentPath = Constants.PARKING_SLOTS + "/" + userId;
         String vehicleDocumentPath = Constants.PARKING_SLOTS + "/" + userId + "/" + Constants.PARKED_VEHICLES + "/" + vehicleId;
 
         fbHelper.readDocumentFromFirestore(ParkingSlot.class, parkingSlotDocumentPath, new OnSnapshotListener() {
@@ -92,8 +92,7 @@ public class VehicleExitActivity extends AppCompatActivity {
 
             int val = availableSpace + 1;
 
-            DateFormat timeFormat = new SimpleDateFormat("HH:mm:ss");
-            SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy hh:mm:ss a");
+            SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy hh:mm:ss a", Locale.US);
 
             Timestamp exitTime = Timestamp.now();
 
@@ -106,8 +105,19 @@ public class VehicleExitActivity extends AppCompatActivity {
                     entryTimeTextView.append(" " + dateFormat.format(entryDate));
                     exitTimeTextView.append(" " + dateFormat.format(exitTime.toDate()));
 
-                    FirebaseFirestore.getInstance().collection(Constants.PARKING_SLOTS).document(userId).update("availableSpace", val);
-                    Logger.d("updated successfully");
+                    Map<String, Object> map = new HashMap<>();
+                    map.put("availableSpace", val);
+                    fbHelper.updateField(parkingSlotDocumentPath, map, new OnSnapshotListener() {
+                        @Override
+                        public <T> void onSuccess(T object) {
+                            Logger.d(object.toString());
+                        }
+
+                        @Override
+                        public void onFailure(String errorMessage) {
+                            Logger.e(errorMessage);
+                        }
+                    });
 
                     long time_difference = exitTime.toDate().getTime() - entryDate.getTime();
                     long minutes_difference = (time_difference / 1000) / 60;
@@ -120,8 +130,7 @@ public class VehicleExitActivity extends AppCompatActivity {
 
                     ParkedHistory parkedHistory = new ParkedHistory(historyDocument.getId(),
                             parkedVehicle.getVehicleNumber(), parkedVehicle.getEntryTime(), exitTime, amountPaid);
-                    moveFirestoreDocument(fbHelper.toDocumentReference(vehicleDocumentPath), historyDocument, parkedHistory);
-
+                    moveFirestoreDocument(vehicleDocumentPath, historyDocument, parkedHistory);
                 }
 
                 @Override
@@ -138,26 +147,24 @@ public class VehicleExitActivity extends AppCompatActivity {
         Toast.makeText(this, toastMessage, Toast.LENGTH_LONG).show();
     }
 
-    public void moveFirestoreDocument(DocumentReference fromPath, DocumentReference toPath, ParkedHistory parkedHistory) {
+    public void moveFirestoreDocument(String fromPath, DocumentReference toPath, ParkedHistory parkedHistory) {
         toPath.set(parkedHistory)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
                         Logger.d("DocumentSnapshot successfully written!");
 
-                        fromPath.delete()
-                                .addOnSuccessListener(new OnSuccessListener<Void>() {
-                                    @Override
-                                    public void onSuccess(Void aVoid) {
-                                        Logger.d("DocumentSnapshot successfully deleted!");
-                                    }
-                                })
-                                .addOnFailureListener(new OnFailureListener() {
-                                    @Override
-                                    public void onFailure(@NonNull Exception e) {
-                                        Logger.w("Error deleting document" + e);
-                                    }
-                                });
+                        fbHelper.deleteDocument(fromPath, new OnSnapshotListener() {
+                            @Override
+                            public <T> void onSuccess(T object) {
+                                Logger.d(object.toString());
+                            }
+
+                            @Override
+                            public void onFailure(String errorMessage) {
+                                Logger.d(errorMessage);
+                            }
+                        });
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {

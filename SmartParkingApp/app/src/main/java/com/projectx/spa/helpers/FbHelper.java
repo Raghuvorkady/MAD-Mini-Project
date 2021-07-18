@@ -35,6 +35,7 @@ import com.projectx.spa.interfaces.Settable;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import es.dmoral.toasty.Toasty;
 
@@ -100,10 +101,36 @@ public class FbHelper {
     }
 
     /**
-     * Returns the FirebaseFirestore instance
+     * Sends a mail to reset your password
      */
-    public FirebaseFirestore getFirebaseFirestore() {
-        return firebaseFirestore;
+    public void resetPassword(String email, OnSnapshotListener listener) {
+        firebaseAuth.sendPasswordResetEmail(email)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void unused) {
+                        listener.onSuccess("Reset link sent to your email");
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        listener.onFailure("Error! Reset Link is not sent" + e.getMessage());
+                    }
+                });
+    }
+
+    /**
+     * To sign out the current Firebase User
+     *
+     * @param listener to listen for onSuccess() and onFailure()
+     */
+    public void logoutUser(OnSnapshotListener listener) {
+        firebaseAuth.signOut();
+        if (firebaseAuth.getCurrentUser() == null) {
+            listener.onSuccess("Sign out successful");
+        } else {
+            listener.onFailure("Sign out failed");
+        }
     }
 
     /**
@@ -118,7 +145,7 @@ public class FbHelper {
     /**
      * Adds an object to the Firebase Cloud Firestore based on collectionPath and documentPath.
      *
-     * @param object         is the object that needs to be added to firestore
+     * @param object         is the object that needs to be added to Firestore
      * @param collectionPath is the path of a Collection
      * @param documentPath   is the path of a Document
      * @param listener       is the listener which is used to handle callbacks i.e, onSuccess and onFailure
@@ -159,7 +186,7 @@ public class FbHelper {
     }
 
     /**
-     * To read a particular document from the firestore
+     * To read a particular document from the Firestore
      *
      * @param className    is the Class name(Model) of the object which
      *                     will be returned back
@@ -194,7 +221,7 @@ public class FbHelper {
     }
 
     /**
-     * To read all the documents in a Collection from the firestore
+     * To read all the documents in a Collection from the Firestore
      *
      * @param className      is the Class name(Model) of the object which
      *                       will be returned back
@@ -210,7 +237,7 @@ public class FbHelper {
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if (task.isSuccessful()) {
+                        if (task.isSuccessful() && (task.getResult() != null)) {
                             for (QueryDocumentSnapshot document : task.getResult()) {
                                 if (document.exists()) {
                                     T object = document.toObject(className);
@@ -245,8 +272,8 @@ public class FbHelper {
      * @implNote Inorder to access the object which is returned in onAdded(), onModified(), onFailure()
      * you need to cast it to it's respective Class
      */
-    public <T> void trackMultipleDocuments(Class<T> className, String collectionPath, OnMultiDocumentListener listener) {
-        Query query = FirebaseFirestore.getInstance().collection(collectionPath);
+    public <T> void trackDocuments(Class<T> className, String collectionPath, OnMultiDocumentListener listener) {
+        Query query = firebaseFirestore.collection(collectionPath);
 
         ListenerRegistration registration = query.addSnapshotListener(new EventListener<QuerySnapshot>() {
             @RequiresApi(api = Build.VERSION_CODES.N)
@@ -284,7 +311,7 @@ public class FbHelper {
                 for (QueryDocumentSnapshot doc : value) {
                     if (doc.exists()) {
                         Map<String, Object> data = doc.getData();
-                        String str = "name: " + data.get("name") + "\nemail: " + data.get("email") + "\nrandomInt: " + data.get("randomInt");
+                        String str = "name: " + data.get("name") + "\n email: " + data.get("email") + "\n randomInt: " + data.get("randomInt");
                         Logger.d("TAG1", str);
                         makeToast(str);
                     }
@@ -294,6 +321,83 @@ public class FbHelper {
 
         // Stop listening to changes
 //        registration.remove();
+    }
+
+    /**
+     * To track a single document in a Collection for any changes
+     *
+     * @param className    is the Class name(Model) of the object which
+     *                     will be returned back
+     * @param documentPath is the Collection path
+     * @param listener     is the event listener
+     * @implNote Inorder to access the object which is returned in onAdded(), onModified(), onFailure()
+     * you need to cast it to it's respective Class
+     */
+    public <T> void trackDocument(Class<T> className, String documentPath, OnSnapshotListener listener) {
+        DocumentReference documentReference = toDocumentReference(documentPath);
+        documentReference
+                .addSnapshotListener(new EventListener<DocumentSnapshot>() {
+                    @Override
+                    public void onEvent(DocumentSnapshot snapshot, FirebaseFirestoreException e) {
+                        if (e != null) {
+                            Logger.w("Listen failed: " + e);
+                            return;
+                        }
+
+                        if (snapshot != null && snapshot.exists()) {
+                            Logger.d(snapshot);
+                            T object = snapshot.toObject(className);
+                            if (object != null) {
+                                listener.onSuccess(object);
+                            }
+                        } else {
+                            Logger.d("Current data: null");
+                            listener.onFailure("Current data: null");
+                        }
+                    }
+                });
+    }
+
+    /**
+     * Updates a particular field of a document
+     */
+    public void updateField(String documentPath, Map<String, Object> map, OnSnapshotListener listener) {
+        DocumentReference documentReference = toDocumentReference(documentPath);
+        documentReference
+                .update(map)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void unused) {
+                        listener.onSuccess("Update successful");
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        listener.onSuccess("Update failed : " + e.getMessage());
+                    }
+                });
+    }
+
+    /**
+     * Deletes a particular a document in a Collection
+     */
+    public void deleteDocument(String documentPath, OnSnapshotListener listener) {
+        DocumentReference documentReference = toDocumentReference(documentPath);
+        documentReference
+                .delete()
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void unused) {
+                        listener.onSuccess("Delete successful");
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        listener.onSuccess("Delete failed : " + e.getMessage());
+                    }
+                });
     }
 
     private void makeToast(String toastMessage) {

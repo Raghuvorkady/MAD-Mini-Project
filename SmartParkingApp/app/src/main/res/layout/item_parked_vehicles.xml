@@ -5,7 +5,6 @@
     android:layout_height="wrap_content"
     android:layout_marginTop="2dp"
     android:layout_marginBottom="2dp">
-    android
 
     <LinearLayout
         android:id="@+id/parked_vehicles_card_layout"
@@ -23,7 +22,7 @@
             android:id="@+id/item_parked_vehicle_vehicle_number"
             style="@style/TextViewStyle.AvailableSlotsItem"
             android:drawablePadding="8dp"
-            android:text="Vehicle Number"
+            android:text="@string/vehicle_number"
             android:textAppearance="@style/TextAppearance.AppCompat.Headline"
             android:textStyle="bold"
             app:drawableLeftCompat="@drawable/ic_car" />

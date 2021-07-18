@@ -36,5 +36,11 @@
     <string name="total_space_available">Total Space Available</string>
     <string name="already_registered_login_here">Already Registered? Login here</string>
     <string name="register">Register</string>
+    <string name="add_vehicle">Add Vehicle</string>
+    <string name="vehicle_number">Vehicle Number</string>
+    <string name="parked_vehicles">Parked Vehicles</string>
+    <string name="aa_00_bb_1111">AA-00-BB-1111</string>
+    <string name="_000">000</string>
+    <string name="logout">Logout</string>
 
 </resources>

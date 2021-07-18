@@ -22,7 +22,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ParkedHistoryActivity extends AppCompatActivity implements SwipeRefreshLayout.OnRefreshListener {
-    private final String TAG = getClass().getSimpleName();
+
     private List<ParkedHistory> parkedHistories;
     private FbHelper fbHelper;
     String id;
@@ -65,7 +65,7 @@ public class ParkedHistoryActivity extends AppCompatActivity implements SwipeRef
     }
 
     private void trackDocumentChanges(String collectionPath) {
-        fbHelper.trackMultipleDocuments(ParkedHistory.class, collectionPath, new OnMultiDocumentListener() {
+        fbHelper.trackDocuments(ParkedHistory.class, collectionPath, new OnMultiDocumentListener() {
             @Override
             public <T> void onAdded(T object) {
                 parkedHistories.add((ParkedHistory) object);

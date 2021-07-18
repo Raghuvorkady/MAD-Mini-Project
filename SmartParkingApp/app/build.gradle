@@ -11,8 +11,8 @@ android {
         applicationId "com.projectx.spa"
         minSdkVersion 16
         targetSdkVersion 30
-        versionCode 1
-        versionName "1.0"
+        versionCode 7
+        versionName "1.5.0"
 
         multiDexEnabled true
 
@@ -58,7 +58,7 @@ dependencies {
 
     // Firebase dependencies
     implementation platform('com.google.firebase:firebase-bom:28.2.0')
-    implementation 'com.google.firebase:firebase-firestore:23.0.1'
+    implementation 'com.google.firebase:firebase-firestore:23.0.2'
     implementation 'com.google.firebase:firebase-analytics'
     implementation 'com.google.firebase:firebase-auth:21.0.1'
 

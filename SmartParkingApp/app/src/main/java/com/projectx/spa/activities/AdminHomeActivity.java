@@ -1,5 +1,6 @@
 package com.projectx.spa.activities;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
@@ -9,26 +10,20 @@ import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.EventListener;
-import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.orhanobut.logger.Logger;
 import com.projectx.spa.R;
 import com.projectx.spa.helpers.Constants;
+import com.projectx.spa.helpers.FbHelper;
 import com.projectx.spa.helpers.UserSession;
+import com.projectx.spa.interfaces.OnSnapshotListener;
 import com.projectx.spa.models.ParkingSlot;
 
 import es.dmoral.toasty.Toasty;
 
-public class AdminHomeActivity extends AppCompatActivity {
-    private final String TAG = getClass().getSimpleName();
+public class AdminHomeActivity extends AppCompatActivity implements View.OnClickListener {
 
     private TextView nameTextView;
     private TextView buildingTextView;
@@ -38,6 +33,8 @@ public class AdminHomeActivity extends AppCompatActivity {
     private int availableSpace;
     private UserSession userSession;
     private ProgressBar progress;
+
+    private FbHelper fbHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,72 +48,66 @@ public class AdminHomeActivity extends AppCompatActivity {
         buildingTextView = findViewById(R.id.building_text_view);
         landTextView = findViewById(R.id.land_text_view);
         availableTextView = findViewById(R.id.linear_layout1_available_slots);
-        parkedVehicleCardView = findViewById(R.id.contraint_layout3_info_card);
+        parkedVehicleCardView = findViewById(R.id.constraint_layout3_info_card);
         historyCardView = findViewById(R.id.history_card);
         progress = findViewById(R.id.loading);
 
-        /*parkedVehicleCardView.setOnClickListener(this);
-        historyCardView.setOnClickListener(this);*/
+        parkedVehicleCardView.setOnClickListener(this);
+        historyCardView.setOnClickListener(this);
+
+        fbHelper = new FbHelper(this);
 
         userSession = new UserSession(this);
         String id = userSession.getUserDetails().get(Constants.PREF_ID);
-        DocumentReference documentReference;
         if (id != null) {
-            documentReference = FirebaseFirestore.getInstance().collection(Constants.PARKING_SLOTS).document(id);
-            trackSingleDocumentTest(documentReference);
+            String documentPath = Constants.PARKING_SLOTS + "/" + id;
+            trackDocumentChanges(documentPath);
         } else {
             Logger.d("id is null");
         }
     }
 
-    //@Override
-   /* public void onClick(View view) {
+    @Override
+    public void onClick(View view) {
         parkedVehicleCardView.setVisibility(View.INVISIBLE);
         historyCardView.setVisibility(View.INVISIBLE);
         progress.setVisibility(View.VISIBLE);
 
         Intent intent = new Intent();
         if (view.equals(parkedVehicleCardView)) {
-            //intent.setClass(this, ParkedVehiclesActivity.class);
-            //startActivity(intent);
+            intent.setClass(this, ParkedVehiclesActivity.class);
+            startActivity(intent);
         }
         if (view.equals(historyCardView)) {
-            //intent.setClass(this, ParkedHistoryActivity.class);
-            //startActivity(intent);
+            intent.setClass(this, ParkedHistoryActivity.class);
+            startActivity(intent);
         }
 
         parkedVehicleCardView.setVisibility(View.VISIBLE);
         historyCardView.setVisibility(View.VISIBLE);
         progress.setVisibility(View.INVISIBLE);
     }
-*/
-    private void trackSingleDocumentTest(DocumentReference documentReference) {
-        documentReference.addSnapshotListener(new EventListener<DocumentSnapshot>() {
+
+    private void trackDocumentChanges(String documentPath) {
+        fbHelper.trackDocument(ParkingSlot.class, documentPath, new OnSnapshotListener() {
             @Override
-            public void onEvent(DocumentSnapshot snapshot, FirebaseFirestoreException e) {
-                if (e != null) {
-                    Logger.w("Listen failed: " + e);
-                    return;
-                }
+            public <T> void onSuccess(T object) {
+                // TODO: 12-07-2021 Name is not being updated because of using cached name
+                String name = userSession.getUserDetails().get(Constants.PREF_NAME);
+                ParkingSlot parkingSlot = (ParkingSlot) object;
+                String building = parkingSlot.getBuilding();
+                String land = parkingSlot.getAddress();
+                availableSpace = parkingSlot.getAvailableSpace();
 
-                if (snapshot != null && snapshot.exists()) {
-                    Logger.d(snapshot);
-                    ParkingSlot parkingSlot = snapshot.toObject(ParkingSlot.class);
-                    if (parkingSlot != null) {
-                        String name = userSession.getUserDetails().get(Constants.PREF_NAME);
-                        String building = parkingSlot.getBuilding();
-                        String land = parkingSlot.getAddress();
-                        availableSpace = parkingSlot.getAvailableSpace();
+                nameTextView.setText(name);
+                buildingTextView.setText(building);
+                landTextView.setText(land);
+                availableTextView.setText(String.valueOf(availableSpace));
+            }
 
-                        nameTextView.setText(name);
-                        buildingTextView.setText(building);
-                        landTextView.setText(land);
-                        availableTextView.setText(String.valueOf(availableSpace));
-                    }
-                } else {
-                    Logger.d("Current data: null");
-
-                }
+            @Override
+            public void onFailure(String errorMessage) {
+                Logger.e(errorMessage);
             }
         });
     }
@@ -128,6 +119,7 @@ public class AdminHomeActivity extends AppCompatActivity {
         return true;
     }
 
+    @SuppressLint("NonConstantResourceId")
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle item selection
@@ -144,10 +136,19 @@ public class AdminHomeActivity extends AppCompatActivity {
     }
 
     private void logOut() {
-        Toasty.success(this, "Logout successful", Toasty.LENGTH_SHORT).show();
-        FirebaseAuth.getInstance().signOut();
-        userSession.clearUserData();
-        finish();
+        fbHelper.logoutUser(new OnSnapshotListener() {
+            @Override
+            public <T> void onSuccess(T object) {
+                Toasty.success(getApplicationContext(), (String) object, Toasty.LENGTH_SHORT).show();
+                userSession.clearUserData();
+                finish();
+            }
+
+            @Override
+            public void onFailure(String errorMessage) {
+                Toasty.error(getApplicationContext(), errorMessage, Toasty.LENGTH_SHORT).show();
+            }
+        });
     }
 
     //private void profilePage() {

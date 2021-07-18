@@ -1,6 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <style name="Layout">
+        <item name="android:background">@color/blue_100</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">match_parent</item>
+    </style>
+
     <style name="TextViewStyle.AvailableSlotsItem" parent="Widget.AppCompat.TextView">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
@@ -18,6 +24,10 @@
         <item name="android:layout_marginBottom">10dp</item>
     </style>
 
+    <style name="ImageViewStyle.Logo">
+        <item name="android:src">@drawable/ic_logo</item>
+    </style>
+
     <style name="TextViewStyle" parent="Widget.AppCompat.TextView">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
@@ -30,6 +40,7 @@
 
     <style name="ButtonStyle" parent="Widget.AppCompat.Button">
         <item name="android:background">@drawable/bg_button</item>
+        <item name="android:fontFamily">@font/open_sans_bold</item>
         <item name="android:textSize">16sp</item>
         <item name="android:textAppearance">@style/TextAppearance.MaterialComponents.Button</item>
         <item name="android:textAllCaps">false</item>
