@@ -34,7 +34,7 @@ public class ParkedHistoryActivity extends AppCompatActivity implements SwipeRef
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_parked_history);
-        getSupportActionBar().setTitle("History");
+//        getSupportActionBar().setTitle("History");
 
         id = new UserSession(this).getUserDetails().get(Constants.PREF_ID);
         recyclerView = findViewById(R.id.recycler_view);

@@ -47,7 +47,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
-        getSupportActionBar().setTitle("Register");
+//        getSupportActionBar().setTitle("Register");
 
         userSession = new UserSession(this);
 

@@ -46,7 +46,7 @@ public class ParkedVehiclesActivity extends AppCompatActivity implements SwipeRe
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_parked_vehicles);
-        getSupportActionBar().setTitle("Parked vehicles");
+//        getSupportActionBar().setTitle("Parked vehicles");
 
         String id = new UserSession(this).getUserDetails().get(Constants.PREF_ID);
         recyclerView = findViewById(R.id.recycler_view);
