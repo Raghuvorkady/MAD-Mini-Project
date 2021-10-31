@@ -39,6 +39,7 @@ public class ParkedHistory extends ParkedVehicle implements Parcelable {
     };
 
     protected ParkedHistory(Parcel in) {
+        super(in);
         exitTime = in.readParcelable(Timestamp.class.getClassLoader());
         amountPaid = in.readDouble();
     }
@@ -50,6 +51,7 @@ public class ParkedHistory extends ParkedVehicle implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel parcel, int i) {
+        super.writeToParcel(parcel, i);
         parcel.writeParcelable(exitTime, i);
         parcel.writeDouble(amountPaid);
     }
@@ -62,5 +64,10 @@ public class ParkedHistory extends ParkedVehicle implements Parcelable {
     @Override
     public int hashCode() {
         return super.hashCode();
+    }
+
+    @Override
+    public String toString() {
+        return "ParkedHistory{" + super.toString() + ", exitTime=" + exitTime + ", amountPaid=" + amountPaid + '}';
     }
 }
