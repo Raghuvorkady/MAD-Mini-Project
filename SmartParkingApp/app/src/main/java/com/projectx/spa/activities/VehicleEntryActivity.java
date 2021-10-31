@@ -47,7 +47,7 @@ public class VehicleEntryActivity extends AppCompatActivity implements View.OnCl
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_vehicle_entry);
-        getSupportActionBar().setTitle("Vehicle Entry");
+//        getSupportActionBar().setTitle("Vehicle Entry");
 
         wait = findViewById(R.id.waiting);
         in = findViewById(R.id.in_card);

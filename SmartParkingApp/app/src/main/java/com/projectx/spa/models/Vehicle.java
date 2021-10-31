@@ -5,7 +5,7 @@ import android.os.Parcelable;
 
 import com.projectx.spa.interfaces.Settable;
 
-public class Vehicle implements Parcelable, Settable {
+public abstract class Vehicle implements Parcelable, Settable {
     private String id;
     private String vehicleNumber;
 
@@ -30,18 +30,6 @@ public class Vehicle implements Parcelable, Settable {
         return vehicleNumber;
     }
 
-    public static final Creator<Vehicle> CREATOR = new Creator<Vehicle>() {
-        @Override
-        public Vehicle createFromParcel(Parcel in) {
-            return new Vehicle(in);
-        }
-
-        @Override
-        public Vehicle[] newArray(int size) {
-            return new Vehicle[size];
-        }
-    };
-
     protected Vehicle(Parcel in) {
         id = in.readString();
         vehicleNumber = in.readString();
@@ -51,11 +39,6 @@ public class Vehicle implements Parcelable, Settable {
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(id);
         dest.writeString(vehicleNumber);
-    }
-
-    @Override
-    public int describeContents() {
-        return 0;
     }
 
     @Override
@@ -69,5 +52,10 @@ public class Vehicle implements Parcelable, Settable {
     @Override
     public int hashCode() {
         return id.hashCode();
+    }
+
+    @Override
+    public String toString() {
+        return "Vehicle{" + "id='" + id + '\'' + ", vehicleNumber='" + vehicleNumber + '\'' + '}';
     }
 }

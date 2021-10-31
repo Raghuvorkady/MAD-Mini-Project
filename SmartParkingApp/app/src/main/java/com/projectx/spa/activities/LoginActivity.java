@@ -37,7 +37,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        getSupportActionBar().setTitle("Login");
+//        getSupportActionBar().setTitle("Login");
         setContentView(R.layout.activity_login);
 
         userSession = new UserSession(this);

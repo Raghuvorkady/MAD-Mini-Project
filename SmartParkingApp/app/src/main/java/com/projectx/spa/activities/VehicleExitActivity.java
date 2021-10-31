@@ -47,7 +47,7 @@ public class VehicleExitActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_vehicle_exit);
-        getSupportActionBar().setTitle("Bill");
+//        getSupportActionBar().setTitle("Bill");
 
         TextView vehicleNumberTextView = findViewById(R.id.bill_activity_vehicle_number);
         entryTimeTextView = findViewById(R.id.bill_activity_entry_time);

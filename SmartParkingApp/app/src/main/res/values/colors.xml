@@ -14,4 +14,5 @@
     <color name="blue_300">#B8DFD8</color>
     <color name="blue_800">#4C4C6D</color>
     <color name="yellow_200">#FFE194</color>
+    <color name="text_light">#777777</color>
 </resources>

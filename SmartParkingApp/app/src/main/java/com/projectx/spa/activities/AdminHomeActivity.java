@@ -40,7 +40,7 @@ public class AdminHomeActivity extends AppCompatActivity implements View.OnClick
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_admin_home);
-        getSupportActionBar().setTitle("Admin");
+        //getSupportActionBar().setTitle("Admin");
 //        getActionBar().setTitle("Admin");
 //actionbar
 

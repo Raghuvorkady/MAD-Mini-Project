@@ -33,6 +33,7 @@ public class ParkedVehicle extends Vehicle implements Parcelable {
     };
 
     protected ParkedVehicle(Parcel in) {
+        super(in);
         entryTime = in.readParcelable(Timestamp.class.getClassLoader());
     }
 
@@ -43,6 +44,7 @@ public class ParkedVehicle extends Vehicle implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel parcel, int i) {
+        super.writeToParcel(parcel, i);
         parcel.writeParcelable(entryTime, i);
     }
 
@@ -54,5 +56,10 @@ public class ParkedVehicle extends Vehicle implements Parcelable {
     @Override
     public int hashCode() {
         return super.hashCode();
+    }
+
+    @Override
+    public String toString() {
+        return "ParkedVehicle{" + super.toString() + ", entryTime=" + entryTime + '}';
     }
 }

@@ -50,7 +50,7 @@
         <item name="android:layout_marginTop">10dp</item>
         <item name="android:layout_marginRight">20dp</item>
         <item name="android:layout_marginBottom">10dp</item>
-        <item name="android:textColor">@color/teal_700</item>
+        <item name="android:textColor">@color/white</item>
     </style>
 
     <style name="EditTextStyle" parent="Widget.AppCompat.EditText">
